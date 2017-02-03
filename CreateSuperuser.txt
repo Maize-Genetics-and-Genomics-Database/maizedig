@@ -1,0 +1,8 @@
+
+Here is an example to create superuser on BioDIG
+$ python manage.py createsuperuser --username=mgdb --email=mgdb@maizegdb.org
+
+Changing password
+$ python manage.py changepassword [username]
+
+ref: https://docs.djangoproject.com/en/1.9/topics/auth/default/

@@ -1,0 +1,69 @@
+.left_container {
+	display: inline-block;
+	width: 660px;
+	padding: 10px;
+	border: 1px solid #CCCCCC;
+	height: 800px;
+}
+
+.right_container {
+	display: inline-block;
+	float: right;
+	width: 250px;
+	padding: 10px;
+	border: 1px solid #CCCCCC;
+	height: 800px;
+}
+
+.center_container {
+    margin: 50px;
+    display: block;
+    height: 700px;
+}
+
+div#mycoplasma_selector_menu {
+	height: 750px;
+	overflow-y: scroll;
+	width: auto;
+	margin-right: 10px;
+}
+
+div#search_selected {
+	width: auto;
+	height: auto;
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 15px;
+	padding: 5px;
+}
+
+#helpBox {
+	font-size: 13px;
+	width: 700px;
+}
+
+.organismInfoImg {
+	height: 20px;
+}
+
+form#search {
+	margin-bottom: 5px;
+}
+
+.search_button {
+	background-color: cornflowerblue;
+	color: white;
+	border: 1px solid #3079ED;
+	border-radius: 5px;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	height: 29px;
+    	width: 42px;
+    	vertical-align: top;
+}
+
+.search_button:hover {
+	cursor: pointer;
+	border: 1px solid #2F5BB7;
+	box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
+	filter: DXImageTransform.Microsoft.gradient(startColorstr='#6495ED', endColorstr='#2F5BB7'); /*For IE */
+}

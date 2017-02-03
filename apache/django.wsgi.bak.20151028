@@ -1,0 +1,51 @@
+import os
+import sys
+
+
+#clean sys.path
+#for ph in sys.path:
+#    sys.path.remove(ph)
+
+# add path for python2.7
+path1 = '/usr/local/lib/python27.zip'
+path2 = '/usr/local/lib/python2.7'
+path3 = '/usr/local/lib/python2.7/plat-linux2'
+path4 = '/usr/local/lib/python2.7/lib-tk'
+path5 = '/usr/local/lib/python2.7/lib-old'
+path6 = '/usr/local/lib/python2.7/lib-dynload'
+path7 = '/usr/local/lib/python2.7/site-packages'
+
+#sys.path.insert(1, path7)
+#sys.path.insert(1, path1)
+#sys.path.insert(1, path6)
+#sys.path.insert(1, path5)
+#sys.path.insert(1, path4)
+#sys.path.insert(1, path3)
+#sys.path.insert(1, path2)
+
+#sys.path.append(path1)
+#sys.path.append(path2)
+#sys.path.append(path3)
+#sys.path.append(path4)
+#sys.path.append(path5)
+#sys.path.append(path6)
+#sys.path.append(path7)
+
+#djangoPath = '/usr/local/lib/python2.7/site-packages/django'
+path = '/var/www/BioDIG'
+otherpath = '/var/www'
+
+#sys.path.append(djangoPath)
+sys.path.append(path)
+#sys.path.insert(0, path)
+sys.path.append(otherpath)
+
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'BioDIG.settings'
+
+# debugging - by ktcho 2015.10.27
+print sys.path
+
+import django.core.handlers.wsgi
+application = django.core.handlers.wsgi.WSGIHandler()
+

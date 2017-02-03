@@ -1,0 +1,30 @@
+div.gene_list {
+    display: none;
+    background-color: white;
+    border: 1px solid black;
+    position: absolute;
+    box-shadow: 3px 3px 3px 4px black;
+    -moz-box-shadow: 3px 3px 3px 4px black;
+    -webkit-box-shadow: 3px 3px 3px 4px gray;
+    opacity: 1;
+    font-weight: normal;
+    z-index: 11;
+}
+
+div.gene_close {
+    text-align: right;
+    background-color: gray;
+}
+
+span.gene_close_text {
+    font-size: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+div.gene_links {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #000000;
+    padding: 5px;
+}
