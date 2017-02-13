@@ -22,10 +22,6 @@ def renderAction(request, *args, **kwargs):
 	thumbnailCheck = query.split('thumbnails/')
 	if len(thumbnailCheck) > 1:
 		query = os.path.join('pictures', thumbnailCheck[1])
-	#else:
-	#	downsizedCheck = query.split('downsized/')
-	#	if len(downsizedCheck) > 1:
-	#		query = os.path.join('')
 
 	if request.user and request.user.is_authenticated():
 		if request.user.is_staff:
@@ -41,7 +37,7 @@ def renderAction(request, *args, **kwargs):
 				#print query
 				authorized = not Picture.objects.get(thumbnail=query).isPrivate
 			except Exception:
-				print 'T1'
+				print 'Cannot find an image on picture table with both imageName and thumbnail'	# for debugger
 				return HttpResponseNotFound()
 	
 	if authorized:
@@ -50,8 +46,8 @@ def renderAction(request, *args, **kwargs):
 			response['Content-Length'] = os.path.getsize(filename)
 			return response
 		except Exception:
-			print 'T2'
+			print 'HttpResponse exception!'
 			return HttpResponseNotFound()
 	else:
-		print 'T3'
+		print 'Not authorized!'
 		return HttpResponseNotFound()
