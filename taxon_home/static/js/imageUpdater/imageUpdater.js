@@ -130,9 +130,8 @@
 
 	        var $pictureDiv = $('<div>');
 	        var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
-	        //$href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(180).height(130));
-	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.url).width(180).height(130));
-	                        
+	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(180).height(130));
+
 	        var $descriptionDiv = $('<div class="description"><span>' + picture.description + '</span></div>');
 				
 	        $currentCell.append($pictureDiv.append($href));
