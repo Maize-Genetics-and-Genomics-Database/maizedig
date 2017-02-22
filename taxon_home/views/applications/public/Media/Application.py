@@ -39,7 +39,7 @@ def renderAction(request, *args, **kwargs):
 			except Exception:
 				print 'Cannot find an image on picture table with both imageName and thumbnail'	# for debugger
 				return HttpResponseNotFound()
-	
+
 	if authorized:
 		try:
 			response = HttpResponse(FileWrapper(file(filename)), mimetype="image/png")
@@ -51,3 +51,4 @@ def renderAction(request, *args, **kwargs):
 	else:
 		print 'Not authorized!'
 		return HttpResponseNotFound()
+
