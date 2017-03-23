@@ -2015,3 +2015,66 @@ class PictureDefinitionTag(models.Model):
         db_table = u'picturedefinitiontag'
     def __unicode__(self):
         return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))
+
+#
+# add models for relationship between maizedig database (picture table) and mgdb database
+#
+
+class PictureNotes(models.Model):
+    pn_id = models.IntegerField(primary_key=True)
+    picture = models.ForeignKey(Picture)
+    notes = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(Pubauthor)
+    dateCreated = models.DateTimeField()
+
+    class Meta:
+        db_table = u'picture_notes'
+
+class PictureMgdb(models.Model):
+    pm_id = models.IntegerField(primary_key=True)
+    mgdb_id = models.IntegerField()
+    picture = models.ForeignKey(Picture)
+
+    class Meta:
+        db_table = u'picture_mgdb'
+
+##
+## Models for mgdb-curation database
+##
+
+class IdNum(models.Model):
+    id = models.IntegerField(primary_key=True)
+    add_by = models.IntegerField()
+    add_date = models.DateTimeField()
+    curation_lvl = models.SmallIntegerField()
+    mod_by = models.IntegerField()
+    mod_date = models.DateTimeField()
+    type_term = models.IntegerField()
+    #del = models.CharField(max_length=1)
+    comments = models.CharField(max_length=100)
+    curation_lvl_change = models.DateTimeField()
+    temp_data = models.CharField(max_length=70)
+
+    class Meta:
+        db_table = u'id_num'
+
+class Locus(models.Model):
+    #id = models.OneToOneField(IdNum, primary_key=True)
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=120)
+    arm = models.IntegerField()
+    full_name = models.CharField(max_length=65)
+    internal_map = models.IntegerField()
+    linkage_group = models.IntegerField()
+    plant_wide_gene_name = models.CharField(max_length=40)
+    species = models.IntegerField()
+    type = models.IntegerField()
+    orig_arm = models.IntegerField()
+    value = models.BigIntegerField()
+    g = models.BigIntegerField()
+
+    class Meta:
+        db_table = u'locus'
+    def __unicode__(self):
+        return self.name
+
