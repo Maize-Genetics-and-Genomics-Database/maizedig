@@ -15,6 +15,8 @@ from taxon_home.views.pagelets.public.GBrowseSearchPagelet import GBrowseSearchP
 from taxon_home.views.pagelets.public.NavBarPagelet import NavBarPagelet
 from taxon_home.views.pagelets.public.FooterPagelet import FooterPagelet
 from taxon_home.models import Picture, GeneLink, Tag, Feature
+from taxon_home.models import PictureNotes, PictureMgdb
+from taxon_home.models import Locus
 #from taxon_home.models import Organism
 #from taxon_home.models import GeneLink
 #from taxon_home.models import Feature
@@ -47,14 +49,25 @@ class Application(ApplicationBase):
             #geneLink = GeneLink.objects.get(feature_id__exact=featureID)
             #pictureID = geneLink.
             #pictures = Picture.objects.filter(notes__icontains=query[0])
-            pictures = Picture.objects.filter(imageName__icontains=query[0])
-            for picture in pictures:
-                candidates[1].append(picture)
+
+            #pictures = Picture.objects.filter(imageName__icontains=query[0])
+            #for picture in pictures:
+            #    candidates[1].append(picture)
+
+            pNotes = PictureNotes.objects.filter(notes__icontains=query[0])
+            pictureIDs = []
+            for note in pNotes:
+                pictureID = note.picture_id
+                if not pictureID in pictureIDs:
+                    pictureIDs.append(pictureID)
+                    candidates[1].append(pictureID)
+
         if searchGeneName:
             #pictures = Picture.objects.filter(description__icontains=query[0])
             #for picture in pictures:
             #    candidates[2].append(picture)
 
+            '''
             tags = Tag.objects.filter(name__icontains=query[0])
             gNameImages = []
             pictureIDs = []
@@ -64,6 +77,34 @@ class Application(ApplicationBase):
                     gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
                     pictureIDs.append(pictureID)
                     candidates[2].append(pictureID)
+            '''
+
+            locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
+            #for loc in locus:
+            #print locus
+            #gNameImages = []
+            pictureIDs = []
+            for loc in locus:
+                locusID = loc.pk
+                pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
+                for mgdb in pMgdb:
+                    pictureID = mgdb.picture.pk
+                    if not pictureID in pictureIDs:
+                        #gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
+                        pictureIDs.append(pictureID)
+                        candidates[2].append(pictureID)
+
+        if searchGeneSymbol:
+            locus = Locus.objects.using('mgdb').filter(name__icontains=query[0])
+            pictureIDs = []
+            for loc in locus:
+                locusID = loc.pk
+                pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
+                for mgdb in pMgdb:
+                    pictureID = mgdb.picture.pk
+                    if not pictureID in pictureIDs:
+                        pictureIDs.append(pictureID)
+                        candidates[3].append(pictureID)
 
         #if searchGeneID:
         #    #pictures = Picture.objects.filter(description__icontains=query[0])

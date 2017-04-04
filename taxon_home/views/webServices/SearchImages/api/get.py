@@ -1,4 +1,5 @@
 from taxon_home.models import Picture, PictureDefinitionTag, GeneLink, Tag, Feature
+from taxon_home.models import Locus, PictureNotes, PictureMgdb
 from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
 from renderEngine.WebServiceException import WebServiceException
 from taxon_home.views.webServices.Images.api.get import GetAPI as ImageMetadataAPI
