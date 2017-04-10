@@ -124,17 +124,41 @@ class GetAPI:
         iNotesImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
 
         # Gene name
-        tags = Tag.objects.filter(name__icontains=query[0])
+        #tags = Tag.objects.filter(name__icontains=query[0])
+        #gNameImages = []
+        #pictureIDs = []
+        #for tag in tags:
+        #    pictureID = tag.group.picture.pk
+        #    if not pictureID in pictureIDs:
+        #        gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
+        #        pictureIDs.append(pictureID)
+
         gNameImages = []
-        pictureIDs = []
-        for tag in tags:
-            pictureID = tag.group.picture.pk
-            if not pictureID in pictureIDs:
-                gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
-                pictureIDs.append(pictureID)
+        locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
+        picturesGN = []
+        for loc in locus:
+            locusID = loc.pk
+            pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
+            for mgdb in pMgdb:
+                pictureID = mgdb.picture.pk
+                if not pictureID in picturesGN:
+                    gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
+                    picturesGN.append(pictureID)
+
 
         # Gene Symbol
-        gSymbolImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
+        gSymbolImages = []
+        #gSymbolImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
+        locus = Locus.objects.using('mgdb').filter(name__icontains=query[0])
+        picturesGS = []
+        for loc in locus:
+            locusID = loc.pk
+            pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
+            for mgdb in pMgdb:
+                pictureID = mgdb.picture.pk
+                if not pictureID in picturesGS:
+                    gSymbolImages.extend(Picture.objects.filter(id__exact=pictureID))
+                    picturesGS.append(pictureID)
 
         # Gene ID
         gIDImages = []
@@ -145,9 +169,17 @@ class GetAPI:
         #print (query[0])
         features = Feature.objects.filter(name__icontains=query[0])[self.offset:self.offset+self.limit]
 
+        for feature in features:
+            genelink = GeneLink.objects.filter(feature__exact=feature.pk)
+            if len(genelink) > 0:
+                pictureID = genelink.tag.group.picture.pk
+                if not pictureID in pictureIDs:
+                    gIDImages.extend(Picture.objects.filter(id__exact=pictureID))
+                    pictureIDs.append(pictureID)
+
         # for test
         #print len(features)
-
+        '''
         for feature in features:
             # for test
             #print (feature.feature_id)
@@ -163,6 +195,7 @@ class GetAPI:
                 if not pictureID in pictureIDs:
                     gIDImages.extend(Picture.objects.filter(id__exact=pictureID))
                     pictureIDs.append(pictureID)
+        '''
 
         # for test
         #print 'pictures_4: ', len(pictureIDs)
@@ -184,6 +217,11 @@ class GetAPI:
                 imageMetadata[2]['images'].append(imageMetadataAPI.getImageMetadata(image, False).getObject())
             else:
                 imageMetadata[2] = {'images' : [imageMetadataAPI.getImageMetadata(image, False).getObject()]}
+        for image in gSymbolImages:
+            if imageMetadata.has_key(3):
+                imageMetadata[3]['images'].append(imageMetadataAPI.getImageMetadata(image, False).getObject())
+            else:
+                imageMetadata[3] = {'images' : [imageMetadataAPI.getImageMetadata(image, False).getObject()]}
         for image in gIDImages:
             if imageMetadata.has_key(4):
                 imageMetadata[4]['images'].append(imageMetadataAPI.getImageMetadata(image, False).getObject())

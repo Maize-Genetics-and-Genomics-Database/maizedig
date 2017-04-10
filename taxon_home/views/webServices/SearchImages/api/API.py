@@ -22,6 +22,8 @@ def getImageMetadata(request):
         #query = request.GET['query']
         query = Util.getDelimitedList(request.GET, 'query')
         #print query[0] + ' TTT'
+        #iSearchID = Util.getDelimitedList(request.GET, 'iSearchID')
+        #print iSearchID
 
         return getAPI.getImageMetadataForiSearch(query)
     else:

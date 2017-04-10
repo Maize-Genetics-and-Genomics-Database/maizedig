@@ -106,26 +106,23 @@ class Application(ApplicationBase):
                         pictureIDs.append(pictureID)
                         candidates[3].append(pictureID)
 
-        #if searchGeneID:
+        if searchGeneID:
         #    #pictures = Picture.objects.filter(description__icontains=query[0])
         #    features = Feature.objects.filter(name__icontains=query[0])
         #    for feature in features:
         #        candidates[4].append(feature)
-            '''
             gIDImages = []
             pictureIDs = []
             features = Feature.objects.filter(name__icontains=query[0])[0:10]
             #features = Feature.objects.filter(name__icontains=query[0])
-            print len(features)
+            #print len(features)
             for feature in features:
-                #pictureID = GeneLink.objects.filter(feature__exact=feature.feature_id).tag.group.picture.pk
-                genelink = GeneLink.objects.get(feature_id__exact=feature.feature_id)
-                pictureID = genelink.tag.group.picture.pk
-                if not pictureID in pictureIDs:
-                    #gIDImages.extend(Picture.objects.filter(id__exact=pictureID))
-                    pictureIDs.append(pictureID)
-                    candidates[4].append(pictureID)
-            '''
+                genelink = GeneLink.objects.filter(feature__exact=feature.pk)
+                if len(genelink) > 0:
+                    pictureID = genelink.tag.group.picture.pk
+                    if not pictureID in pictureIDs:
+                        pictureIDs.append(pictureID)
+                        candidates[4].append(pictureID)
 
         formatQuery = ""
         if query:
