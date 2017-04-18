@@ -83,18 +83,25 @@ class Application(ApplicationBase):
             #for loc in locus:
             #print locus
             #gNameImages = []
+            #for loc in locus:
+            #    locusID = loc.pk
+            #    pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
+            #    for mgdb in pMgdb:
+            #        pictureID = mgdb.picture.pk
+            #        if not pictureID in pictureIDs:
+            #            #gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
+            #            pictureIDs.append(pictureID)
+            #            candidates[2].append(pictureID)
             pictureIDs = []
-            for loc in locus:
-                locusID = loc.pk
-                pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
-                for mgdb in pMgdb:
-                    pictureID = mgdb.picture.pk
-                    if not pictureID in pictureIDs:
-                        #gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
-                        pictureIDs.append(pictureID)
-                        candidates[2].append(pictureID)
+            pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
+            for pMgdb in pMgdbs:
+                pictureID = pMgdb.picture.pk
+                if not pictureID in picturesIDs:
+                    pictureIDs.append(pictureID)
+                    candidates[2].append(pictureID)
 
         if searchGeneSymbol:
+            '''
             locus = Locus.objects.using('mgdb').filter(name__icontains=query[0])
             pictureIDs = []
             for loc in locus:
@@ -105,6 +112,14 @@ class Application(ApplicationBase):
                     if not pictureID in pictureIDs:
                         pictureIDs.append(pictureID)
                         candidates[3].append(pictureID)
+            '''
+            pictureIDs = []
+            pMgdbs = PictureMgdb.objects.filter(locus_name__icontains=query[0])
+            for pMgdb in pMgdbs:
+                pictureID = pMgdb.picture.pk
+                if not pictureID in pictureIDs:
+                    pictureIDs.append(pictureID)
+                    candidates[3].append(pictureID)
 
         if searchGeneID:
         #    #pictures = Picture.objects.filter(description__icontains=query[0])
@@ -118,8 +133,11 @@ class Application(ApplicationBase):
             #print len(features)
             for feature in features:
                 genelink = GeneLink.objects.filter(feature__exact=feature.pk)
-                if len(genelink) > 0:
-                    pictureID = genelink.tag.group.picture.pk
+                #genelink = GeneLink.objects.get(feature__exact=feature.pk)
+                for gl in genelink:
+                #if len(genelink) > 0:
+                    #pictureID = genelink.tag.group.picture.pk
+                    pictureID = gl.tag.group.picture.pk
                     if not pictureID in pictureIDs:
                         pictureIDs.append(pictureID)
                         candidates[4].append(pictureID)

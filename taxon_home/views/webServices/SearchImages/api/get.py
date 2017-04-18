@@ -134,31 +134,42 @@ class GetAPI:
         #        pictureIDs.append(pictureID)
 
         gNameImages = []
-        locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
         picturesGN = []
-        for loc in locus:
-            locusID = loc.pk
-            pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
-            for mgdb in pMgdb:
-                pictureID = mgdb.picture.pk
-                if not pictureID in picturesGN:
-                    gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
-                    picturesGN.append(pictureID)
-
+        #locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
+        #for loc in locus:
+        #    locusID = loc.pk
+        #    pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
+        #    for mgdb in pMgdb:
+        #        pictureID = mgdb.picture.pk
+        #        if not pictureID in picturesGN:
+        #            gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
+        #            picturesGN.append(pictureID)
+        pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
+        for pMgdb in pMgdbs:
+            pictureID = pMgdb.picture.pk
+            if not pictureID in picturesGN:
+                gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
+                picturesGN.append(pictureID)
 
         # Gene Symbol
         gSymbolImages = []
-        #gSymbolImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
-        locus = Locus.objects.using('mgdb').filter(name__icontains=query[0])
         picturesGS = []
-        for loc in locus:
-            locusID = loc.pk
-            pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
-            for mgdb in pMgdb:
-                pictureID = mgdb.picture.pk
-                if not pictureID in picturesGS:
-                    gSymbolImages.extend(Picture.objects.filter(id__exact=pictureID))
-                    picturesGS.append(pictureID)
+        #gSymbolImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
+        #locus = Locus.objects.using('mgdb').filter(name__icontains=query[0])
+        #for loc in locus:
+        #    locusID = loc.pk
+        #    pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
+        #    for mgdb in pMgdb:
+        #        pictureID = mgdb.picture.pk
+        #        if not pictureID in picturesGS:
+        #            gSymbolImages.extend(Picture.objects.filter(id__exact=pictureID))
+        #            picturesGS.append(pictureID)
+        pMgdbs = PictureMgdb.objects.filter(locus_name__icontains=query[0])
+        for pMgdb in pMgdbs:
+            pictureID = pMgdb.picture.pk
+            if not pictureID in picturesGS:
+                gSymbolImages.extend(Picture.objects.filter(id__exact=pictureID))
+                picturesGS.append(pictureID)
 
         # Gene ID
         gIDImages = []

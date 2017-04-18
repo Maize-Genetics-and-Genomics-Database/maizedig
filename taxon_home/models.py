@@ -2034,6 +2034,8 @@ class PictureMgdb(models.Model):
     pm_id = models.IntegerField(primary_key=True)
     mgdb_id = models.IntegerField()
     picture = models.ForeignKey(Picture)
+    locus_name = models.TextField()
+    locus_full_name = models.TextField()
 
     class Meta:
         db_table = u'picture_mgdb'
