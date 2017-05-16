@@ -38,16 +38,14 @@ class iSearchPagelet(PageletBase):
         candidateInfo = list()
         candidates = self.searchParams['candidates']
         
-        for categories in candidates:
+        for category in candidates:
 
             #for cats in candidate:
                #numImages = PictureDefinitionTag.objects.filter(organism__exact=match.pk).count()
                 #numImages = Picture.objects.filter(id__exact=match.pk).count()
-            numImages = len(categories) - 1
+            numImages = len(category) - 1
             pages = numImages/limit + 1
-                #candidateInfo.append((match.common_name, match.abbreviation, str(match.pk), pages, numImages))
-                #candidateInfo.append((match.imageName, match.description, str(match.pk), pages, numImages))
-            candidateInfo.append(('par 1', categories[0], str(candidates.index(categories)), pages, numImages))
+            candidateInfo.append(('par 1', category[0], str(candidates.index(category)), pages, numImages))
 
         return {
             'candidateInfo': candidateInfo,

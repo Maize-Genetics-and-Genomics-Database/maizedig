@@ -40,10 +40,12 @@ class Application(ApplicationBase):
 
         candidates = [['Image Description'], ['Image Notes'], ['Gene Name'], ['Gene Symbol'], ['Gene ID']]
 
+
         if searchImageDesc:
             pictures = Picture.objects.filter(description__icontains=query[0])
             for picture in pictures:
                 candidates[0].append(picture)
+
         if searchImageNotes:
             #featureID = feature.objects.filter()
             #geneLink = GeneLink.objects.get(feature_id__exact=featureID)
@@ -79,7 +81,7 @@ class Application(ApplicationBase):
                     candidates[2].append(pictureID)
             '''
 
-            locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
+            #locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
             #for loc in locus:
             #print locus
             #gNameImages = []
@@ -152,9 +154,7 @@ class Application(ApplicationBase):
             'query' : query[0]
         }
 
-        #if searchImageDesc:
         numSearch += 1
-        #self.addPageletBinding('center-' + str(numSearch), ImageSearchPagelet().setSearchParams(search))
         self.addPageletBinding('center-' + str(numSearch), iSearchPagelet().setSearchParams(search))
 
         args = {

@@ -62,7 +62,7 @@ class GetAPI:
                             'commonName' : tag.organism.common_name,
                             'abbreviation' : tag.organism.abbreviation,
                             'genus' : tag.organism.genus,
-                            'species' : tag.organism.species      
+                            'species' : tag.organism.species
                         }
                     }
                     
@@ -170,6 +170,7 @@ class GetAPI:
             if not pictureID in picturesGS:
                 gSymbolImages.extend(Picture.objects.filter(id__exact=pictureID))
                 picturesGS.append(pictureID)
+        gSymbolImages = gSymbolImages[self.offset:self.offset+self.limit]
 
         # Gene ID
         gIDImages = []
@@ -179,6 +180,7 @@ class GetAPI:
         # for test
         #print (query[0])
         features = Feature.objects.filter(name__icontains=query[0])[self.offset:self.offset+self.limit]
+        #features = Feature.objects.filter(name__icontains=query[0])
 
         for feature in features:
             genelink = GeneLink.objects.filter(feature__exact=feature.pk)
