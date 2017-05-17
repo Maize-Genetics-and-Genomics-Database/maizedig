@@ -132,8 +132,18 @@
 	        var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
 	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(180).height(130));
 
-	        var $descriptionDiv = $('<div class="description"><span>' + picture.description + '</span></div>');
-				
+            var $pic_description = '';
+            var $pic_description_len = 27;
+            if (picture.description != null)
+                $pic_description = picture.description;
+            else
+                $pic_description = 'null';
+
+            if ($pic_description.length >= $pic_description_len )
+                $pic_description = $pic_description.substring(0, $pic_description_len) + ' ...';
+
+            var $descriptionDiv = $('<div class="description"><span>' + $pic_description + '</span></div>');
+
 	        $currentCell.append($pictureDiv.append($href));
 	        $currentCell.append($descriptionDiv);
 	    }
