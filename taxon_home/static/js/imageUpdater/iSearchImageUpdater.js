@@ -130,8 +130,13 @@
 	        var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
 	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(172).height(130));
 
-            var $pic_description = picture.description;
-            var $pic_description_len = 35;
+	        var $pic_description = '';
+            var $pic_description_len = 27;
+	        if (picture.description != null)
+            	$pic_description = picture.description;
+	        else
+                $pic_description = 'null';
+
 	        if ($pic_description.length >= $pic_description_len )
 	        	$pic_description = $pic_description.substring(0, $pic_description_len) + ' ...';
 
