@@ -98,7 +98,7 @@ class Application(ApplicationBase):
             pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
             for pMgdb in pMgdbs:
                 pictureID = pMgdb.picture.pk
-                if not pictureID in picturesIDs:
+                if not pictureID in pictureIDs:
                     pictureIDs.append(pictureID)
                     candidates[2].append(pictureID)
 
