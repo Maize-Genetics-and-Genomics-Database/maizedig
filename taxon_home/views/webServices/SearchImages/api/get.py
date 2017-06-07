@@ -1,5 +1,5 @@
 from taxon_home.models import Picture, PictureDefinitionTag, GeneLink, Tag, Feature
-from taxon_home.models import Locus, PictureNotes, PictureMgdb
+from taxon_home.models import Locus, PictureNotes, PictureMgdb, PictureGeneID
 from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
 from renderEngine.WebServiceException import WebServiceException
 from taxon_home.views.webServices.Images.api.get import GetAPI as ImageMetadataAPI
@@ -147,7 +147,7 @@ class GetAPI:
         pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
         for pMgdb in pMgdbs:
             pictureID = pMgdb.picture.pk
-            if not pictureID in picturesGN:
+            if pictureID not in picturesGN:
                 gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
                 picturesGN.append(pictureID)
 
@@ -167,48 +167,22 @@ class GetAPI:
         pMgdbs = PictureMgdb.objects.filter(locus_name__icontains=query[0])
         for pMgdb in pMgdbs:
             pictureID = pMgdb.picture.pk
-            if not pictureID in picturesGS:
+            if pictureID not in picturesGS:
                 gSymbolImages.extend(Picture.objects.filter(id__exact=pictureID))
                 picturesGS.append(pictureID)
         gSymbolImages = gSymbolImages[self.offset:self.offset+self.limit]
 
         # Gene ID
         gIDImages = []
-        #pictureIDs = []
-        pictureIDs = None
+        pictureGIs = []
 
-        # for test
-        #print (query[0])
-        features = Feature.objects.filter(name__icontains=query[0])[self.offset:self.offset+self.limit]
-        #features = Feature.objects.filter(name__icontains=query[0])
-
-        for feature in features:
-            genelink = GeneLink.objects.filter(feature__exact=feature.pk)
-            if len(genelink) > 0:
-                pictureID = genelink.tag.group.picture.pk
-                if not pictureID in pictureIDs:
-                    gIDImages.extend(Picture.objects.filter(id__exact=pictureID))
-                    pictureIDs.append(pictureID)
-
-        # for test
-        #print len(features)
-        '''
-        for feature in features:
-            # for test
-            #print (feature.feature_id)
-
-            #pictureID = GeneLink.objects.filter(feature_id__exact=feature.feature_id)
-            #pictureID = GeneLink.objects.filter(feature__exact=feature.feature_id)
-
-            gLink = GeneLink.objects.filter(feature__exact=feature.feature_id)
-            if gLink:
-                pictureID = gLink.tag.group.picture.pk
-                #pictureID = GeneLink.objects.filter(feature__exact=feature.feature_id)
-
-                if not pictureID in pictureIDs:
-                    gIDImages.extend(Picture.objects.filter(id__exact=pictureID))
-                    pictureIDs.append(pictureID)
-        '''
+        pIDs = PictureGeneID.objects.filter(gene_id__icontains=query[0])
+        for pID in pIDs:
+            pictureID = pID.pk
+            if pictureID not in pictureGIs:
+                gIDImages.extend(Picture.objects.filter(id__exact=pictureID))
+                pictureGIs.append(pictureID)
+        gIDImages = gIDImages[self.offset:self.offset+self.limit]
 
         # for test
         #print 'pictures_4: ', len(pictureIDs)

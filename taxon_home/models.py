@@ -2080,3 +2080,12 @@ class Locus(models.Model):
     def __unicode__(self):
         return self.name
 
+class PictureGeneID(models.Model):
+    pg_id = models.IntegerField(primary_key=True)
+    picture_id = models.IntegerField()
+    gene_id = models.CharField(max_length=255)
+    version = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = u'picture_gene_id'
+

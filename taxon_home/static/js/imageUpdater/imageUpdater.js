@@ -140,7 +140,7 @@
                 $pic_description = 'null';
 
             if ($pic_description.length >= $pic_description_len )
-                $pic_description = $pic_description.substring(0, $pic_description_len) + ' ...';
+                $pic_description = $pic_description.substring(0, $pic_description_len) + '...';
 
             var $descriptionDiv = $('<div class="description"><span>' + $pic_description + '</span></div>');
 

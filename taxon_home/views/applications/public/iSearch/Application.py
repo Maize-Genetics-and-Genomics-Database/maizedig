@@ -15,7 +15,7 @@ from taxon_home.views.pagelets.public.GBrowseSearchPagelet import GBrowseSearchP
 from taxon_home.views.pagelets.public.NavBarPagelet import NavBarPagelet
 from taxon_home.views.pagelets.public.FooterPagelet import FooterPagelet
 from taxon_home.models import Picture, GeneLink, Tag, Feature
-from taxon_home.models import PictureNotes, PictureMgdb
+from taxon_home.models import PictureNotes, PictureMgdb, PictureGeneID
 from taxon_home.models import Locus
 #from taxon_home.models import Organism
 #from taxon_home.models import GeneLink
@@ -128,8 +128,15 @@ class Application(ApplicationBase):
         #    features = Feature.objects.filter(name__icontains=query[0])
         #    for feature in features:
         #        candidates[4].append(feature)
-            gIDImages = []
             pictureIDs = []
+            pIDs = PictureGeneID.objects.filter(gene_id__icontains=query[0])
+            for pID in pIDs:
+                pictureID = pID.pk
+                if pictureID not in pictureIDs:
+                    pictureIDs.append(pictureID)
+                    candidates[4].append(pictureID)
+
+            '''
             features = Feature.objects.filter(name__icontains=query[0])[0:10]
             #features = Feature.objects.filter(name__icontains=query[0])
             #print len(features)
@@ -143,6 +150,7 @@ class Application(ApplicationBase):
                     if not pictureID in pictureIDs:
                         pictureIDs.append(pictureID)
                         candidates[4].append(pictureID)
+            '''
 
         formatQuery = ""
         if query:
