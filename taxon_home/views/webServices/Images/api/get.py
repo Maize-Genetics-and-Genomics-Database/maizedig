@@ -1,5 +1,6 @@
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import Picture, PictureDefinitionTag, RecentlyViewedPicture
+from taxon_home.models import PictureMgdb, PictureGeneID
 from django.core.exceptions import ObjectDoesNotExist
 from renderEngine.WebServiceObject import WebServiceObject
 
@@ -29,7 +30,19 @@ class GetAPI:
                 image = imageKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_IMAGE_KEY
-            
+
+        # Get gene information
+        if image.pk is not None:
+            pictureGID = PictureGeneID.objects.filter(picture_id__exact=image.pk)
+            pictureMb = PictureMgdb.objects.filter(picture__exact=image.pk)
+            geneID = pictureGID.gene_id
+            geneSymbol = pictureMb.locus_name
+            geneName = pictureMb.locus_full_name
+        else:
+            geneID = None
+            geneSymbol = None
+            geneName = None
+
         if not image.readPermissions(self.user):
             raise Errors.AUTHENTICATION
         
@@ -56,6 +69,9 @@ class GetAPI:
         metadata.put('url', image.imageName.url)
         metadata.put('thumbnail', image.thumbnail.url)
         metadata.put('id', image.pk)
+        metadata.put('geneID', geneID)
+        metadata.put('geneSymbol', geneSymbol)
+        metadata.put('geneName', geneName)
         
         # add to recently viewed images if there is a user
         if self.user and self.user.is_authenticated():
