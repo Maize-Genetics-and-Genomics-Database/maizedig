@@ -47,15 +47,6 @@ class Application(ApplicationBase):
                 candidates[0].append(picture)
 
         if searchImageNotes:
-            #featureID = feature.objects.filter()
-            #geneLink = GeneLink.objects.get(feature_id__exact=featureID)
-            #pictureID = geneLink.
-            #pictures = Picture.objects.filter(notes__icontains=query[0])
-
-            #pictures = Picture.objects.filter(imageName__icontains=query[0])
-            #for picture in pictures:
-            #    candidates[1].append(picture)
-
             pNotes = PictureNotes.objects.filter(notes__icontains=query[0])
             pictureIDs = []
             for note in pNotes:
@@ -65,35 +56,6 @@ class Application(ApplicationBase):
                     candidates[1].append(pictureID)
 
         if searchGeneName:
-            #pictures = Picture.objects.filter(description__icontains=query[0])
-            #for picture in pictures:
-            #    candidates[2].append(picture)
-
-            '''
-            tags = Tag.objects.filter(name__icontains=query[0])
-            gNameImages = []
-            pictureIDs = []
-            for tag in tags:
-                pictureID = tag.group.picture.pk
-                if not pictureID in pictureIDs:
-                    gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
-                    pictureIDs.append(pictureID)
-                    candidates[2].append(pictureID)
-            '''
-
-            #locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
-            #for loc in locus:
-            #print locus
-            #gNameImages = []
-            #for loc in locus:
-            #    locusID = loc.pk
-            #    pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
-            #    for mgdb in pMgdb:
-            #        pictureID = mgdb.picture.pk
-            #        if not pictureID in pictureIDs:
-            #            #gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
-            #            pictureIDs.append(pictureID)
-            #            candidates[2].append(pictureID)
             pictureIDs = []
             pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
             for pMgdb in pMgdbs:
@@ -103,18 +65,6 @@ class Application(ApplicationBase):
                     candidates[2].append(pictureID)
 
         if searchGeneSymbol:
-            '''
-            locus = Locus.objects.using('mgdb').filter(name__icontains=query[0])
-            pictureIDs = []
-            for loc in locus:
-                locusID = loc.pk
-                pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
-                for mgdb in pMgdb:
-                    pictureID = mgdb.picture.pk
-                    if not pictureID in pictureIDs:
-                        pictureIDs.append(pictureID)
-                        candidates[3].append(pictureID)
-            '''
             pictureIDs = []
             pMgdbs = PictureMgdb.objects.filter(locus_name__icontains=query[0])
             for pMgdb in pMgdbs:
@@ -124,33 +74,13 @@ class Application(ApplicationBase):
                     candidates[3].append(pictureID)
 
         if searchGeneID:
-        #    #pictures = Picture.objects.filter(description__icontains=query[0])
-        #    features = Feature.objects.filter(name__icontains=query[0])
-        #    for feature in features:
-        #        candidates[4].append(feature)
             pictureIDs = []
             pIDs = PictureGeneID.objects.filter(gene_id__icontains=query[0])
             for pID in pIDs:
-                pictureID = pID.pk
+                pictureID = pID.picture.pk
                 if pictureID not in pictureIDs:
                     pictureIDs.append(pictureID)
                     candidates[4].append(pictureID)
-
-            '''
-            features = Feature.objects.filter(name__icontains=query[0])[0:10]
-            #features = Feature.objects.filter(name__icontains=query[0])
-            #print len(features)
-            for feature in features:
-                genelink = GeneLink.objects.filter(feature__exact=feature.pk)
-                #genelink = GeneLink.objects.get(feature__exact=feature.pk)
-                for gl in genelink:
-                #if len(genelink) > 0:
-                    #pictureID = genelink.tag.group.picture.pk
-                    pictureID = gl.tag.group.picture.pk
-                    if not pictureID in pictureIDs:
-                        pictureIDs.append(pictureID)
-                        candidates[4].append(pictureID)
-            '''
 
         formatQuery = ""
         if query:
