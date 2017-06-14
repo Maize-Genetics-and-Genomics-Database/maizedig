@@ -22,8 +22,7 @@ class Picture(models.Model):
     user = models.ForeignKey(User)
     uploadDate = models.DateTimeField(auto_now_add=True)
     isPrivate = models.BooleanField(default=True)
-    #isPrivate = models.BooleanField(default=False)
-    
+
     class Meta:
         db_table = u'picture'    
     
@@ -2082,7 +2081,7 @@ class Locus(models.Model):
 
 class PictureGeneID(models.Model):
     pg_id = models.IntegerField(primary_key=True)
-    picture_id = models.IntegerField()
+    picture = models.ForeignKey(Picture)
     gene_id = models.CharField(max_length=255)
     version = models.CharField(max_length=255)
 

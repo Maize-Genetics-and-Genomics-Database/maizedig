@@ -124,26 +124,8 @@ class GetAPI:
         iNotesImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
 
         # Gene name
-        #tags = Tag.objects.filter(name__icontains=query[0])
-        #gNameImages = []
-        #pictureIDs = []
-        #for tag in tags:
-        #    pictureID = tag.group.picture.pk
-        #    if not pictureID in pictureIDs:
-        #        gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
-        #        pictureIDs.append(pictureID)
-
         gNameImages = []
         picturesGN = []
-        #locus = Locus.objects.using('mgdb').filter(full_name__icontains=query[0])
-        #for loc in locus:
-        #    locusID = loc.pk
-        #    pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
-        #    for mgdb in pMgdb:
-        #        pictureID = mgdb.picture.pk
-        #        if not pictureID in picturesGN:
-        #            gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
-        #            picturesGN.append(pictureID)
         pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
         for pMgdb in pMgdbs:
             pictureID = pMgdb.picture.pk
@@ -154,16 +136,6 @@ class GetAPI:
         # Gene Symbol
         gSymbolImages = []
         picturesGS = []
-        #gSymbolImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
-        #locus = Locus.objects.using('mgdb').filter(name__icontains=query[0])
-        #for loc in locus:
-        #    locusID = loc.pk
-        #    pMgdb = PictureMgdb.objects.filter(mgdb_id__exact=locusID)
-        #    for mgdb in pMgdb:
-        #        pictureID = mgdb.picture.pk
-        #        if not pictureID in picturesGS:
-        #            gSymbolImages.extend(Picture.objects.filter(id__exact=pictureID))
-        #            picturesGS.append(pictureID)
         pMgdbs = PictureMgdb.objects.filter(locus_name__icontains=query[0])
         for pMgdb in pMgdbs:
             pictureID = pMgdb.picture.pk
@@ -175,17 +147,13 @@ class GetAPI:
         # Gene ID
         gIDImages = []
         pictureGIs = []
-
         pIDs = PictureGeneID.objects.filter(gene_id__icontains=query[0])
         for pID in pIDs:
-            pictureID = pID.pk
+            pictureID = pID.picture.pk
             if pictureID not in pictureGIs:
                 gIDImages.extend(Picture.objects.filter(id__exact=pictureID))
                 pictureGIs.append(pictureID)
         gIDImages = gIDImages[self.offset:self.offset+self.limit]
-
-        # for test
-        #print 'pictures_4: ', len(pictureIDs)
 
         imageMetadataAPI = ImageMetadataAPI(self.user, self.fields)
 
