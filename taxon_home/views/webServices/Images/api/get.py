@@ -32,16 +32,21 @@ class GetAPI:
             raise Errors.INVALID_IMAGE_KEY
 
         # Get gene information
-        if image.pk is not None:
-            pictureGID = PictureGeneID.objects.filter(picture_id__exact=image.pk)
-            pictureMb = PictureMgdb.objects.filter(picture__exact=image.pk)
-            geneID = pictureGID.gene_id
-            geneSymbol = pictureMb.locus_name
-            geneName = pictureMb.locus_full_name
-        else:
-            geneID = None
-            geneSymbol = None
-            geneName = None
+        geneID = None
+        geneSymbol = None
+        geneName = None
+        if image is not None:
+            # Gene ID
+            pictureGIDs = PictureGeneID.objects.filter(picture__exact=image)
+            for picGID in pictureGIDs:
+                geneID = picGID.gene_id
+                break
+
+            pictureMbs = PictureMgdb.objects.filter(picture__exact=image)
+            for pMb in pictureMbs:
+                geneSymbol = pMb.locus_name
+                geneName = pMb.locus_full_name
+                break
 
         if not image.readPermissions(self.user):
             raise Errors.AUTHENTICATION

@@ -220,7 +220,9 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	speciesInfo.append(descriptionRow);
 
     // Gene ID
-    var geneIDRow = $('<tr />');
+    var geneIDRow = $('<tr />', {
+    	'class' : 'even'
+	});
     var geneIDLabel = $('<td />', {
         'text' : 'Gene ID:'
     });
@@ -246,7 +248,9 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     speciesInfo.append(geneSymbolRow);
 
     // Gene Name
-    var geneNameRow = $('<tr />');
+    var geneNameRow = $('<tr />', {
+        'class' : 'even'
+	});
     var geneNameLabel = $('<td />', {
         'text' : 'Gene Name:'
     });
@@ -259,9 +263,7 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     speciesInfo.append(geneNameRow);
 
 	// upload date data
-	var uploadDateRow = $('<tr />', {
-		'class' : 'even'
-	});
+	var uploadDateRow = $('<tr />');
 	var uploadDateLabel = $('<td />', {
 		'text' : 'Uploaded on:'
 	});
@@ -275,7 +277,9 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	speciesInfo.append(uploadDateRow);
 	
 	// uploader data
-	var uploaderRow = $('<tr />');
+	var uploaderRow = $('<tr />', {
+        'class' : 'even'
+	});
 	var uploaderLabel = $('<td />', {
 		'text' : 'Uploaded by:'
 	});
