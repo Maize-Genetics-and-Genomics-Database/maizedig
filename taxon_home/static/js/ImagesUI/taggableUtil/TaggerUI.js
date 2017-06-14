@@ -373,24 +373,67 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	
 	speciesInfo.append(descriptionRow);
 
-	// upload date data
-	var uploadDateRow = $('<tr />', {
-		'class' : 'even'
+	    // Gene ID
+    var geneIDRow = $('<tr />', {
+    	'class' : 'even'
 	});
+    var geneIDLabel = $('<td />', {
+        'text' : 'Gene ID:'
+    });
+    var geneID = $('<td />', {
+        'text' : this.imageMetadata.geneID
+    });
+
+    geneIDRow.append(geneIDLabel);
+    geneIDRow.append(geneID);
+    speciesInfo.append(geneIDRow);
+
+	// Gene Symbol
+	var geneSymbolRow = $('<tr />');
+	var geneSymbolLabel = $('<td />', {
+		'text' : 'Gene Symbol:'
+	});
+	var geneSymbol = $('<td />', {
+		'text' : this.imageMetadata.geneSymbol
+	});
+
+    geneSymbolRow.append(geneSymbolLabel);
+    geneSymbolRow.append(geneSymbol);
+    speciesInfo.append(geneSymbolRow);
+
+    // Gene Name
+    var geneNameRow = $('<tr />', {
+        'class' : 'even'
+	});
+    var geneNameLabel = $('<td />', {
+        'text' : 'Gene Name:'
+    });
+    var geneName = $('<td />', {
+        'text' : this.imageMetadata.geneName
+    });
+
+    geneNameRow.append(geneNameLabel);
+    geneNameRow.append(geneName);
+    speciesInfo.append(geneNameRow);
+
+	// upload date data
+	var uploadDateRow = $('<tr />');
 	var uploadDateLabel = $('<td />', {
 		'text' : 'Uploaded on:'
 	});
 	var uploadDate = $('<td />', {
 		'text' : this.imageMetadata.uploadDate
 	});
-	
+
 	uploadDateRow.append(uploadDateLabel);
 	uploadDateRow.append(uploadDate);
-	
+
 	speciesInfo.append(uploadDateRow);
-	
+
 	// uploader data
-	var uploaderRow = $('<tr />');
+	var uploaderRow = $('<tr />', {
+        'class' : 'even'
+	});
 	var uploaderLabel = $('<td />', {
 		'text' : 'Uploaded by:'
 	});
