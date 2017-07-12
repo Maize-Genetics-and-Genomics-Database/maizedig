@@ -38,15 +38,18 @@ class Application(ApplicationBase):
         if not query:
             query = ''
 
-        candidates = [['Image Description'], ['Image Notes'], ['Gene Name'], ['Gene Symbol'], ['Gene ID']]
+        #candidates = [['Image Description'], ['Image Notes'], ['Gene Name'], ['Gene Symbol'], ['Gene ID']]
+        candidates = [['0'], ['1'], ['2'], ['3'], ['4']]
 
 
         if searchImageDesc:
+            candidates[0][0] = 'Image Description xx'
             pictures = Picture.objects.filter(description__icontains=query[0])
             for picture in pictures:
                 candidates[0].append(picture)
 
         if searchImageNotes:
+            candidates[1][0] = 'Image Notes'
             pNotes = PictureNotes.objects.filter(notes__icontains=query[0])
             pictureIDs = []
             for note in pNotes:
@@ -56,6 +59,7 @@ class Application(ApplicationBase):
                     candidates[1].append(pictureID)
 
         if searchGeneName:
+            candidates[2][0] = 'Gene Name'
             pictureIDs = []
             pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
             for pMgdb in pMgdbs:
@@ -65,6 +69,7 @@ class Application(ApplicationBase):
                     candidates[2].append(pictureID)
 
         if searchGeneSymbol:
+            candidates[3][0] = 'Gene Symbol'
             pictureIDs = []
             pMgdbs = PictureMgdb.objects.filter(locus_name__icontains=query[0])
             for pMgdb in pMgdbs:
@@ -74,6 +79,7 @@ class Application(ApplicationBase):
                     candidates[3].append(pictureID)
 
         if searchGeneID:
+            candidates[4][0] = 'Gene ID'
             pictureIDs = []
             pIDs = PictureGeneID.objects.filter(gene_id__icontains=query[0])
             for pID in pIDs:
