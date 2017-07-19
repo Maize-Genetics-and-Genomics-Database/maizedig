@@ -43,7 +43,7 @@ class Application(ApplicationBase):
 
 
         if searchImageDesc:
-            candidates[0][0] = 'Image Description xx'
+            candidates[0][0] = 'Image Description'
             pictures = Picture.objects.filter(description__icontains=query[0])
             for picture in pictures:
                 candidates[0].append(picture)
