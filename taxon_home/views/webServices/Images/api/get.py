@@ -21,6 +21,8 @@ class GetAPI:
     '''
     def getImageMetadata(self, imageKey, isKey=True):
         organisms = []
+        geneIDs = []
+        geneIDVers = []
         metadata = WebServiceObject()
         
         try:
@@ -32,15 +34,21 @@ class GetAPI:
             raise Errors.INVALID_IMAGE_KEY
 
         # Get gene information
-        geneID = None
+        #geneID = None
         geneSymbol = None
         geneName = None
         if image is not None:
             # Gene ID
             pictureGIDs = PictureGeneID.objects.filter(picture__exact=image)
             for picGID in pictureGIDs:
-                geneID = picGID.gene_id
-                break
+                #geneIDs.append(picGID.gene_id)
+                #geneIDVers.append(picGID.version)
+                geneIDs.append({
+                    'geneID' : picGID.gene_id,
+                    'version' : picGID.version
+                })
+                print picGID.gene_id
+                print picGID.version
 
             pictureMbs = PictureMgdb.objects.filter(picture__exact=image)
             for pMb in pictureMbs:
@@ -74,7 +82,9 @@ class GetAPI:
         metadata.put('url', image.imageName.url)
         metadata.put('thumbnail', image.thumbnail.url)
         metadata.put('id', image.pk)
-        metadata.put('geneID', geneID)
+        #metadata.put('geneID', geneID)
+        metadata.put('geneIDs', geneIDs)
+        #metadata.put('geneIDVers', geneIDVers)
         metadata.put('geneSymbol', geneSymbol)
         metadata.put('geneName', geneName)
         

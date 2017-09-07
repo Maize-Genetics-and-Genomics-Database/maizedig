@@ -370,22 +370,24 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	
 	descriptionRow.append(descriptionLabel);
 	descriptionRow.append(description);
-	
 	speciesInfo.append(descriptionRow);
 
-	    // Gene ID
-    var geneIDRow = $('<tr />', {
-    	'class' : 'even'
-	});
-    var geneIDLabel = $('<td />', {
-        'text' : 'Gene ID:'
-    });
-    var geneID = $('<td />', {
-        'text' : this.imageMetadata.geneID
-    });
+    // Gene ID
+    for (var i = 0; i < this.imageMetadata.geneIDs.length; i++) {
+        var geneIDRow = $('<tr />', {
+            'class': 'even'
+        });
+        var geneIDLabel = $('<td />', {
+            'text': 'Gene ID:'
+        });
+        var geneID = $('<td />', {
+            //'text': this.imageMetadata.geneIDs[i],
+			'text': this.imageMetadata.geneIDs[i].geneID
+        });
 
-    geneIDRow.append(geneIDLabel);
-    geneIDRow.append(geneID);
+        geneIDRow.append(geneIDLabel);
+        geneIDRow.append(geneID);
+    }
     speciesInfo.append(geneIDRow);
 
 	// Gene Symbol
