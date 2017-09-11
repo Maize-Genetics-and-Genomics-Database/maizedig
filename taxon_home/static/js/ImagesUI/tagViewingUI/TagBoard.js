@@ -294,14 +294,14 @@ TagBoard.prototype.boardMouseMove = function(event) {
 						var geneLinkGBrowserX = $('<a />', {
 							'text' : 'GBrowserX',
 							'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
-							'href' : 'http://betabrowse.maizegdb.org/gb2/gbrowse/maize_v3test/?q=' + geneLink.getName() + ';enable=MaizeDIG'
+                            'href' : 'https://www.maizegdb.org/gbrowse/maize_v4?q=' + this.imageMetadata.geneSymbol
 						});
 
                         var geneLinkGeneModelPage = $('<a />', {
                             'text' : 'Gene Model',
 							'style' : 'font-size: 12px',
                             'target' : '_blank',
-							'href' : 'http://maizegdb.org/gene_center/gene/' + geneLink.getName()
+                            'href' : 'https://www.maizegdb.org/gene_center/gene/' + this.imageMetadata.geneSymbol
                         });
 
                         var geneLinkBR = $('<br>', {

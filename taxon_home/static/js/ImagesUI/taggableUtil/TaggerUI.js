@@ -373,7 +373,8 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	speciesInfo.append(descriptionRow);
 
     // Gene ID
-    for (var i = 0; i < this.imageMetadata.geneIDs.length; i++) {
+    //alert(this.imageMetadata.geneIDs.length);
+	if (this.imageMetadata.geneIDs.length == 0) {
         var geneIDRow = $('<tr />', {
             'class': 'even'
         });
@@ -381,14 +382,72 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
             'text': 'Gene ID:'
         });
         var geneID = $('<td />', {
-            //'text': this.imageMetadata.geneIDs[i],
-			'text': this.imageMetadata.geneIDs[i].geneID
+            'text': 'null'
         });
 
         geneIDRow.append(geneIDLabel);
         geneIDRow.append(geneID);
+        speciesInfo.append(geneIDRow);
+	}
+    for (var i = 0; i < this.imageMetadata.geneIDs.length; i++) {
+        var geneIDRow = $('<tr />', {
+            'class': 'even'
+        });
+        if (i == 0) {
+            var geneIDLabel = $('<td />', {
+                'text': 'Gene ID:'
+            });
+        }
+        else {
+            var geneIDLabel = $('<td />', {
+                'text': ' '
+            });
+        }
+
+        // Set version string (short form)
+        var versionStr =  this.imageMetadata.geneIDs[i].version;
+        var versionAssm = '';
+        var genomeAssmURL = "";
+        switch (versionStr.toLowerCase()) {
+            case "v3":
+            case "v4":
+            //case "b73 refgen_v4":
+                versionAssm = "";
+                genomeAssmURL = "https://www.maizegdb.org/assembly";
+                break;
+            default:
+                versionAssm = versionStr;
+                genomeAssmURL = "https://www.maizegdb.org/genome/genome_assembly/";
+        }
+        //var geneID = $('<td />', {
+        //    //'text': this.imageMetadata.geneIDs[i].geneID + " " + this.imageMetadata.geneIDs[i].version
+        //    'text': this.imageMetadata.geneIDs[i].geneID + " " + versionStr
+        //});
+
+        var geneIDCell = $('<td />');
+        var geneIDGeneModelPage = $('<a />', {
+            'text' : this.imageMetadata.geneIDs[i].geneID,
+            'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
+            'target' : '_blank',
+            'href' : 'https://www.maizegdb.org/gene_center/gene/' + this.imageMetadata.geneIDs[i].geneID
+        });
+
+        var geneIDAssemblyPage = $('<a />', {
+            'text' : versionStr,
+            'style' : 'font-size: 12px',
+            'target' : '_blank',
+            'href' : genomeAssmURL + versionAssm
+        });
+
+        geneIDCell.append(geneIDGeneModelPage);
+        geneIDCell.append(geneIDAssemblyPage);
+        geneIDRow.append(geneIDLabel);
+        //geneIDRow.append(geneID);
+        geneIDRow.append(geneIDCell);
+        speciesInfo.append(geneIDRow);
     }
-    speciesInfo.append(geneIDRow);
+    //alert("test2");
+    //speciesInfo.append(geneIDRow);
 
 	// Gene Symbol
 	var geneSymbolRow = $('<tr />');
