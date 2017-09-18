@@ -46,8 +46,8 @@ class WorkbenchPagelet(PageletBase):
                 'permissions' : permissions,
                 'tag' : tag
             })
-        
-        
+
+
         userTagGroups = TagGroup.objects.filter(user__exact=request.user).order_by('dateCreated')
         myTagGroups = []
                 
