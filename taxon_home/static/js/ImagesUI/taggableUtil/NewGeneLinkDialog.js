@@ -120,7 +120,6 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
 };
 
 NewGeneLinkDialog.prototype.onSubmit = function() {
-    //alert("test");
     var geneName = $.trim(this.geneName.val());
     var uniqueName = $.trim(this.geneUniqueName.val());
     var organismId = this.organism.val();
@@ -148,36 +147,10 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
                                 alert(errorMessage);
             }
         });
-               /* jp - 6/16/16 - Added below code to support dynamic gbrowse track */
-                //TODO Figure out a better way for linking images to genes in the track
-                var imgURL = document.getElementById("current-editing").src.split("/");
-                var imgURL2 = document.getElementById("current-editing").src;
-                var tagName = this.table.find('input:radio[name=tag]:checked').next().html();
-                var imgName = imgURL[5];
-                var updateTrackURL = "http://betabrowse.maizegdb.org/etc/MaizeDIG/add_gene_link.php";
-                //var updateTrackURL = "http://blade.gdcb.iastate.edu/etc/MaizeDIG/add_gene_link.php";
-                //imgURL = imgURL.split("/");
-                //alert("Test John\n GeneName: " + geneName + "\n submitURL: " + this.submitUrl + "\n imageName: " + imgName + "\n imgURL: " + imgURL2 + "\ntagId: " + tagId + "\nuniqueName " + uniqueName + "\n tagName: " + tagName);
-                $.ajax({
-                    url : updateTrackURL,
-                    type : 'POST',
-                    data : {
-                        gene : geneName,
-                        tagId :tagId,
-                        tagName : tagName
-                    },
-                    dataType : 'json',
-                    success : function(data, textStatus, jqXHR) {
-                        var response = $.parseJSON(jqXHR.responseText).message;
-                        //alert(response);
-                    },
-                    error : function(jqXHR, textStatus, errorThrown) {
-                        //var errorMessage = $.parseJSON(jqXHR.responseText).message;
-                       //alert("textStatus: " + textStatus); 
-                       //alert("errorThrown: " + errorThrown);
-                    }
-                });
-               /* jp - end of addition to code */
+        
+        //jp -- added function to update MaizeDIG track on all genome browsers
+        updateGBrowseTracks(geneName);
+        
     }
 };
 
@@ -247,3 +220,48 @@ NewGeneLinkDialog.prototype.show = function(tagBoard) {
     this.block.show();
     this.dialog.show();
 };
+
+
+/**
+ * Calls a web service on gblade to update the MaizeDIG tracks on all of the genome browsers
+ * with the newly linked gene. 
+ */
+function updateGBrowseTrack(geneName) {   
+    var img = document.getElementById("current-editing");            
+    var imgID = img.name;
+    var imgPath = "";
+    var imgElems = document.getElementsByName(imgID);
+    for (var i=0; i<imgElems.length; i++) {
+        if (imgElems[i].src.indexOf('downsized') >= 0) {
+         imgPath = imgElems[i].src;
+         break;
+        }
+    }
+    if (imgPath == "") {
+        alert("Error! Could not find downsized image to send to gblade...");
+    }
+    imgPath = imgPath.replace("http://maizedig.maizegdb.org/media/booster/Variation/", "");
+    imgPath = imgPath.replace("https://maizedig.maizegdb.org/media/booster/Variation/", "");
+    var updateTrackURL = "https://gbrowse.maizegdb.org/etc/MaizeDIG/add_gene_link.php";
+    //alert("updateGBrowseTrack(): \n GeneName: " + geneName + "\n imagePath: " + imgPath + "\n picID: " + imgID);
+    $.ajax({
+        url : updateTrackURL,
+        type : 'POST',
+        data : {
+            gene : geneName,
+            imagePath : imgPath,
+            imageID : imgID
+        },
+        success : function(data, textStatus, jqXHR) {
+            if (data.indexOf("Error") != -1) {
+                //Encountered an error on gblade script
+                alert(data);
+            }
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+            // var errorMessage = $.parseJSON(jqXHR.responseText).message;
+            alert("Error: textStatus: " + textStatus); 
+            alert("Error: errorThrown: " + errorThrown);
+        }
+    });
+}
