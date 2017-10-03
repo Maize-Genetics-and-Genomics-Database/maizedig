@@ -226,7 +226,7 @@ NewGeneLinkDialog.prototype.show = function(tagBoard) {
  * Calls a web service on gblade to update the MaizeDIG tracks on all of the genome browsers
  * with the newly linked gene. 
  */
-function updateGBrowseTrack(geneName) {   
+function updateGBrowseTracks(geneName) {   
     var img = document.getElementById("current-editing");            
     var imgID = img.name;
     var imgPath = "";

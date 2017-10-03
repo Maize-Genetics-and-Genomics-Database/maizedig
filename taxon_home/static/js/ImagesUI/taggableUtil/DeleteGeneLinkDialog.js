@@ -68,8 +68,8 @@ function DeleteGeneLinkDialog(pageBlock, organisms, siteUrl) {
 };
 
 DeleteGeneLinkDialog.prototype.onSubmit = function() {
-    //alert("test");
     var geneId = this.table.find('input:radio[name=geneLink]:checked').val();
+    var geneName = this.table.find('input:radio[name=geneLink]:checked').next().html();
     var organismId = 25;
     if (geneId) {
         var self = this;
@@ -92,6 +92,9 @@ DeleteGeneLinkDialog.prototype.onSubmit = function() {
             }
         });
     }
+    
+    //jp -- added function to update MaizeDIG track on all genome browsers
+    DeleteFromGBrowseTracks(geneName);
 };
 
 DeleteGeneLinkDialog.prototype.onCancel = function() {
@@ -161,3 +164,27 @@ DeleteGeneLinkDialog.prototype.show = function(tagBoard) {
     this.block.show();
     this.dialog.show();
 };
+
+function  DeleteFromGBrowseTracks(geneName) {
+  var picID = document.getElementById("current-editing").name;
+  var updateTrackURL = "https://gbrowse.maizegdb.org/etc/MaizeDIG/del_gene_link.php";
+  $.ajax({
+        url : updateTrackURL,
+        type : 'POST',
+        data : {
+            gene : geneName,
+            imageID : picID
+        },
+        success : function(data, textStatus, jqXHR) {
+            if (data.indexOf("Error") != -1) {
+                //Encountered an error on gblade script
+                alert(data);
+            }
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+            // var errorMessage = $.parseJSON(jqXHR.responseText).message;
+            alert("Error: textStatus: " + textStatus); 
+            alert("Error: errorThrown: " + errorThrown);
+        }
+    });
+}
