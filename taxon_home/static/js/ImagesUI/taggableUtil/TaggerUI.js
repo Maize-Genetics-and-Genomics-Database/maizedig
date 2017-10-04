@@ -34,6 +34,9 @@ function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, image
 
 TaggerUI.prototype.deleteTagE = function(TagID) {	
     var tag = new Tag(TagID, null, null, null, [], this.imageMetadata.id, this.siteUrl, null);
+    var tags = this.drawingAPI.getTagBoard().getSelectedTags();
+
+   // console.log(geneLinks[0].getName());
     // deletes the tag
     tag.delete(
         Util.scopeCallback(this, function(TagID) {
@@ -44,6 +47,8 @@ TaggerUI.prototype.deleteTagE = function(TagID) {
             errorCallback(errorMessage);
         }
     );
+    
+    deleteGeneLinksFromGBrowse(tags);
 };
 
 TaggerUI.prototype.createStructure = function() {	
@@ -104,9 +109,9 @@ TaggerUI.prototype.createStructure = function() {
 	
 	var self = this;
 	
-	this.menu.getSection('organisms').getMenuItem('addOrganism').onClick(function() {
-		addOrganismDialog.show(self.imageMetadata.id);
-	});
+	//this.menu.getSection('organisms').getMenuItem('addOrganism').onClick(function() {
+	//	addOrganismDialog.show(self.imageMetadata.id);
+	//});
 	
 	// events for clicking the start and stop drawing buttons
 	this.menu.getSection('tags').getMenuItem('addNewTag').onClick(function() {
@@ -127,18 +132,6 @@ TaggerUI.prototype.createStructure = function() {
         alert("Tag has been deleted. Please reload your image if needed.");
         //this.redraw();
 
-        /* jp - 8/3/16 - Added below code to remove features from MaizeDIG track */ 
-        var updateTrackURL = "http://betabrowse.maizegdb.org/etc/MaizeDIG/del_gene_link.php";
-        $.ajax({
-                 url : updateTrackURL,
-                 type : 'POST',
-                 data : {
-                     tagId :selectedTagID,
-                 },
-                 dataType : 'json'
-         });
-         /* jp - end of addition to code */
-
 	});
 	
 	this.menu.getSection('tagGroups').getMenuItem('addNewTagGroup').onClick(function() {
@@ -153,13 +146,13 @@ TaggerUI.prototype.createStructure = function() {
 		self.drawingAPI.getTagBoard().toggleTags();
 	});
 	
-	this.menu.getSection('tools').getMenuItem('download').onClick(function() {
-		downloadImageDataDialog.show();
-	});
+	//this.menu.getSection('tools').getMenuItem('download').onClick(function() {
+	//	downloadImageDataDialog.show();
+	//});
 	
-	this.menu.getSection('tools').getMenuItem('editImage').onClick(function() {
-		editImageDialog.show();
-	});
+	//this.menu.getSection('tools').getMenuItem('editImage').onClick(function() {
+	//	editImageDialog.show();
+	//});
 	
 	this.menu.getSection('tools').getMenuItem('zoomIn').onClick(function() {
 		self.image.zoomable("zoom", 1);
@@ -260,31 +253,31 @@ TaggerUI.prototype.getToolbar = function(id) {
 	
 	// create tools menu section
 	var tools = new MenuSection('Tools', this.imagesUrl + 'tools.png');
-	tools.addMenuItem('download', 'Download Image Data', 'ui-icon ui-icon-disk', false);
-	tools.addMenuItem('editImage', 'Edit Image Data', 'ui-icon ui-icon-pencil', false);
+	//tools.addMenuItem('download', 'Download Image Data', 'ui-icon ui-icon-disk', false);
+	//tools.addMenuItem('editImage', 'Edit Image Data', 'ui-icon ui-icon-pencil', false);
 	tools.addMenuItem('zoomIn', 'Zoom In', 'ui-icon ui-icon-zoomin', false);
 	tools.addMenuItem('zoomOut', 'Zoom Out', 'ui-icon ui-icon-zoomout', false);
 	tools.addMenuItem('toggleTags', 'Toggle All Tag Visibility', this.imagesUrl + 'eye.png', true);
 	menu.addNewSection('tools', tools);
 	
 	// create organism menu section
-	var organisms = new MenuSection('Organisms', this.imagesUrl + 'organismIcon.png');
-	organisms.addMenuItem('addOrganism', 'Add Organism', 'ui-icon ui-icon-plusthick', false);
-	organisms.addMenuItem('deleteOrganism', 'Delete Organism', 'ui-icon ui-icon-trash', false);
-	menu.addNewSection('organisms', organisms);
+	//var organisms = new MenuSection('Organisms', this.imagesUrl + 'organismIcon.png');
+	//organisms.addMenuItem('addOrganism', 'Add Organism', 'ui-icon ui-icon-plusthick', false);
+	//organisms.addMenuItem('deleteOrganism', 'Delete Organism', 'ui-icon ui-icon-trash', false);
+	//menu.addNewSection('organisms', organisms);
 	
 	// create tag groups menu section
 	var tagGroups = new MenuSection('Tag Groups', this.imagesUrl + 'tagGroupIcon.png');
 	tagGroups.addMenuItem('addNewTagGroup', 'Add New Tag Group', 'ui-icon ui-icon-plusthick', false);
 	tagGroups.addMenuItem('changeCurrentGroups', 'Change Current Tag Groups', 'ui-icon ui-icon-pencil', false);
-	tagGroups.addMenuItem('editTagGroup', 'Edit Tag Group', 'ui-icon ui-icon-pencil', false);
-	tagGroups.addMenuItem('deleteTagGroup', 'Delete Tag Group', 'ui-icon ui-icon-trash', false);
+	//tagGroups.addMenuItem('editTagGroup', 'Edit Tag Group', 'ui-icon ui-icon-pencil', false);
+	//tagGroups.addMenuItem('deleteTagGroup', 'Delete Tag Group', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('tagGroups', tagGroups);
 	
 	// create tag groups menu section
 	var tags = new MenuSection('Tags', this.imagesUrl + 'tag.png');
 	tags.addMenuItem('addNewTag', 'Add New Tag', 'ui-icon ui-icon-plusthick', false);
-	tags.addMenuItem('editTag', 'Edit Tag', 'ui-icon ui-icon-pencil', false);
+	//tags.addMenuItem('editTag', 'Edit Tag', 'ui-icon ui-icon-pencil', false);
 	tags.addMenuItem('deleteTag', 'Delete Tag', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('tags', tags);
 	
@@ -508,3 +501,35 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	speciesInfo.append(uploaderRow);
 	return speciesInfo;
 };
+
+function deleteGeneLinksFromGBrowse(tags) {
+    var picID = document.getElementById("current-editing").name;
+    var updateTrackURL = "https://gbrowse.maizegdb.org/etc/MaizeDIG/del_gene_link.php";
+    var geneList = "";
+    $.each(tags, function(id, tag) {
+        var geneLinks = tag.getGeneLinks();
+        for (i=0; i<geneLinks.length; i++) {
+            geneList = (i == 0) ? geneLinks[i].getName() : geneList + "," + geneLinks[i].getName();
+        }
+    });
+    $.ajax({
+        url : updateTrackURL,
+        type : 'POST',
+        data : {
+            geneList : geneList,
+            imageID : picID
+        },
+        success : function(data, textStatus, jqXHR) {
+            if (data.indexOf("Error") != -1) {
+                //Encountered an error on gblade script
+                alert(data);
+            }
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+            // var errorMessage = $.parseJSON(jqXHR.responseText).message;
+            alert("Error: textStatus: " + textStatus); 
+            alert("Error: errorThrown: " + errorThrown);
+        }
+    });
+    
+}
