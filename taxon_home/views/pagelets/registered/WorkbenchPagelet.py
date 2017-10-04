@@ -32,7 +32,7 @@ class WorkbenchPagelet(PageletBase):
                 'image' : image
             })
             
-        recentImages = RecentlyViewedPicture.objects.filter(user__exact=request.user).order_by('lastDateViewed')[:10]
+        recentImages = RecentlyViewedPicture.objects.filter(user__exact=request.user).order_by('-lastDateViewed')[:10]
         
         userTags = Tag.objects.filter(user__exact=request.user).order_by('dateCreated')
         myTags = []
