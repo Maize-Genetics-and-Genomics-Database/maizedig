@@ -47,6 +47,7 @@
 			</span>
 		</div>
 		<div class="workbench-toolbar-container">
+			<!--
 			<div class="workbench-area toolbar">
 				<div class="toolbar-header">
 					<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
@@ -71,6 +72,7 @@
 					</div>
 				</div>
 			</div>
+			-->
 			<div class="workbench-area toolbar">
 				<div class="toolbar-header">
 					<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
@@ -511,7 +513,7 @@
 				});
 			});
 		});
-	
+
 		// trash cans should prompt the user to delete the image and this should pull up the
 		// dialog box asking if they are sure
 		$('.delete-image-button').on('click', function() {
@@ -618,5 +620,46 @@
 				$('.private-tag-group').parent().show('slow');
 			}
 		});
+
+        {% if dlImageID %}
+		//
+        // Default image loading
+        //
+        function LoadImage() {
+            var $imgClone = $('.taggable-image:first').clone();
+            $imgClone.attr('id', 'current-editing');
+            $imgClone.attr('class', '');
+            var key = {{ dlImageID }};
+
+            var taggingDataClient = new TaggingDataClient();
+            var getImageClient = new ImageClient();
+
+            getImageClient.call(key, function(data, textStatus, jqXHR) {
+                taggingDataClient.call(key, function(tagGroups) {
+                    var $workArea = $('#work-area').empty();
+                    $('<div />', { 'class' : 'zoomable-left' })
+                        .html($imgClone)
+                        .appendTo($workArea);
+                    $('<div />', { 'class' : 'zoomable-right' })
+                        .append($('<div />', { 'class' : 'info-container' }))
+                        .appendTo($workArea);
+
+                    $imgClone.taggable({
+                        originalData: tagGroups,
+                        imageMetadata: data,
+                        parent: $workArea,
+                        imagesUrl: '{{ STATIC_URL }}images/',
+                        siteUrl: '{{ SITE_URL }}',
+                        genomicInfo: $workArea.find('.info-container')
+                    });
+
+                    $imgClone.attr('src', data.url);
+                });
+            });
+        }
+
+	    LoadImage();
+        {% endif %}
+
 	});
 </script>

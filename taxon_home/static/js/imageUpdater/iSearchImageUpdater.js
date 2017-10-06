@@ -127,7 +127,8 @@
 	        var picture = data[index];
 
 	        var $pictureDiv = $('<div>');
-	        var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
+	        //var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
+            var $href = $('<a>').attr('href', settings.siteUrl + 'administration/?dliid=' + picture.id);
 	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(172).height(130));
 
 	        var $pic_description = '';

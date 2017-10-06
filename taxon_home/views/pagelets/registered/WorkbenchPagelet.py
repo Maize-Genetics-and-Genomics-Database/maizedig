@@ -73,11 +73,18 @@ class WorkbenchPagelet(PageletBase):
                 'permissions' : permissions,
                 'geneLink' : geneLink
             })
-            
+
+        # check imageID request for default showing image (image showing from other page like iSearch result page)
+        dlImageID = request.GET.get('dliid', None)
+        #if(dlImageID):
+        #    print(dlImageID)
+
+
         return {
             'myImages' : myImages,
             'recentImages' : recentImages,
             'myTags' : myTags,
             'myTagGroups' : myTagGroups,
-            'myGeneLinks' : myGeneLinks
+            'myGeneLinks' : myGeneLinks,
+            'dlImageID' : dlImageID
         }
