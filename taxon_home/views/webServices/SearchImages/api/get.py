@@ -132,6 +132,7 @@ class GetAPI:
             if pictureID not in picturesGN:
                 gNameImages.extend(Picture.objects.filter(id__exact=pictureID))
                 picturesGN.append(pictureID)
+        gNameImages = gNameImages[self.offset:self.offset+self.limit]
 
         # Gene Symbol
         gSymbolImages = []
