@@ -18,6 +18,15 @@ class WorkbenchPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('registered/workbench.html')
 
+        # check imageID request for default showing image (image showing from other page like iSearch result page)
+        dlImageID = request.GET.get('dliid', None)
+        if(dlImageID):
+            # add to recently viewed images - modified by ktcho, 2017.10.09
+            # moved from get.py to here (add only when user view image via image editor/viewer)
+            if (request.user):
+                image = Picture.objects.filter(pk__exact=dlImageID)
+                RecentlyViewedPicture.objects.get_or_create(user=request.user, picture=image[0])[0].save()
+
         userImages = Picture.objects.filter(user__exact=request.user)
 
         myImages = []
@@ -74,10 +83,6 @@ class WorkbenchPagelet(PageletBase):
                 'geneLink' : geneLink
             })
 
-        # check imageID request for default showing image (image showing from other page like iSearch result page)
-        dlImageID = request.GET.get('dliid', None)
-        #if(dlImageID):
-        #    print(dlImageID)
 
 
         return {
