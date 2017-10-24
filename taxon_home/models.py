@@ -2024,7 +2024,7 @@ class PictureNotes(models.Model):
     picture = models.ForeignKey(Picture)
     notes = models.TextField(blank=True, null=True)
     user = models.ForeignKey(Pubauthor)
-    dateCreated = models.DateTimeField()
+    dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
 
     class Meta:
         db_table = u'picture_notes'
