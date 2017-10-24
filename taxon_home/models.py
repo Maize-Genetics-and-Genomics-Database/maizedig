@@ -2023,7 +2023,7 @@ class PictureNotes(models.Model):
     pn_id = models.IntegerField(primary_key=True)
     picture = models.ForeignKey(Picture)
     notes = models.TextField(blank=True, null=True)
-    user = models.ForeignKey(Pubauthor)
+    user = models.ForeignKey(User)
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
 
     class Meta:
