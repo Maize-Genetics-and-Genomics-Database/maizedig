@@ -2020,7 +2020,6 @@ class PictureDefinitionTag(models.Model):
 #
 
 class PictureNotes(models.Model):
-    pn_id = models.IntegerField(primary_key=True)
     picture = models.ForeignKey(Picture)
     notes = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)

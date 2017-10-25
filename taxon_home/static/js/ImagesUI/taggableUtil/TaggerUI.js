@@ -72,11 +72,13 @@ TaggerUI.prototype.createStructure = function() {
 	var addOrganismDialog = new AddOrganismDialog(pageBlock);
 	var editImageDialog = new EditImageDialog(pageBlock);
 	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.imagesUrl);
+	var editNotesDialog = new EditNotesDialog(pageBlock, this.siteUrl);
 	
 	var dialogs = {
 		'saveTags' : saveTagDialog,
 		'newTagGroup' : newTagGroupDialog,
 		'newGeneLink' : newGeneLinkDialog,
+		'editNotes' : editNotesDialog,
 		'changeCurrentGroups' : changeCurrentTagGroupsDialog,
 		'downloadImageData' : downloadImageDataDialog
 	};
@@ -169,6 +171,11 @@ TaggerUI.prototype.createStructure = function() {
     // Delete Gene Link
 	this.menu.getSection('geneLinks').getMenuItem('deleteLink').onClick(function() {
 		deleteGeneLinkDialog.show(self.drawingAPI.getTagBoard());
+	});
+
+	// Add/Edit Image Notes
+	this.menu.getSection('imageNotes').getMenuItem('editNotes').onClick(function() {
+		editNotesDialog.show(self.imageMetadata);
 	});
 	
 	this.taggingMenu.onCancelClick(function() {
@@ -286,7 +293,12 @@ TaggerUI.prototype.getToolbar = function(id) {
 	geneLinks.addMenuItem('addNewLink', 'Add New Link To Tag', 'ui-icon ui-icon-plusthick', false);
 	geneLinks.addMenuItem('deleteLink', 'Delete Link From Tag', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('geneLinks', geneLinks);
-	
+
+	// create image note menu section
+	var imageNotes = new MenuSection('Notes', this.imagesUrl + 'polygonButtonIcon.png');
+	imageNotes.addMenuItem('editNotes', 'Add/Edit Image Notes', 'ui-icon ui-icon-plusthick', false);
+	menu.addNewSection('imageNotes', imageNotes);
+
 	return menu;
 };
 
@@ -360,7 +372,6 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	var description = $('<td />', {
 		'text' : this.imageMetadata.description
 	});
-	
 	descriptionRow.append(descriptionLabel);
 	descriptionRow.append(description);
 	speciesInfo.append(descriptionRow);
@@ -377,7 +388,6 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
         var geneID = $('<td />', {
             'text': 'null'
         });
-
         geneIDRow.append(geneIDLabel);
         geneIDRow.append(geneID);
         speciesInfo.append(geneIDRow);
@@ -431,7 +441,6 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
             'target' : '_blank',
             'href' : genomeAssmURL + versionAssm
         });
-
         geneIDCell.append(geneIDGeneModelPage);
         geneIDCell.append(geneIDAssemblyPage);
         geneIDRow.append(geneIDLabel);
@@ -450,7 +459,6 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	var geneSymbol = $('<td />', {
 		'text' : this.imageMetadata.geneSymbol
 	});
-
     geneSymbolRow.append(geneSymbolLabel);
     geneSymbolRow.append(geneSymbol);
     speciesInfo.append(geneSymbolRow);
@@ -465,7 +473,6 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     var geneName = $('<td />', {
         'text' : this.imageMetadata.geneName
     });
-
     geneNameRow.append(geneNameLabel);
     geneNameRow.append(geneName);
     speciesInfo.append(geneNameRow);
@@ -478,10 +485,8 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	var uploadDate = $('<td />', {
 		'text' : this.imageMetadata.uploadDate
 	});
-
 	uploadDateRow.append(uploadDateLabel);
 	uploadDateRow.append(uploadDate);
-
 	speciesInfo.append(uploadDateRow);
 
 	// uploader data
@@ -494,11 +499,32 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	var uploader = $('<td />', {
 		'text' : this.imageMetadata.uploadedBy
 	});
-	
 	uploaderRow.append(uploaderLabel);
 	uploaderRow.append(uploader);
-	
 	speciesInfo.append(uploaderRow);
+
+	// Image Notes
+	var notesRow = $('<tr />');
+    var notesLabel = $('<td />', {
+        'text' : 'Notes:'
+    });
+    var notesByStr = '';
+    if (this.imageMetadata.notesBy.length > 0)
+    	notesByStr = ' - commented by '	 + this.imageMetadata.notesBy;
+    var notesContext = $('<td />', {
+        'text' : this.imageMetadata.notes + notesByStr
+    });
+	//var notesEditBtn = $('<input/>', {
+	//	'type' : 'button',
+    //    'id' : 'notes-edit-btn',
+	//	'name' : 'notesEdit',
+	//	'value' : 'Edit'
+	//});
+    //notesContext.append(notesEditBtn);
+    notesRow.append(notesLabel);
+    notesRow.append(notesContext);
+    speciesInfo.append(notesRow);
+
 	return speciesInfo;
 };
 

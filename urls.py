@@ -18,7 +18,6 @@ urlpatterns = patterns('taxon_home.views.applications.public',
     url(r'^images/$', 'Images.Application.renderAction'),
     url(r'^genome_browser/$', 'GBrowse.Application.renderAction'),
     url(r'^blast/$', 'Blast.Application.renderAction'),
-    #url(r'^blast/submit/$', 'mycoplasma_home.views.submit_blast'),
     url(r'^login_handler/$', 'Login.Application.renderAction'),
     url(r'^logout_handler/$', 'Logout.Application.renderAction'),
     url(r'^search/$', 'Search.Application.renderAction'),
@@ -30,6 +29,7 @@ urlpatterns += patterns('taxon_home.views.webServices',
     url(r'^api/tags$', 'Tags.Application.renderAction'),
     url(r'^api/tagGroups$', 'TagGroups.Application.renderAction'),
     url(r'^api/geneLinks$', 'GeneLinks.Application.renderAction'),
+    url(r'^api/notes$', 'Notes.Application.renderAction'),
     url(r'^api/images$', 'Images.Application.renderAction'),
     url(r'^api/geneLinks/search$', 'SearchGeneLinks.Application.renderAction'),
     url(r'^api/tags/search$', 'SearchTags.Application.renderAction'),
@@ -37,7 +37,6 @@ urlpatterns += patterns('taxon_home.views.webServices',
     url(r'^api/aggregate/tagGroups$', 'AggregateTagGroups.Application.renderAction'),
     url(r'^api/aggregate/tagGroups/search$', 'AggregateTagGroupsSearch.Application.renderAction'),
     url(r'^api/images/search$', 'SearchImages.Application.renderAction'),
-    #url(r'^api/images/iSearch$', 'iSearch.Application.renderAction'),
     url(r'^api/organisms/search$', 'SearchOrganisms.Application.renderAction')
 )
 
@@ -45,7 +44,6 @@ urlpatterns += patterns('taxon_home.views.applications.registered',
     url(r'^administration/$', 'Administration.Application.renderAction'),
     url(r'^administration/uploadImages/$', 'ImageUploader.Application.renderAction'),
     url(r'^administration/tgManager$', 'TGManager.Application.renderAction')
-    #url(r'^administration/gbrowse_manager/genome_uploader/$', 'mycoplasma_home.views.genome_uploader'),
 )
 
 urlpatterns += patterns('taxon_home.views.applications.admin',
@@ -58,6 +56,5 @@ urlpatterns += patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'taxon_home.views.applications.public.Media.Application.renderAction', {'document_root': settings.MEDIA_ROOT}),
     url(r'^static_site/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATICFILES_DIRS[0]}),
-    #url(r'^static/admin/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/usr/local/lib/python2.6/dist-packages/django/contrib/admin/media'}),
     url(r'^static/admin/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/usr/lib/python2.7/site-packages/django/contrib/admin/media'}),
 )

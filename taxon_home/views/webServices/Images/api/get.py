@@ -3,6 +3,7 @@ from taxon_home.models import Picture, PictureDefinitionTag, RecentlyViewedPictu
 from taxon_home.models import PictureMgdb, PictureGeneID
 from django.core.exceptions import ObjectDoesNotExist
 from renderEngine.WebServiceObject import WebServiceObject
+from taxon_home.views.webServices.Notes.api.get import GetAPI as NotesAPI
 
 class GetAPI:
     def __init__(self, user=None, fields=None):
@@ -20,6 +21,9 @@ class GetAPI:
         stored in the errorMessage and error fields
     '''
     def getImageMetadata(self, imageKey, isKey=True):
+        # TODO: getImageMetadata() should be refactorized because it is used for all image loading parts
+        #  including image list even thumbnail image. It potentially has unnecessary database queries.
+
         organisms = []
         geneIDs = []
         metadata = WebServiceObject()
@@ -64,7 +68,17 @@ class GetAPI:
                     'species' : tag.organism.species,
                     'id' : tag.organism.pk
                 })
-        
+
+        # Get Image Notes Information
+        pictureNotesAPI = NotesAPI(self.user)
+        pictureNotes = pictureNotesAPI.getNote(imageKey).getObject()
+        if pictureNotes:
+            notes = pictureNotes['notes']
+            notesBy = pictureNotes['user']
+        else:
+            notes = ''
+            notesBy = ''
+
         metadata.limitFields(self.fields)
 
         # put in the information we care about
@@ -79,7 +93,9 @@ class GetAPI:
         metadata.put('geneIDs', geneIDs)
         metadata.put('geneSymbol', geneSymbol)
         metadata.put('geneName', geneName)
-        
+        metadata.put('notes', notes)
+        metadata.put('notesBy', notesBy)
+
         # add to recently viewed images if there is a user
         #if self.user and self.user.is_authenticated():
         #    RecentlyViewedPicture.objects.get_or_create(user=self.user, picture=image)[0].save()
