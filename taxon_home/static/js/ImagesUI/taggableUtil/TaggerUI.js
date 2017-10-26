@@ -36,7 +36,6 @@ TaggerUI.prototype.deleteTagE = function(TagID) {
     var tag = new Tag(TagID, null, null, null, [], this.imageMetadata.id, this.siteUrl, null);
     var tags = this.drawingAPI.getTagBoard().getSelectedTags();
 
-   // console.log(geneLinks[0].getName());
     // deletes the tag
     tag.delete(
         Util.scopeCallback(this, function(TagID) {
@@ -69,8 +68,6 @@ TaggerUI.prototype.createStructure = function() {
 	var newGeneLinkDialog = new NewGeneLinkDialog(pageBlock, this.imageMetadata.organisms, this.siteUrl);
 	var deleteGeneLinkDialog = new DeleteGeneLinkDialog(pageBlock, this.imageMetadata.organisms, this.siteUrl);
 	var changeCurrentTagGroupsDialog = new ChangeCurrentTagGroupsDialog(pageBlock);
-	var addOrganismDialog = new AddOrganismDialog(pageBlock);
-	var editImageDialog = new EditImageDialog(pageBlock);
 	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.imagesUrl);
 	var editNotesDialog = new EditNotesDialog(pageBlock, this.siteUrl);
 	
@@ -111,10 +108,6 @@ TaggerUI.prototype.createStructure = function() {
 	
 	var self = this;
 	
-	//this.menu.getSection('organisms').getMenuItem('addOrganism').onClick(function() {
-	//	addOrganismDialog.show(self.imageMetadata.id);
-	//});
-	
 	// events for clicking the start and stop drawing buttons
 	this.menu.getSection('tags').getMenuItem('addNewTag').onClick(function() {
 		self.drawingAPI.startTagging();
@@ -147,14 +140,6 @@ TaggerUI.prototype.createStructure = function() {
 	this.menu.getSection('tools').getMenuItem('toggleTags').onClick(function() {
 		self.drawingAPI.getTagBoard().toggleTags();
 	});
-	
-	//this.menu.getSection('tools').getMenuItem('download').onClick(function() {
-	//	downloadImageDataDialog.show();
-	//});
-	
-	//this.menu.getSection('tools').getMenuItem('editImage').onClick(function() {
-	//	editImageDialog.show();
-	//});
 	
 	this.menu.getSection('tools').getMenuItem('zoomIn').onClick(function() {
 		self.image.zoomable("zoom", 1);
@@ -260,31 +245,20 @@ TaggerUI.prototype.getToolbar = function(id) {
 	
 	// create tools menu section
 	var tools = new MenuSection('Tools', this.imagesUrl + 'tools.png');
-	//tools.addMenuItem('download', 'Download Image Data', 'ui-icon ui-icon-disk', false);
-	//tools.addMenuItem('editImage', 'Edit Image Data', 'ui-icon ui-icon-pencil', false);
 	tools.addMenuItem('zoomIn', 'Zoom In', 'ui-icon ui-icon-zoomin', false);
 	tools.addMenuItem('zoomOut', 'Zoom Out', 'ui-icon ui-icon-zoomout', false);
 	tools.addMenuItem('toggleTags', 'Toggle All Tag Visibility', this.imagesUrl + 'eye.png', true);
 	menu.addNewSection('tools', tools);
 	
-	// create organism menu section
-	//var organisms = new MenuSection('Organisms', this.imagesUrl + 'organismIcon.png');
-	//organisms.addMenuItem('addOrganism', 'Add Organism', 'ui-icon ui-icon-plusthick', false);
-	//organisms.addMenuItem('deleteOrganism', 'Delete Organism', 'ui-icon ui-icon-trash', false);
-	//menu.addNewSection('organisms', organisms);
-	
 	// create tag groups menu section
 	var tagGroups = new MenuSection('Tag Groups', this.imagesUrl + 'tagGroupIcon.png');
 	tagGroups.addMenuItem('addNewTagGroup', 'Add New Tag Group', 'ui-icon ui-icon-plusthick', false);
 	tagGroups.addMenuItem('changeCurrentGroups', 'Change Current Tag Groups', 'ui-icon ui-icon-pencil', false);
-	//tagGroups.addMenuItem('editTagGroup', 'Edit Tag Group', 'ui-icon ui-icon-pencil', false);
-	//tagGroups.addMenuItem('deleteTagGroup', 'Delete Tag Group', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('tagGroups', tagGroups);
 	
 	// create tag groups menu section
 	var tags = new MenuSection('Tags', this.imagesUrl + 'tag.png');
 	tags.addMenuItem('addNewTag', 'Add New Tag', 'ui-icon ui-icon-plusthick', false);
-	//tags.addMenuItem('editTag', 'Edit Tag', 'ui-icon ui-icon-pencil', false);
 	tags.addMenuItem('deleteTag', 'Delete Tag', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('tags', tags);
 	
@@ -422,10 +396,6 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
                 versionAssm = versionStr;
                 genomeAssmURL = "https://www.maizegdb.org/genome/genome_assembly/";
         }
-        //var geneID = $('<td />', {
-        //    //'text': this.imageMetadata.geneIDs[i].geneID + " " + this.imageMetadata.geneIDs[i].version
-        //    'text': this.imageMetadata.geneIDs[i].geneID + " " + versionStr
-        //});
 
         var geneIDCell = $('<td />');
         var geneIDGeneModelPage = $('<a />', {
@@ -444,12 +414,9 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
         geneIDCell.append(geneIDGeneModelPage);
         geneIDCell.append(geneIDAssemblyPage);
         geneIDRow.append(geneIDLabel);
-        //geneIDRow.append(geneID);
         geneIDRow.append(geneIDCell);
         speciesInfo.append(geneIDRow);
     }
-    //alert("test2");
-    //speciesInfo.append(geneIDRow);
 
 	// Gene Symbol
 	var geneSymbolRow = $('<tr />');
@@ -514,13 +481,6 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     var notesContext = $('<td />', {
         'text' : this.imageMetadata.notes + notesByStr
     });
-	//var notesEditBtn = $('<input/>', {
-	//	'type' : 'button',
-    //    'id' : 'notes-edit-btn',
-	//	'name' : 'notesEdit',
-	//	'value' : 'Edit'
-	//});
-    //notesContext.append(notesEditBtn);
     notesRow.append(notesLabel);
     notesRow.append(notesContext);
     speciesInfo.append(notesRow);

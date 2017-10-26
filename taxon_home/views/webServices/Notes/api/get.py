@@ -15,13 +15,7 @@ class GetAPI:
     def getNote(self, imageKey):
         metadata = WebServiceObject()
 
-        #if not self.user:
-        #    raise Errors.NO_USER_KEY
-        #else:
-        #    userID = self.user
-
         try:
-            #pictureNotes = PictureNotes.objects.filter(picture__exact=imageKey, user__exact=userID).order_by('-dateCreated')[:1].get()
             pictureNotes = PictureNotes.objects.filter(picture__exact=imageKey).order_by('-dateCreated')[:1].get()
         except (ObjectDoesNotExist, ValueError):
             return metadata

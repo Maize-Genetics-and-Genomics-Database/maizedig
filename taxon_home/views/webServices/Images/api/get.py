@@ -96,8 +96,4 @@ class GetAPI:
         metadata.put('notes', notes)
         metadata.put('notesBy', notesBy)
 
-        # add to recently viewed images if there is a user
-        #if self.user and self.user.is_authenticated():
-        #    RecentlyViewedPicture.objects.get_or_create(user=self.user, picture=image)[0].save()
-
         return metadata

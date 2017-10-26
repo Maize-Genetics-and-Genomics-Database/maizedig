@@ -89,9 +89,6 @@ EditNotesDialog.prototype.onSubmit = function() {
     var img = document.getElementById("current-editing");
     var pictureID = img.name;
 
-    //console.log(notes);
-    //console.log(pictureID);
-
     if (notes && pictureID) {
         var self = this;
         
