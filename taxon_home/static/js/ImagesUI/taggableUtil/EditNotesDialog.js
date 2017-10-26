@@ -129,11 +129,10 @@ EditNotesDialog.prototype.show = function(imageMetadata) {
     // Load current notes to the <textarea>
     if (imageMetadata)
     {
-        $('#notes').attr({
+        $('textarea#notes').attr({
             'value' : imageMetadata.notes
         });
-
-        console.log(imageMetadata.notes);
+        //$('textarea#notes').val(imageMetadata.notes);
     }
 
     this.block.show();

@@ -31,7 +31,7 @@ class GetAPI:
         metadata.limitFields(self.fields)
 
         metadata.put('pn_id', pictureNotes.pk)
-        metadata.put('picture', pictureNotes.picture)
+        metadata.put('picture', pictureNotes.picture.pk)
         metadata.put('notes', pictureNotes.notes)
         metadata.put('user', pictureNotes.user.username)
         metadata.put('dateCreated', pictureNotes.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
