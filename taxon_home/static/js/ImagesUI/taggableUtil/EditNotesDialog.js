@@ -105,6 +105,7 @@ EditNotesDialog.prototype.onSubmit = function() {
             },
             success : function(data, textStatus, jqXHR) {
                 self.hide();
+                alert('Notes added successfully!');
             },
             error : function(jqXHR, textStatus, errorThrown) {
                 var errorMessage = $.parseJSON(jqXHR.responseText).message;
@@ -131,6 +132,8 @@ EditNotesDialog.prototype.show = function(imageMetadata) {
         $('#notes').attr({
             'value' : imageMetadata.notes
         });
+
+        console.log(imageMetadata.notes);
     }
 
     this.block.show();
