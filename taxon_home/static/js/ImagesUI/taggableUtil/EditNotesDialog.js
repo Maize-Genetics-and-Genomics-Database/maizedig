@@ -102,7 +102,6 @@ EditNotesDialog.prototype.onSubmit = function() {
             },
             success : function(data, textStatus, jqXHR) {
                 self.hide();
-                alert('Notes added successfully!');
                 location.href = '/administration/?dliid=' + pictureID;
             },
             error : function(jqXHR, textStatus, errorThrown) {
