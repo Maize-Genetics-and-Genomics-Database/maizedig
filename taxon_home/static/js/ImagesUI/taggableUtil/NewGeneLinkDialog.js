@@ -47,7 +47,7 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
     });
     
     var uniqueNameLabel = $('<span />', {
-        'text' : 'Uniquename (optional)',
+        'text' : 'Allele (optional)',
         'style' : 'margin-right: 10px'
     });
     
@@ -141,16 +141,18 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
                 data.feature.organismId = organismId;
                 self.tags[tagId].addGeneLink(data.id, data.feature);
                 self.hide();
+                var subdomain = (window.location.host.split("."))[0];
+                if (subdomain == "maizedig") {
+                    //jp -- added function to update MaizeDIG track on all genome browsers,
+                   //       but only call it on the production maizedig server
+                    updateGBrowseTracks(geneName);
+                }
             },
             error : function(jqXHR, textStatus, errorThrown) {
                 var errorMessage = $.parseJSON(jqXHR.responseText).message;
                                 alert(errorMessage);
             }
         });
-        
-        //jp -- added function to update MaizeDIG track on all genome browsers
-        updateGBrowseTracks(geneName);
-        
     }
 };
 
