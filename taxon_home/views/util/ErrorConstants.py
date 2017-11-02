@@ -24,5 +24,6 @@ INVALID_METHOD = CustomWebServiceException("This method %s is not supported by t
 MISSING_PARAMETER = CustomWebServiceException("Missing required parameter: %s", 400)
 INVALID_PARAMETER = CustomWebServiceException("Invalid input for parameter: %s", 404)
 NO_MATCHING_FEATURE = CustomWebServiceException("No matching feature for the parameters: %s", 404)
+NO_MATCHING_ALLELE = CustomWebServiceException("No matching allele for the parameters: %s.", 404)
 INVALID_SYNTAX = CustomWebServiceException("Incorrect syntax for argument: %s", 400)
 INTEGRITY_ERROR = CustomWebServiceException("Database transaction error. Message: %s", 500)

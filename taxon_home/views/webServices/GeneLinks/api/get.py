@@ -33,10 +33,11 @@ class GetAPI:
         metadata.put('id', geneLink.pk)
         metadata.put('user', geneLink.user.username)
         metadata.put('tagId', geneLink.tag.pk)
-        metadata.put('feature', 
+        metadata.put('feature',
             LimitDict(self.fields, {
                 'uniqueName' : geneLink.feature.uniquename,
                 'name': geneLink.feature.name,
+                'allele': geneLink.allele,
                 'organismId' : geneLink.feature.organism.organism_id
             })
         )

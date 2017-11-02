@@ -46,6 +46,7 @@ class GetAPI:
                         'feature' : LimitDict(self.fields, {
                             'uniqueName' : geneLink.feature.uniquename,
                             'name' : geneLink.feature.name,
+                            'allele' : geneLink.allele,
                             'organismId' : geneLink.feature.organism.organism_id
                         })
                     })    
@@ -88,6 +89,7 @@ class GetAPI:
                         'tagId' : geneLink.tag.pk,
                         'uniquename' : geneLink.feature.uniquename,
                         'name' : geneLink.feature.name,
+                        'allele' : geneLink.allele,
                         'organismId' : geneLink.feature.organism.organism_id,
                     })    
                 )
@@ -133,6 +135,7 @@ class GetAPI:
                         'tagId' : geneLink.tag.pk,
                         'uniquename' : geneLink.feature.uniquename,
                         'name' : geneLink.feature.name,
+                        'allele' : geneLink.allele,
                         'organismId' : geneLink.feature.organism.organism_id
                     })    
                 )
@@ -168,6 +171,7 @@ class GetAPI:
                         'tagId' : geneLink.tag.pk,
                         'uniquename' : geneLink.feature.uniquename,
                         'name' : geneLink.feature.name,
+                        'allele' : geneLink.allele,
                         'organismId' : geneLink.feature.organism.organism_id
                     })
                 )

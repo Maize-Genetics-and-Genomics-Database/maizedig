@@ -1955,6 +1955,7 @@ class GeneLink(models.Model):
     lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
     isPrivate = models.BooleanField(default=True)
+    allele = models.CharField(max_length=255)
     class Meta:
         db_table = u'genelink'
         unique_together = ('tag', 'feature')
@@ -2038,9 +2039,11 @@ class PictureMgdb(models.Model):
     class Meta:
         db_table = u'picture_mgdb'
 
+###############################################################################
 ##
 ## Models for mgdb-curation database
 ##
+###############################################################################
 
 class IdNum(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -2086,4 +2089,33 @@ class PictureGeneID(models.Model):
 
     class Meta:
         db_table = u'picture_gene_id'
+
+###############################################################################
+##
+## Models for mgdb database (Oracle)
+##
+###############################################################################
+
+class Variation(models.Model):
+    alleledescriptor = models.CharField(max_length=40)
+    dominance = models.IntegerField()
+    function = models.CharField(max_length=2)
+    inbred = models.IntegerField()
+    name = models.CharField(max_length=50)
+    progenitorstock = models.IntegerField()
+    species = models.IntegerField()
+    type = models.IntegerField()
+    variationof = models.IntegerField()
+    viability = models.IntegerField()
+    submitted_by = models.IntegerField()
+    snp = models.CharField(max_length=8)
+    strand = models.CharField(max_length=12)
+    reference_version = models.FloatField()
+    #posttext_var = models.TextField()  # this is tsvector type for text search, so more research is needed for using tsvector in Django 1.3.   - ktcho
+
+    class Meta:
+        db_table = u'variation'
+    def __unicode__(self):
+        return self.name
+
 

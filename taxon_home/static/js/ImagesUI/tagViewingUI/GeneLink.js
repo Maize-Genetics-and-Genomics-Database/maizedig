@@ -1,6 +1,7 @@
 function GeneLink(id, feature) {
 	this.id = id;
 	this.name = feature.name;
+    this.allele = feature.allele;
 	this.uniqueName = feature.uniqueName;
 	this.organismId = feature.organismId;
 };
@@ -14,7 +15,11 @@ GeneLink.prototype.getUniqueName = function() {
 };
 
 GeneLink.prototype.getName = function() {
-	return this.name;
+    return this.name;
+};
+
+GeneLink.prototype.getAllele = function() {
+	return this.allele;
 };
 
 GeneLink.prototype.getOrganismId = function() {

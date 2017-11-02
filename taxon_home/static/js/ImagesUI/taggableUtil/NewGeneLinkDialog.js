@@ -40,13 +40,13 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
         'style' : 'margin-right: 10px'
     });
     
-    var geneUniqueNameContainer = $('<div />');
+    var geneAlleleContainer = $('<div />');
     
-    this.geneUniqueName = $('<input />', {
+    this.geneAllele = $('<input />', {
         'type' : 'text'
     });
     
-    var uniqueNameLabel = $('<span />', {
+    var alleleLabel = $('<span />', {
         'text' : 'Allele (optional)',
         'style' : 'margin-right: 10px'
     });
@@ -55,9 +55,9 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
     geneNameContainer.append(this.geneName);
     this.contents.append(geneNameContainer);
     
-    geneUniqueNameContainer.append(uniqueNameLabel);
-    geneUniqueNameContainer.append(this.geneUniqueName);
-    this.contents.append(geneUniqueNameContainer);
+    geneAlleleContainer.append(alleleLabel);
+    geneAlleleContainer.append(this.geneAllele);
+    this.contents.append(geneAlleleContainer);
     
     var organismContainer = $('<div />');
     
@@ -121,7 +121,7 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
 
 NewGeneLinkDialog.prototype.onSubmit = function() {
     var geneName = $.trim(this.geneName.val());
-    var uniqueName = $.trim(this.geneUniqueName.val());
+    var allele = $.trim(this.geneAllele.val());
     var organismId = this.organism.val();
     var tagId = this.table.find('input:radio[name=tag]:checked').val();
     if (geneName && organismId && tagId) {
@@ -134,7 +134,7 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
                 name : geneName,
                 organismId : organismId,
                 tagId: tagId,
-                uniqueName: uniqueName
+                allele : allele
             },
             dataType : 'json',
             success : function(data, textStatus, jqXHR) {
@@ -144,13 +144,13 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
                 var subdomain = (window.location.host.split("."))[0];
                 if (subdomain == "maizedig") {
                     //jp -- added function to update MaizeDIG track on all genome browsers,
-                   //       but only call it on the production maizedig server
+                    //       but only call it on the production maizedig server
                     updateGBrowseTracks(geneName);
                 }
             },
             error : function(jqXHR, textStatus, errorThrown) {
                 var errorMessage = $.parseJSON(jqXHR.responseText).message;
-                                alert(errorMessage);
+                alert(errorMessage);
             }
         });
     }

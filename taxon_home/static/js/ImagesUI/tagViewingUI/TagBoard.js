@@ -279,21 +279,24 @@ TagBoard.prototype.boardMouseMove = function(event) {
 							'class' : 'geneLinkLabel'
 						});
 						var geneLinkCell = $('<td />');
-						
+
 						var geneLinkName = $('<font />', {
 							'text' : geneLink.getName(),
-							'style' : 'margin-right: 20px; font-size: 12px',
+							'style' : 'margin-right: 5px; font-size: 12px'
+						});
+
+						var geneLinkAllele = $('<a />', {
+							'text' : '(' + geneLink.getAllele() + ')',
+                            //'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
+                            'style' : 'font-size: 12px',
+                            'target' : '_blank',
+                            'href' : 'https://www.maizegdb.org/data_center/variation/' + geneLink.getAllele()
 						});
 
 						var geneLinkGBrowser = $('<a />', {
 							'text' : 'GBrowser',
 							'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
-							'href' : this.siteUrl + 'genome_browser/?name=' + geneLink.getName()
-						});
-
-						var geneLinkGBrowserX = $('<a />', {
-							'text' : 'GBrowserX',
-							'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
+                            'target' : '_blank',
                             'href' : 'https://www.maizegdb.org/gbrowse/maize_v4?q=' + this.imageMetadata.geneSymbol
 						});
 
@@ -309,9 +312,10 @@ TagBoard.prototype.boardMouseMove = function(event) {
                         });
 						
 						geneLinkCell.append(geneLinkName);
+						if (geneLink.getAllele())
+							geneLinkCell.append(geneLinkAllele);
                         geneLinkCell.append(geneLinkBR);
-                        //geneLinkCell.append(geneLinkGBrowser);
-                        geneLinkCell.append(geneLinkGBrowserX);
+                        geneLinkCell.append(geneLinkGBrowser);
                         geneLinkCell.append(geneLinkGeneModelPage);
 						geneLinkRow.append(geneLinkLabel);
 						geneLinkRow.append(geneLinkCell);

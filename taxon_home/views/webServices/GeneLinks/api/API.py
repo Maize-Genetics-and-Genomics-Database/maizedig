@@ -48,22 +48,21 @@ def createGeneLink(request):
     if not tagId:
         raise Errors.NO_TAG_KEY
     
-    # find name or uniquename
     name = request.POST.get('name', None)
-    uniquename = request.POST.get('uniqueName', None)
+    allele = request.POST.get('allele', None)
     organismId = request.POST.get('organismId', None)
     
     # read in optional parameters and initialize the API
     fields = Util.getDelimitedList(request.POST, 'fields')
     
-    if not (uniquename or (name and organismId)):
-        if not uniquename:
-            raise Errors.MISSING_PARAMETER.setCustom('uniquename')
+    if not (allele or (name and organismId)):
+        if not allele:
+            raise Errors.MISSING_PARAMETER.setCustom('allele')
         else:
             raise Errors.INVALID_SYNTAX.setCustom('name and organismId required as a pair')
         
     postAPI = PostAPI(request.user, fields)
-    return postAPI.createGeneLink(tagId, name, uniquename, organismId)
+    return postAPI.createGeneLink(tagId, name, allele, organismId)
 
 '''
     Deletes a tag and returns the information for the tag that was deleted

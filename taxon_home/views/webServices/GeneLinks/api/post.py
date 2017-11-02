@@ -1,8 +1,9 @@
 import taxon_home.views.util.ErrorConstants as Errors
-from taxon_home.models import Tag, GeneLink, Feature
+from taxon_home.models import Tag, GeneLink, Feature, Variation
 from django.core.exceptions import ObjectDoesNotExist
 from renderEngine.WebServiceObject import WebServiceObject, LimitDict
 from django.db import transaction, DatabaseError
+from django.http import HttpResponse, HttpResponseNotFound
 
 class PostAPI:
     
@@ -20,9 +21,19 @@ class PostAPI:
             format: [r, g, b]
     '''
     @transaction.commit_on_success 
-    def createGeneLink(self, tagKey, name=None,  uniqueName=None, organismId=None, isKey=True):
+    def createGeneLink(self, tagKey, name=None,  allele=None, organismId=None, isKey=True):
         metadata = WebServiceObject()
-        
+
+        try:
+            if allele:
+                #vID = Variation.objects.using('mgdb2').get(name__exact=allele)
+                vID = Variation.objects.using('mgdb').get(name__exact=allele)
+        except (ObjectDoesNotExist, ValueError):
+            error = Errors.NO_MATCHING_ALLELE.setCustom(allele)
+            print (error.getMessage())     # for log/debugging
+            metadata.setError(error)
+            return metadata
+
         try:
             if isKey:
                 tag = Tag.objects.get(pk__exact=tagKey)
@@ -32,42 +43,31 @@ class PostAPI:
             raise Errors.INVALID_TAG_GROUP_KEY
         
         if not tag.writePermissions(self.user):
-            raise Errors.AUTHENTICATION 
-        
+            raise Errors.AUTHENTICATION
+
         try:
             feature = None
             if name and organismId:
                 feature = Feature.objects.filter(name=name, organism=organismId)
-            if uniqueName:
-                if feature:
-                    feature = feature & Feature.objects.filter(uniquename=uniqueName)
-                else:
-                    feature = Feature.objects.filter(uniquename=uniqueName)
-            
+
             if not feature:
                 error = "Could not find a feature with the parameters: "
                 if name and organismId:
                     error += "name: " + name + ", organismId: " + organismId
-                if uniqueName:
-                    comma = ", " if name and organismId else ""
-                    error += comma + "uniqueName: " + uniqueName
-                
+
                 raise Errors.NO_MATCHING_FEATURE.setCustom(error)
             elif len(feature) > 1:
                 error = "Multiple matches for parameters: "
                 if name and organismId:
                     error += "name: " + name + ", organismId: " + organismId
-                if uniqueName:
-                    comma = ", " if name and organismId else ""
-                    error += comma + "uniqueName: " + uniqueName
-                    
+
                 error += "\n\n Responses: \n\n"
                 
                 for f in feature:
                     error += "uniquename: " + f.uniquename + ", name: " + f.name + ", organism: " + f.organism.common_name + "\n\n"
                 
                 raise Errors.NO_MATCHING_FEATURE.setCustom(error)
-            geneLink = GeneLink(tag=tag, feature=feature[0], user=self.user)
+            geneLink = GeneLink(tag=tag, feature=feature[0], user=self.user, allele=allele)
             geneLink.save()
         except DatabaseError as e:
             transaction.rollback()
@@ -79,10 +79,11 @@ class PostAPI:
         metadata.put('id', geneLink.pk)
         metadata.put('user', geneLink.user.username)
         metadata.put('tagId', geneLink.tag.pk)
-        metadata.put('feature', 
+        metadata.put('feature',
             LimitDict(self.fields, {
                 'uniqueName' : geneLink.feature.uniquename,
                 'name' : geneLink.feature.name,
+                'allele': geneLink.allele,
                 'organismId' : geneLink.feature.organism.organism_id
             })
         )

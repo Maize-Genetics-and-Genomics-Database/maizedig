@@ -82,7 +82,7 @@ DeleteGeneLinkDialog.prototype.onSubmit = function() {
             dataType : 'json',
             success : function(data, textStatus, jqXHR) {
                 data.feature.organismId = organismId;
-                var geneLink = new GeneLink(geneId, data.feature);
+                //var geneLink = new GeneLink(geneId, data.feature);
                 //self.hide();
                 //alert(geneLink.getName() + ' has been deleted!');
             },
