@@ -12,9 +12,50 @@ class GetAPI:
         self.unlimited = unlimited
         self.user = user
         self.fields = fields
-        
+
     '''
         Gets the tag groups for the given image
+        
+        @param imageKey: The primary key for the image or the image
+        @param isKey: Whether the first argument is a key object or not (default: true)
+    '''
+    def getTagGroupsByImageID(self, imageKey, isKey=True):
+        metadata = WebServiceArray()
+
+        try:
+            if (isKey):
+                image = Picture.objects.get(pk__exact=imageKey)
+            else:
+                image = imageKey
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.INVALID_IMAGE_KEY
+
+        if not image.readPermissions(self.user):
+            raise Errors.AUTHENTICATION
+
+        if self.unlimited:
+            groups = TagGroup.objects.filter(picture__exact=image)[self.offset:]
+        else:
+            groups = TagGroup.objects.filter(picture__exact=image)[self.offset : self.offset+self.limit]
+
+        for group in groups:
+            if group.readPermissions(self.user):
+                metadata.put(
+                    LimitDict(self.fields, {
+                        'id' : group.pk,
+                        'user' : group.user.username,
+                        'name' : group.name,
+                        'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
+                        'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
+                        'imageId' : group.picture.pk,
+                        'isPrivate' : group.isPrivate
+                    })
+                )
+
+        return metadata
+
+    '''
+        Gets the all tag groups for the given image name - Default
         
         @param imageKey: The primary key for the image or the image
         @param isKey: Whether the first argument is a key object or not (default: true)
@@ -32,25 +73,29 @@ class GetAPI:
                 
         if not image.readPermissions(self.user):
             raise Errors.AUTHENTICATION
-        
-        if self.unlimited:
-            groups = TagGroup.objects.filter(picture__exact=image)[self.offset:]
-        else:
-            groups = TagGroup.objects.filter(picture__exact=image)[self.offset : self.offset+self.limit]
-        
-        for group in groups:
-            if group.readPermissions(self.user):
-                metadata.put(
-                    LimitDict(self.fields, {
-                        'id' : group.pk,
-                        'user' : group.user.username,
-                        'name' : group.name,
-                        'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
-                        'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                        'imageId' : group.picture.pk,
-                        'isPrivate' : group.isPrivate
-                    })
-                )
+
+        # get all duplicate image instances with ImageName
+        images = Picture.objects.filter(imageName__exact=image.imageName)
+
+        for imageID in images:
+            if self.unlimited:
+                groups = TagGroup.objects.filter(picture__exact=imageID)[self.offset:]
+            else:
+                groups = TagGroup.objects.filter(picture__exact=imageID)[self.offset : self.offset+self.limit]
+
+            for group in groups:
+                if group.readPermissions(self.user):
+                    metadata.put(
+                        LimitDict(self.fields, {
+                            'id' : group.pk,
+                            'user' : group.user.username,
+                            'name' : group.name,
+                            'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
+                            'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
+                            'imageId' : group.picture.pk,
+                            'isPrivate' : group.isPrivate
+                        })
+                    )
     
         return metadata
     
