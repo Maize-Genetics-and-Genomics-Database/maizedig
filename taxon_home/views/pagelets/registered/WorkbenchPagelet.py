@@ -43,7 +43,8 @@ class WorkbenchPagelet(PageletBase):
             
         recentImages = RecentlyViewedPicture.objects.filter(user__exact=request.user).order_by('-lastDateViewed')[:10]
         
-        userTags = Tag.objects.filter(user__exact=request.user).order_by('dateCreated')
+        #userTags = Tag.objects.filter(user__exact=request.user).order_by('dateCreated')
+        userTags = Tag.objects.filter(user__exact=request.user).order_by('-dateCreated')
         myTags = []
                 
         #
@@ -57,7 +58,8 @@ class WorkbenchPagelet(PageletBase):
             })
 
 
-        userTagGroups = TagGroup.objects.filter(user__exact=request.user).order_by('dateCreated')
+        #userTagGroups = TagGroup.objects.filter(user__exact=request.user).order_by('dateCreated')
+        userTagGroups = TagGroup.objects.filter(user__exact=request.user).order_by('-dateCreated')
         myTagGroups = []
                 
         #
@@ -70,7 +72,8 @@ class WorkbenchPagelet(PageletBase):
                 'tagGroup' : tagGroup
             })
             
-        userGeneLinks = GeneLink.objects.filter(user__exact=request.user).order_by('dateCreated')
+        #userGeneLinks = GeneLink.objects.filter(user__exact=request.user).order_by('dateCreated')
+        userGeneLinks = GeneLink.objects.filter(user__exact=request.user).order_by('-dateCreated')
         myGeneLinks = []
                 
         #
