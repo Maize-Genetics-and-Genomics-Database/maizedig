@@ -12,7 +12,7 @@
 .zoomable-container {
 	overflow: hidden;
 	width: 560px;
-	height: 500px;
+	height: 600px;
 	background-repeat: no-repeat;
 	background-size: auto auto; 
 	position: relative;
@@ -20,8 +20,8 @@
 }
 
 .info-container {
-	width: 350px;
-	height: 500px;
+	width: 440px;
+	height: 600px;
 	padding: 10px;
 }
 
