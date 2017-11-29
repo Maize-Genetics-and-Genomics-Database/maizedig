@@ -40,16 +40,16 @@ class ImageEditorPagelet(PageletBase):
                     
                     tags = tagAPI.getTagsByTagGroup(group['id']).getObject()
                     #tags = tagAPI.getTagsByImage(group['imageId']).getObject()
-                    print('tags= ' + json.dumps(tags))
-                    print('group id= ' + json.dumps(group))
+                    #print('tags= ' + json.dumps(tags))
+                    #print('group id= ' + json.dumps(group))
                     for tag in tags:
                         geneLinks = geneLinkAPI.getGeneLinksByTag(tag['id']).getObject()
                         tag['geneLinks'] = geneLinks
-                        print('tag= ' + json.dumps(tag))
+                        #print('tag= ' + json.dumps(tag))
                     group['tags'] = tags
                     
                     
-                print('tagGroups= ' + json.dumps(tagGroups))
+                #print('tagGroups= ' + json.dumps(tagGroups))
                     
                 # initialize image metadata API
                 imageMetadataAPI = ImageMetadataAPI(request.user)

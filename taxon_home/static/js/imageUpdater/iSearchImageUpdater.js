@@ -36,7 +36,7 @@
 			');
 			    
 			$self.find('.last').on('click', function() {
-				private_methods.callNewImageSet($self, settings.pages - 1);
+				private_methods.callNewImageSet($self, settings.pages);
 			});
 			 
 		    $self.find('.previous').on('click', function() {
