@@ -180,6 +180,13 @@
 	width: 95px;
 }
 
+.item-keyword {
+	color: #222;
+	font-family: Lucida Grande;
+	font-size: 14px;
+	padding-left: 10px;
+}
+
 .colorBox {
 	height: 12px;
 	width: 12px;

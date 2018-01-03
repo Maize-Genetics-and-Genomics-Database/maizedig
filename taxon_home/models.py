@@ -2038,6 +2038,22 @@ class PictureMgdb(models.Model):
 
     class Meta:
         db_table = u'picture_mgdb'
+##
+## My Search History
+##
+class iSearchHistory(models.Model):
+    keyword = models.CharField(max_length=255)
+    user = models.ForeignKey(User)
+    lastDateSearched = models.DateTimeField()
+    def save(self, *args, **kwargs):
+        self.lastDateSearched = datetime.now()
+        super(iSearchHistory, self).save(*args, **kwargs)
+    class Meta:
+        unique_together = ("keyword", "user")
+        db_table = u'picture_isearch_history'
+
+    def __unicode__(self):
+        return (self.keyword) + " searched by " + self.user.username
 
 ###############################################################################
 ##

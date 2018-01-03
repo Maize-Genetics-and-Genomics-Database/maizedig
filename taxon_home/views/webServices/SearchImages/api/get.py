@@ -3,7 +3,7 @@ from taxon_home.models import Locus, PictureNotes, PictureMgdb, PictureGeneID
 from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
 from renderEngine.WebServiceException import WebServiceException
 from taxon_home.views.webServices.Images.api.get import GetAPI as ImageMetadataAPI
-
+from taxon_home.models import iSearchHistory
 
 class GetAPI:
     def __init__(self, limit=10, offset=0, user=None, fields=None, unlimited=False):
@@ -185,6 +185,11 @@ class GetAPI:
                 imageMetadata[4] = {'images' : [imageMetadataAPI.getImageMetadata(image, False).getObject()]}
 
         metadata.setObject(LimitDict(self.fields, imageMetadata))
+
+        # store searching keyword
+        print 't1'
+        iSearchHistory.objects.get_or_create(keyword=query[0], user=self.user)[0].save()
+        print 't2'
 
         return metadata
 

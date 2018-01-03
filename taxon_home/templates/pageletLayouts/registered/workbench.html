@@ -82,9 +82,36 @@
 				<div class="toolbar-body">
 					<div class="image-thumbnail-container">
 						<div>
-						{% for image in recentImages %}
+							{% for image in recentImages %}
 							<div class="my-pictures-image-holder">
 								<img src="{{ MEDIA_URL }}{{ image.picture.thumbnail }}" name="{{ image.picture.pk }}" class="scaled-image recent-pictures-image taggable-image" />
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="workbench-area toolbar">
+				<div class="toolbar-header">
+					<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+					<div><span class="toolbar-title">Search History</span></div>
+				</div>
+				<div class="toolbar-body">
+					<div class="image-thumbnail-container">
+						<div>
+						{% for keyword in mySearchHistory %}
+							<div>
+								<table cellspacing="2" cellpadding="2" style="border: 0px; width: 250px;">
+									<tbody>
+									<tr>
+										<tdh class="item-keyword">
+											<a href="/iSearch/?query={{ keyword.keyword }}&searchImageDesc=true&searchImageNotes=true&searchGeneName=true&searchGeneSymbol=true&searchGeneID=true">
+											{{ keyword.keyword }}
+											</a>
+										</td>
+									</tr>
+									</tbody>
+								</table>
 							</div>
 						{% endfor %}
 						</div>

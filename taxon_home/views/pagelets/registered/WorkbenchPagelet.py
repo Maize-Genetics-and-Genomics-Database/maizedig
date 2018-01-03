@@ -6,6 +6,7 @@
 '''
 from renderEngine.PageletBase import PageletBase
 from taxon_home.models import Picture, RecentlyViewedPicture, Tag, TagGroup, GeneLink
+from taxon_home.models import iSearchHistory
 
 class WorkbenchPagelet(PageletBase):
     '''
@@ -40,8 +41,12 @@ class WorkbenchPagelet(PageletBase):
                 'permissions' : permissions,
                 'image' : image
             })
-            
+
+        # get recent viewed images
         recentImages = RecentlyViewedPicture.objects.filter(user__exact=request.user).order_by('-lastDateViewed')[:10]
+
+        # get recent searched history
+        mySearchHistory = iSearchHistory.objects.filter(user__exact=request.user).order_by('-lastDateSearched')[:10]
         
         #userTags = Tag.objects.filter(user__exact=request.user).order_by('dateCreated')
         userTags = Tag.objects.filter(user__exact=request.user).order_by('-dateCreated')
@@ -91,6 +96,7 @@ class WorkbenchPagelet(PageletBase):
         return {
             'myImages' : myImages,
             'recentImages' : recentImages,
+            'mySearchHistory' : mySearchHistory,
             'myTags' : myTags,
             'myTagGroups' : myTagGroups,
             'myGeneLinks' : myGeneLinks,
