@@ -10,6 +10,9 @@
 			background-image: url({{STATIC_URL}}images/search.png),  -webkit-gradient(linear, left top, left bottom, from(#6495ED), to(#2F5BB7));
 			background-image: url({{STATIC_URL}}images/search.png), -moz-linear-gradient(top, #6495ED, #2F5BB7); /* for firefox 3.6+ */
 		}
+		#banner {
+			background-color: #333333;
+		}
 	</style>
 	<script>
 		function logout(e) {
@@ -21,7 +24,7 @@
         	}
 	</script>
 </head>
-<div id="banner"><img src="{{ STATIC_URL }}images/mycoplasma_banner.png" width="960px" alt="Banner" /></div>
+<div id="banner" align="right"><img src="{{ STATIC_URL }}images/mycoplasma_banner.png" width="960px" alt="Banner" /></div>
 <div id="navbar">
 	<ul id="menu">
 		<li class="menuItem">
@@ -30,7 +33,7 @@
 			</a>     
 		</li>
 		<li class="menuItem">
-			<a href="{{ SITE_URL }}genome_browser">
+			<a href="https://www.maizegdb.org/gbrowse/maize_v4" target="_blank">
 				<span>GBrowse</span>
 			</a>     
 		</li>
