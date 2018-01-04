@@ -47,7 +47,9 @@ class WorkbenchPagelet(PageletBase):
 
         # get recent searched history
         mySearchHistory = iSearchHistory.objects.filter(user__exact=request.user).order_by('-lastDateSearched')[:10]
-        
+        # sort by alphabetic order
+        mySearchHistory = sorted(mySearchHistory, key= lambda x: x.keyword)
+
         #userTags = Tag.objects.filter(user__exact=request.user).order_by('dateCreated')
         userTags = Tag.objects.filter(user__exact=request.user).order_by('-dateCreated')
         myTags = []
