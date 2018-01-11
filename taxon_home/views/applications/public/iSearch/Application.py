@@ -17,6 +17,7 @@ from taxon_home.views.pagelets.public.FooterPagelet import FooterPagelet
 from taxon_home.models import Picture, GeneLink, Tag, Feature
 from taxon_home.models import PictureNotes, PictureMgdb, PictureGeneID
 from taxon_home.models import Locus
+from taxon_home.models import iSearchHistory
 #from taxon_home.models import Organism
 #from taxon_home.models import GeneLink
 #from taxon_home.models import Feature
@@ -87,6 +88,11 @@ class Application(ApplicationBase):
                 if pictureID not in pictureIDs:
                     pictureIDs.append(pictureID)
                     candidates[4].append(pictureID)
+
+        # Store searching keyword
+        newKeyword, created = iSearchHistory.objects.get_or_create(keyword=query[0], user=request.user)
+        if not created:
+            newKeyword.save()
 
         formatQuery = ""
         if query:

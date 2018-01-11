@@ -19,11 +19,7 @@ def getImageMetadata(request):
         else:
             raise Errors.INVALID_PARAMETER.setCustom('by')
     elif request.GET.has_key('query'):
-        #query = request.GET['query']
         query = Util.getDelimitedList(request.GET, 'query')
-        #print query[0] + ' TTT'
-        #iSearchID = Util.getDelimitedList(request.GET, 'iSearchID')
-        #print iSearchID
 
         return getAPI.getImageMetadataForiSearch(query)
     else:
