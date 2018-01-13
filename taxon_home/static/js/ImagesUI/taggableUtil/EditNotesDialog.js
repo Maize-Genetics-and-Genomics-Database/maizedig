@@ -86,6 +86,7 @@ function EditNotesDialog(pageBlock, siteUrl) {
 
 EditNotesDialog.prototype.onSubmit = function() {
     var notes = $.trim(this.notes.val());
+    var pn_id = $.trim(this.notes.data("notesid"));
     var img = document.getElementById("current-editing");
     var pictureID = img.name;
 
@@ -98,6 +99,7 @@ EditNotesDialog.prototype.onSubmit = function() {
             dataType : 'json',
             data : {
                 notes : notes,
+                pn_id : pn_id,
                 pictureID : pictureID
             },
             success : function(data, textStatus, jqXHR) {
@@ -130,6 +132,10 @@ EditNotesDialog.prototype.show = function(imageMetadata) {
             'value' : imageMetadata.notes
         });
         //$('textarea#notes').val(imageMetadata.notes);
+
+        $('textarea#notes').data({
+            'notesid' : imageMetadata.notes_id
+        });
     }
 
     this.block.show();

@@ -17,7 +17,7 @@ class PostAPI:
         @param PictureID
     '''
     @transaction.commit_on_success
-    def addNote(self, notes, imageKey):
+    def addNote(self, notes, pn_id, imageKey):
         metadata = WebServiceObject()
 
         # get picture instance with imageKey
@@ -31,10 +31,24 @@ class PostAPI:
         else:
             userID = self.user
 
-        # save the new note
-        pictureNotes = PictureNotes(notes=notes, picture=image, user=userID)
         try:
-            pictureNotes.save()
+            # save the new note
+            if pn_id:
+                # update
+                pictureNotes = PictureNotes.objects.get(pk__exact=pn_id)
+                if pictureNotes:
+                    pictureNotes.notes = notes
+                    pictureNotes.picture = image
+                    pictureNotes.user = userID
+                    pictureNotes.save()
+                else:
+                    # error
+                    print 'Error: no picture_notes.pk found!'
+            else:
+                # add new
+                pictureNotes = PictureNotes(notes=notes, picture=image, user=userID)
+                pictureNotes.save()
+
         except DatabaseError as e:
             transaction.rollback()
             raise Errors.INTEGRITY_ERROR.setCustom(str(e))

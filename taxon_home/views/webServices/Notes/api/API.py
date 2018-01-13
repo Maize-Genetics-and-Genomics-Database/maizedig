@@ -27,6 +27,7 @@ def getNote(request):
 def addNote(request):
     # get new note information
     notes = request.POST.get('notes', None)
+    pn_id = request.POST.get('pn_id', None)
     imageKey = request.POST.get('pictureID', None)
 
     if not imageKey:
@@ -36,5 +37,5 @@ def addNote(request):
     fields = Util.getDelimitedList(request.POST, 'fields')
 
     postAPI = PostAPI(request.user, fields)
-    return postAPI.addNote(notes, imageKey)
+    return postAPI.addNote(notes, pn_id, imageKey)
 

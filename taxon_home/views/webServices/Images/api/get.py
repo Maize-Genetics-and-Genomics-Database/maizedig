@@ -73,9 +73,11 @@ class GetAPI:
         pictureNotesAPI = NotesAPI(self.user)
         pictureNotes = pictureNotesAPI.getNote(imageKey).getObject()
         if pictureNotes:
+            notes_id = pictureNotes['pn_id']
             notes = pictureNotes['notes']
             notesBy = pictureNotes['user']
         else:
+            notes_id = ''
             notes = ''
             notesBy = ''
 
@@ -93,6 +95,7 @@ class GetAPI:
         metadata.put('geneIDs', geneIDs)
         metadata.put('geneSymbol', geneSymbol)
         metadata.put('geneName', geneName)
+        metadata.put('notes_id', notes_id)
         metadata.put('notes', notes)
         metadata.put('notesBy', notesBy)
 
