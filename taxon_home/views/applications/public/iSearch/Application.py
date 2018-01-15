@@ -54,7 +54,7 @@ class Application(ApplicationBase):
             pNotes = PictureNotes.objects.filter(notes__icontains=query[0])
             pictureIDs = []
             for note in pNotes:
-                pictureID = note.picture_id
+                pictureID = note.picture.pk
                 if not pictureID in pictureIDs:
                     pictureIDs.append(pictureID)
                     candidates[1].append(pictureID)

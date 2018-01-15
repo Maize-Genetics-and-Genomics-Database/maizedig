@@ -470,14 +470,14 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	uploaderRow.append(uploader);
 	speciesInfo.append(uploaderRow);
 
-	// Image Notes
+	// Image notes
 	var notesRow = $('<tr />');
     var notesLabel = $('<td />', {
         'text' : 'Notes:'
     });
     var notesByStr = '';
     if (this.imageMetadata.notesBy.length > 0)
-    	notesByStr = ' - commented by '	 + this.imageMetadata.notesBy;
+    	notesByStr = ' (by '	 + this.imageMetadata.notesBy + ')';
     var notesContext = $('<td />', {
         'text' : this.imageMetadata.notes + notesByStr
     });

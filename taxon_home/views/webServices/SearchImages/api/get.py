@@ -1,7 +1,6 @@
-from taxon_home.models import Picture, PictureDefinitionTag, GeneLink, Tag, Feature
-from taxon_home.models import Locus, PictureNotes, PictureMgdb, PictureGeneID
+from taxon_home.models import Picture, PictureDefinitionTag
+from taxon_home.models import PictureNotes, PictureMgdb, PictureGeneID
 from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
-from renderEngine.WebServiceException import WebServiceException
 from taxon_home.views.webServices.Images.api.get import GetAPI as ImageMetadataAPI
 
 class GetAPI:
@@ -120,8 +119,15 @@ class GetAPI:
         iDescImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
 
         # Image notes
-        iNotesImages = Picture.objects.filter(description__icontains=query[0])[self.offset:self.offset+self.limit]
-        #iNotesImages = PictureNotes.objects.filter(notes__icontains=query[0])[self.offset:self.offset+self.limit]
+        iNoteImages = []
+        picturesIN = []
+        iNotes = PictureNotes.objects.filter(notes__icontains=query[0])
+        for note in iNotes:
+            pictureID = note.picture.pk
+            if pictureID not in picturesIN:
+                iNoteImages.extend(Picture.objects.filter(id__exact=pictureID))
+                picturesIN.append(pictureID)
+        iNoteImages = iNoteImages[self.offset:self.offset+self.limit]
 
         # Gene name
         gNameImages = []
@@ -163,7 +169,7 @@ class GetAPI:
                 imageMetadata[0]['images'].append(imageMetadataAPI.getImageMetadata(image, False).getObject())
             else:
                 imageMetadata[0] = {'images' : [imageMetadataAPI.getImageMetadata(image, False).getObject()]}
-        for image in iNotesImages:
+        for image in iNoteImages:
             if imageMetadata.has_key(1):
                 imageMetadata[1]['images'].append(imageMetadataAPI.getImageMetadata(image, False).getObject())
             else:
