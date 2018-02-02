@@ -87,16 +87,16 @@ SaveTagDialog.prototype.onError = function(errorMessage) {
 };
 
 SaveTagDialog.prototype.onSubmit = function() {
-	var description = $.trim(this.name.val());
-	var tagGroupKey = this.table.find('input:radio[name=tagGroup]:checked').val();
-	
-	if (description && tagGroupKey) {		
-		// adds the current drawn tag to the local tags object
-		this.tagBoard.addTag(this.colorArr, this.tagPoints, description, tagGroupKey,
-			Util.scopeCallback(this, this.onSuccess), Util.scopeCallback(this, this.onError));
-		// updates the tag board
-		this.tagBoard.redraw();
-	}
+    var description = $.trim(this.name.val());
+    var tagGroupKey = this.table.find('input:radio[name=tagGroup]:checked').val();
+
+    if (description && tagGroupKey) {
+        // adds the current drawn tag to the local tags object
+        this.tagBoard.addTag(this.colorArr, this.tagPoints, description, tagGroupKey,
+            Util.scopeCallback(this, this.onSuccess), Util.scopeCallback(this, this.onError));
+        // updates the tag board
+        this.tagBoard.redraw();
+    }
 };
 
 SaveTagDialog.prototype.hide = function() {

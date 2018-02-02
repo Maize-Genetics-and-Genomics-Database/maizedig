@@ -197,7 +197,16 @@ TaggerUI.prototype.createStructure = function() {
 	
 	// submits the currently drawn tag
 	this.taggingMenu.onSubmitClick(function() {
-		self.drawingAPI.saveTag();
+		var dwBoard = self.drawingAPI.getDrawingBoard();
+        var tagPoints = dwBoard.getCurrentTagPoints();// self.drawingBoard.getCurrentTagPoints();
+		console.log(tagPoints.length);
+        if (tagPoints.length > 0) {
+            self.drawingAPI.saveTag();
+        }
+        else
+		{
+            alert('Warning: Please select tagging area.');
+		}
 	});
 	
 	var left = parseInt(this.image.css('left').split('px')[0]);
