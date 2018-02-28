@@ -14,7 +14,7 @@
 			<div class="results-menu">
 				<div class="tabTitle" align="center">Images Found</div>
 			 	{% for candidate in candidateInfo %}
-				<div id="imageTab{{ candidate.2 }}" class="tab{% if forloop.counter0|isZero %} activeTab{% endif %}">{{ candidate.1 }}</div>
+				<div id="imageTab{{ candidate.2 }}" class="tab{% if forloop.counter0|isZero %} activeTab{% endif %}">{{ candidate.1 }} ({{ candidate.4 }})</div>
 				{% endfor %}
 			</div>
 			<div class="results-container">
