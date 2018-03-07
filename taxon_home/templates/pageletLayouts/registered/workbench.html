@@ -104,11 +104,20 @@
 								<table cellspacing="2" cellpadding="2" style="border: 0px; width: 250px;">
 									<tbody>
 									<tr>
-										<tdh class="item-keyword">
-											<a href="/iSearch/?query={{ keyword.keyword }}&searchImageDesc=true&searchImageNotes=true&searchGeneName=true&searchGeneSymbol=true&searchGeneID=true">
+										<td class="item-keyword">
+                                            <a href="{{ forloop.counter }}" class="iSearch_history">
 											{{ keyword.keyword }}
 											</a>
 										</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item-keyword-settings">
+                                            <span>ID</span><input id="{{ forloop.counter }}_ID" name="{{ forloop.counter }}_ID" type="checkbox" {% if  keyword.catSettings|make_list|first == "1"%}checked{% endif %} />
+                                            <span>IN</span><input id="{{ forloop.counter }}_IN" name="{{ forloop.counter }}_IN" type="checkbox" {% if  keyword.catSettings|make_list|slice:"1:"|first == "1"%}checked{% endif %} />
+                                            <span>GN</span><input id="{{ forloop.counter }}_GN" name="{{ forloop.counter }}_GN" type="checkbox" {% if  keyword.catSettings|make_list|slice:"2:"|first == "1"%}checked{% endif %} />
+                                            <span>GS</span><input id="{{ forloop.counter }}_GS" name="{{ forloop.counter }}_GS" type="checkbox" {% if  keyword.catSettings|make_list|slice:"3:"|first == "1"%}checked{% endif %} />
+                                            <span>GI</span><input id="{{ forloop.counter }}_GI" name="{{ forloop.counter }}_GI" type="checkbox" {% if  keyword.catSettings|make_list|last == "1"%}checked{% endif %} />
+                                        </td>
 									</tr>
 									</tbody>
 								</table>
@@ -503,7 +512,7 @@
 			
 			var taggingDataClient = new TaggingDataClient();
 			var getImageClient = new ImageClient();
-			
+
 			getImageClient.call(key, function(data, textStatus, jqXHR) {
 				taggingDataClient.call(key, function(tagGroups) {
 					var $workArea = $('#work-area').empty();
@@ -542,6 +551,30 @@
 				});
 			});
 		});
+
+		//
+        // iSearch history - applying searching setting
+        //
+		$('.iSearch_history').on('click', function () {
+            var idx = $(this).attr('href');
+            var keyword = $(this).text().trim();
+            var targetIDName = '#' + idx + '_ID';
+            var targetINName = '#' + idx + '_IN';
+            var targetGNName = '#' + idx + '_GN';
+            var targetGSName = '#' + idx + '_GS';
+            var targetGIName = '#' + idx + '_GI';
+
+            var isID = $(targetIDName).prop('checked');
+            var isIN = $(targetINName).prop('checked');
+            var isGN = $(targetGNName).prop('checked');
+            var isGS = $(targetGSName).prop('checked');
+            var isGI = $(targetGIName).prop('checked');
+
+            $(this).attr({
+                'href' : '/iSearch/?query=' + keyword + '&searchImageDesc='+ isID +'&searchImageNotes='+ isIN +'&searchGeneName='+ isGN +'&searchGeneSymbol='+ isGS +'&searchGeneID='+ isGI
+            });
+            //alert($(this).attr('href'));
+        });
 
 		// trash cans should prompt the user to delete the image and this should pull up the
 		// dialog box asking if they are sure

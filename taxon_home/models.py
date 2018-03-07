@@ -2045,6 +2045,7 @@ class iSearchHistory(models.Model):
     keyword = models.CharField(max_length=255)
     user = models.ForeignKey(User)
     lastDateSearched = models.DateTimeField()
+    catSettings = models.CharField(max_length=5)
     def save(self, *args, **kwargs):
         self.lastDateSearched = datetime.now()
         super(iSearchHistory, self).save(*args, **kwargs)

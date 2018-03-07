@@ -187,6 +187,13 @@
 	padding-left: 10px;
 }
 
+.item-keyword-settings {
+	color: #222;
+	font-family: Lucida Grande;
+	font-size: 10px;
+	text-align: right;
+}
+
 .colorBox {
 	height: 12px;
 	width: 12px;

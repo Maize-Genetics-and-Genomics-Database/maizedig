@@ -29,7 +29,7 @@ class Application(ApplicationBase):
         self.addPageletBinding('navBar', NavBarPagelet())
 
         numSearch = 0
-        searchCats = 0
+        searchCats = list('00000')
         searchImageDesc = str(request.GET.get('searchImageDesc', '')).lower() == "true"
         searchImageNotes = str(request.GET.get('searchImageNotes', '')).lower() == "true"
         searchGeneName = str(request.GET.get('searchGeneName', '')).lower() == "true"
@@ -45,12 +45,14 @@ class Application(ApplicationBase):
 
         if searchImageDesc:
             candidates[0][0] = 'Image Description'
+            searchCats[0] = '1'
             pictures = Picture.objects.filter(description__icontains=query[0])
             for picture in pictures:
                 candidates[0].append(picture)
 
         if searchImageNotes:
             candidates[1][0] = 'Image Notes'
+            searchCats[1] = '1'
             pNotes = PictureNotes.objects.filter(notes__icontains=query[0])
             pictureIDs = []
             for note in pNotes:
@@ -61,6 +63,7 @@ class Application(ApplicationBase):
 
         if searchGeneName:
             candidates[2][0] = 'Gene Name'
+            searchCats[2] = '1'
             pictureIDs = []
             pMgdbs = PictureMgdb.objects.filter(locus_full_name__icontains=query[0])
             for pMgdb in pMgdbs:
@@ -71,6 +74,7 @@ class Application(ApplicationBase):
 
         if searchGeneSymbol:
             candidates[3][0] = 'Gene Symbol'
+            searchCats[3] = '1'
             pictureIDs = []
             pMgdbs = PictureMgdb.objects.filter(locus_name__icontains=query[0])
             for pMgdb in pMgdbs:
@@ -81,6 +85,7 @@ class Application(ApplicationBase):
 
         if searchGeneID:
             candidates[4][0] = 'Gene ID'
+            searchCats[4] = '1'
             pictureIDs = []
             pIDs = PictureGeneID.objects.filter(gene_id__icontains=query[0])
             for pID in pIDs:
@@ -90,8 +95,14 @@ class Application(ApplicationBase):
                     candidates[4].append(pictureID)
 
         # Store searching keyword
+        catSettings = ''.join(searchCats)
         newKeyword, created = iSearchHistory.objects.get_or_create(keyword=query[0], user=request.user)
-        if not created:
+        if created:
+            updateKeyword = iSearchHistory.objects.get(pk__exact=newKeyword.pk)
+            updateKeyword.catSettings = catSettings
+            updateKeyword.save()
+        else:
+            newKeyword.catSettings = catSettings
             newKeyword.save()
 
         formatQuery = ""
