@@ -513,6 +513,9 @@
 			var taggingDataClient = new TaggingDataClient();
 			var getImageClient = new ImageClient();
 
+			// update current URL in the address bar of browser
+            window.history.pushState('MaizeDIG', 'MaizeDIG Administration', '?dliid=' + key);
+
 			getImageClient.call(key, function(data, textStatus, jqXHR) {
 				taggingDataClient.call(key, function(tagGroups) {
 					var $workArea = $('#work-area').empty();
