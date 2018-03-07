@@ -479,8 +479,22 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	uploaderRow.append(uploader);
 	speciesInfo.append(uploaderRow);
 
+	// Image ID
+	var imageIDRow = $('<tr />');
+    var imageIDLabel = $('<td />', {
+        'text' : 'Image ID:'
+    });
+    var imageIDContext = $('<td />', {
+        'text' : this.imageMetadata.id
+    });
+    imageIDRow.append(imageIDLabel);
+    imageIDRow.append(imageIDContext);
+    speciesInfo.append(imageIDRow);
+
 	// Image notes
-	var notesRow = $('<tr />');
+    var notesRow = $('<tr />', {
+        'class' : 'even'
+    });
     var notesLabel = $('<td />', {
         'text' : 'Notes:'
     });
