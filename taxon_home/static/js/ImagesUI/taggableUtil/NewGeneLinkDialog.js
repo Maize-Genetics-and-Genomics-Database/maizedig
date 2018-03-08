@@ -147,6 +147,9 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
                     //       but only call it on the production maizedig server
                     updateGBrowseTracks(geneName);
                 }
+
+                // auto page refresh
+                location.reload();
             },
             error : function(jqXHR, textStatus, errorThrown) {
                 var errorMessage = $.parseJSON(jqXHR.responseText).message;
