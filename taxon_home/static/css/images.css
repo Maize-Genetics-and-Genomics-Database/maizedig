@@ -38,12 +38,19 @@ td.table_cell {
 }
 
 .image-pagination .last {
-	letter-spacing: -4px;
-	margin-right: 25px;
+	letter-spacing: -3px;
 }
 
 .image-pagination .first {
-	letter-spacing: -4px;
+	letter-spacing: -3px;
+}
+
+.image-pagination .move_page {
+	margin-left: -18px;
+}
+
+.image-pagination .total_pages {
+	margin-right: 25px;
 }
 
 .image-pagination .numbers_holder input {
