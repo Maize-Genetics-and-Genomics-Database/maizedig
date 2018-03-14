@@ -17,14 +17,20 @@
 		addPagination: function($self) {
 			var settings = $self.data('settings');
 			$self.append('<div id="' + settings.organismId + 'Pagination" class="image-pagination"> \
+			        <div class="total_pages pagination-control"> \
+			        	<span>Total pages: ' + settings.pages  + '</span> \
+			        </div> \
 					<div class="last pagination-control"> \
 		        		<span>&gt;&gt;</span> \
 		        	</div> \
 					<div class="next pagination-control"> \
 			        	<span>&gt;</span> \
 			        </div> \
+					<div class="move_page pagination-control"> \
+			        	<span>GO</span> \
+			        </div> \
 		        	<div class="numbers_holder" style="float:right;"> \
-		        		<input type="text" value="' + settings.currentPage + '"/> \
+		        		<input id="move_page_number" type="number" min="1" max="' + settings.pages  + '" value="' + settings.currentPage + '"/> \
 		        	</div> \
 		        	<div class="previous pagination-control"> \
 		        		<span>&lt;</span> \
@@ -50,8 +56,11 @@
 		    $self.find('.first').on('click', function() {
 		    	private_methods.callNewImageSet($self, 1);
 			});
-		    
-		    
+
+		    $self.find('.move_page').on('click', function () {
+				private_methods.callNewImageSet($self, $self.find('#move_page_number').val());
+            });
+
 		},
 		/**
 			Adds a small template that says no images were found
@@ -111,11 +120,9 @@
 		            }
                     settings.imagesOnPage = imagesOnPage;
                     settings.currentPage = newPage;
-                    var $pagination = $('#Pagination');
-                    $pagination.find('.numbers_holder input').val(settings.currentPage);
-                    firstImage = (settings.currentPage - 1) * settings.limit + 1;
-                    $pagination.find('.first-image').html(firstImage);
-                    $pagination.find('.last-image').html(firstImage + settings.imagesOnPage - 1);
+
+                    // Update current page number on input box
+                    $self.find('#move_page_number').val(settings.currentPage);
 	            },
 	            error: function(jqXHR, textStatus, errorThrown) {
 	            	var errorMessage = $.parseJSON(jqXHR.responseText).message;
