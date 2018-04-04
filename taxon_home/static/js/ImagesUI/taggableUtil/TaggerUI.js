@@ -33,7 +33,7 @@ function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, image
 };
 
 TaggerUI.prototype.deleteTagE = function(TagID) {	
-    var tag = new Tag(TagID, null, null, null, [], this.imageMetadata.id, this.siteUrl, null);
+    var tag = new Tag(TagID, null, null, null, null, [], this.imageMetadata.id, this.siteUrl, null);
     var tags = this.drawingAPI.getTagBoard().getSelectedTags();
 
     // deletes the tag

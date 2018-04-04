@@ -20,7 +20,8 @@ function TagGroup(group, imageKey, siteUrl) {
 			var description = tag.name;
 			var geneLinks = tag.geneLinks;
 			var id = tag.id;
-			this.tags[id] = new Tag(id, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, this);
+			var userName = tag.user;
+			this.tags[id] = new Tag(id, userName, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, this);
 		}
 	}
 };

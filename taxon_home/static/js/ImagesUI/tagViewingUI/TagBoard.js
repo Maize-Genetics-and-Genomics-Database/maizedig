@@ -70,7 +70,7 @@ TagBoard.prototype.getSelectedTags = function() {
 
 TagBoard.prototype.addTag = function(color, points, description, tagGroupKey, callback, errorCallback) {
 	var group = this.tagGroups[tagGroupKey];
-	var tag = new Tag(null, color, points, description, [], this.imageMetadata.id, this.siteUrl, group);
+	var tag = new Tag(null, null, color, points, description, [], this.imageMetadata.id, this.siteUrl, group);
 	
 	// saves the tag and then adds the 
 	tag.save(
@@ -240,7 +240,7 @@ TagBoard.prototype.boardMouseMove = function(event) {
 					'class' : 'geneLinkLabel'
 				});
 				var description = $('<td />', {
-					'text' : tag.getDescription()
+					'text' : tag.getDescription() + '(Created by: ' + tag.getUserName() + ')'
 				});
 				
 				descriptionRow.append(descriptionLabel);

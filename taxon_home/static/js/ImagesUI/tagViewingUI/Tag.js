@@ -1,5 +1,6 @@
-function Tag(id, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, tagGroup) {
+function Tag(id, userName, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, tagGroup) {
 	this.id = id;
+	this.userName = userName;
 	this.color = colorArr;
 	this.tagGroup = tagGroup;
 	this.points = tagPoints;
@@ -25,6 +26,10 @@ Tag.prototype.setId = function(id) {
 
 Tag.prototype.getId = function() {
 	return this.id;
+};
+
+Tag.prototype.getUserName = function() {
+	return this.userName;
 };
 
 Tag.prototype.getColor = function() {
@@ -100,7 +105,7 @@ Tag.prototype.delete = function(callback, errorCallback) {
 };
 
 Tag.prototype.copy = function() {
-	return new Tag(this.getId(), this.getColor(), this.getPoints(), 
+	return new Tag(this.getId(), this.getUserName(), this.getColor(), this.getPoints(),
 		this.description, this.getGeneLinks(), this.imageKey, this.siteUrl, this.tagGroup);
 };
 
