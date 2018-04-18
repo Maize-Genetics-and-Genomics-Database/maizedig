@@ -69,17 +69,22 @@ class GetAPI:
                     'id' : tag.organism.pk
                 })
 
+        # Get all imageID for imageName
+        images = Picture.objects.filter(imageName__exact=image.imageName)
+
         # Get Image Notes Information
+        notes_id = ''
+        notes = ''
+        notesBy = ''
+
         pictureNotesAPI = NotesAPI(self.user)
-        pictureNotes = pictureNotesAPI.getNote(imageKey).getObject()
-        if pictureNotes:
-            notes_id = pictureNotes['pn_id']
-            notes = pictureNotes['notes']
-            notesBy = pictureNotes['user']
-        else:
-            notes_id = ''
-            notes = ''
-            notesBy = ''
+        for imageID in images:
+            pictureNotes = pictureNotesAPI.getNote(imageID).getObject()
+            if pictureNotes:
+                notes_id = pictureNotes['pn_id']
+                notes = pictureNotes['notes']
+                notesBy = pictureNotes['user']
+                break
 
         metadata.limitFields(self.fields)
 
