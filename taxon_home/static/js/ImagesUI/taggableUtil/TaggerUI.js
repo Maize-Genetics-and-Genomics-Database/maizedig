@@ -170,14 +170,15 @@ TaggerUI.prototype.createStructure = function() {
 	// changes the color of the currently drawn tag or just of the paint brush itself
 	this.taggingMenu.onColorClick(function() {
 		var color = $(this).css('background-color');
+		//console.log(color);
 		
 		var newFillStyle = "";
-		if (color != "black") {
-			var rgbArr = color.split("(")[1].split(")")[0].split(",");
-			if (parseInt($.trim(rgbArr[0])) + parseInt($.trim(rgbArr[1])) + parseInt($.trim(rgbArr[2])) != 0) {
-				newFillStyle = "rgba(" + rgbArr[0] + "," + rgbArr[1] + "," + rgbArr[2] + ", 0.5)"; 
-			}
-		}
+		var rgbArr = color.split("(")[1].split(")")[0].split(",");
+		if (parseInt($.trim(rgbArr[0])) + parseInt($.trim(rgbArr[1])) + parseInt($.trim(rgbArr[2])) != 0)
+			newFillStyle = "rgba(" + rgbArr[0] + "," + rgbArr[1] + "," + rgbArr[2] + ", 0.2)";
+		else
+            newFillStyle = "rgba(" + rgbArr[0] + "," + rgbArr[1] + "," + rgbArr[2] + ", 0.2)";
+		//console.log(newFillStyle);
 		self.drawingAPI.setFillStyle(newFillStyle);
 		self.drawingAPI.getDrawingBoard().redraw();
 	});
@@ -199,7 +200,7 @@ TaggerUI.prototype.createStructure = function() {
 	this.taggingMenu.onSubmitClick(function() {
 		var dwBoard = self.drawingAPI.getDrawingBoard();
         var tagPoints = dwBoard.getCurrentTagPoints();// self.drawingBoard.getCurrentTagPoints();
-		console.log(tagPoints.length);
+		//console.log(tagPoints.length);
         if (tagPoints.length > 0) {
             self.drawingAPI.saveTag();
         }

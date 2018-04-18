@@ -115,6 +115,7 @@ DrawingAPI.prototype.saveTag = function() {
 	
 	// gets the 3 color values RGB
 	var fillStyle = this.getFillStyle();
+	//console.log(fillStyle)
 	var colorArr = fillStyle.split('(')[1].split(')')[0].split(',');
 	colorArr.pop();
 	for (var i = 0; i < colorArr.length; i++) {
