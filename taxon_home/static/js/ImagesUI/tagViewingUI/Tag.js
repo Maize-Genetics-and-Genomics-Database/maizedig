@@ -50,7 +50,7 @@ Tag.prototype.getGeneLinks = function() {
 
 Tag.prototype.getFormattedColor = function() {
 	if (this.color[0] + this.color[1] + this.color[2] != 0) {
-		return 'rgba(' + this.color.join() + ',0.3)';
+		return 'rgba(' + this.color.join() + ',0.2)';
 	}
 	else {
 		return '';
