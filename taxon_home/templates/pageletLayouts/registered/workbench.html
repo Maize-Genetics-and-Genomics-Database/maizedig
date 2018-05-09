@@ -84,6 +84,9 @@
 						<div>
 							{% for image in recentImages %}
 							<div class="my-pictures-image-holder">
+                                <div class="top-right-float" title=".ui-icon-close">
+                                    <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span>
+                                </div>
 								<img src="{{ MEDIA_URL }}{{ image.picture.thumbnail }}" name="{{ image.picture.pk }}" class="scaled-image recent-pictures-image taggable-image" />
 							</div>
 							{% endfor %}
@@ -491,15 +494,15 @@
 		var areYouSureDialog = new AreYouSureDialog();
 	
 		// make the trash cans work on hover
-		$('.my-pictures-image-holder').on('mouseenter', function() {
-			$(this).find('.delete-image-button').show();
-		});
+		//$('.my-pictures-image-holder').on('mouseenter', function() {
+		//	$(this).find('.delete-image-button').show();
+		//});
 	
-		$('.my-pictures-image-holder').on('mouseout', function(event) {
-			if (!$(event.relatedTarget).hasClass('delete-image-button') && !$(event.relatedTarget).hasClass('my-pictures-image')) {
-				$(this).find('.delete-image-button').hide();
-			}
-		});
+		//$('.my-pictures-image-holder').on('mouseout', function(event) {
+			//if (!$(event.relatedTarget).hasClass('delete-image-button') && !$(event.relatedTarget).hasClass('my-pictures-image')) {
+			//	$(this).find('.delete-image-button').hide();
+			//}
+		//});
 		
 		// calls the getTags web service for this image in order to
 		// get the tags for the picture and stores them in cache so

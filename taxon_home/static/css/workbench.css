@@ -144,7 +144,6 @@
 .delete-image-button {
 	position: absolute;
 	right: 0;	
-	display: none;
 }
 
 .delete-image-button:hover {
