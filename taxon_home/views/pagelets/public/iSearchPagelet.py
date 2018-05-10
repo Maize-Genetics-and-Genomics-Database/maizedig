@@ -48,5 +48,6 @@ class iSearchPagelet(PageletBase):
             'candidateInfo': candidateInfo,
             'limit': limit,
             'imagesPerRow' : 4,
+            'user' : request.user,
             'query' : self.searchParams['query']
         }

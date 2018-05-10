@@ -89,8 +89,9 @@ class PostAPI:
         if self.user.is_staff:
             upload = Picture(user=self.user, isPrivate=False, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)
         else:
-            upload = Picture(user=self.user, isPrivate=True, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)            
-        
+            #upload = Picture(user=self.user, isPrivate=True, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)
+            upload = Picture(user=self.user, isPrivate=False, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)
+
         try:
             upload.save()
         except DatabaseError as e:

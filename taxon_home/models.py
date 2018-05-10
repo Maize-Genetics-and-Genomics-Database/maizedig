@@ -21,7 +21,7 @@ class Picture(models.Model):
     altText = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)
     uploadDate = models.DateTimeField(auto_now_add=True)
-    isPrivate = models.BooleanField(default=True)
+    isPrivate = models.BooleanField(default=False)
 
     class Meta:
         db_table = u'picture'    
@@ -91,7 +91,7 @@ class TagGroup(models.Model):
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    isPrivate = models.BooleanField(default=True)
+    isPrivate = models.BooleanField(default=False)
     class Meta:
         db_table = u'taggroup'
         unique_together = ('name', 'picture',)
@@ -160,7 +160,7 @@ class Tag(models.Model):
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    isPrivate = models.BooleanField(default=True)
+    isPrivate = models.BooleanField(default=False)
     class Meta:
         db_table = u'tag'
         
@@ -1954,7 +1954,7 @@ class GeneLink(models.Model):
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    isPrivate = models.BooleanField(default=True)
+    isPrivate = models.BooleanField(default=False)
     allele = models.CharField(max_length=255)
     class Meta:
         db_table = u'genelink'

@@ -100,6 +100,7 @@
 	                limit: settings.limit,
 	                offset: (newPage - 1) * settings.limit,
 	                query : settings.query,
+                    user : settings.user,
 	                iSearchID: settings.iSearchID
 	            },
 	            dataType: 'json',
@@ -134,8 +135,10 @@
 	        var picture = data[index];
 
 	        var $pictureDiv = $('<div>');
-	        //var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
-            var $href = $('<a>').attr('href', settings.siteUrl + 'administration/?dliid=' + picture.id);
+	        if (settings.user == 'AnonymousUser')
+	        	var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
+	        else
+            	var $href = $('<a>').attr('href', settings.siteUrl + 'administration/?dliid=' + picture.id);
 	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(172).height(130));
 
 	        var $pic_description = '';
@@ -170,6 +173,7 @@
 					'totalImages' : 0,
 					'imagesPerRow' : 4,
 					'query' : '',
+                    'user' : '',
 					'iSearchID' : -1,
 					'useActualImages' : false
 				}, options);

@@ -95,15 +95,17 @@ class Application(ApplicationBase):
                     candidates[4].append(pictureID)
 
         # Store searching keyword
-        catSettings = ''.join(searchCats)
-        newKeyword, created = iSearchHistory.objects.get_or_create(keyword=query[0], user=request.user)
-        if created:
-            updateKeyword = iSearchHistory.objects.get(pk__exact=newKeyword.pk)
-            updateKeyword.catSettings = catSettings
-            updateKeyword.save()
-        else:
-            newKeyword.catSettings = catSettings
-            newKeyword.save()
+        #if request.user != None or request.user != 'AnonymousUser':
+        if str(request.user) != 'AnonymousUser':
+            catSettings = ''.join(searchCats)
+            newKeyword, created = iSearchHistory.objects.get_or_create(keyword=query[0], user=request.user)
+            if created:
+                updateKeyword = iSearchHistory.objects.get(pk__exact=newKeyword.pk)
+                updateKeyword.catSettings = catSettings
+                updateKeyword.save()
+            else:
+                newKeyword.catSettings = catSettings
+                newKeyword.save()
 
         formatQuery = ""
         if query:
