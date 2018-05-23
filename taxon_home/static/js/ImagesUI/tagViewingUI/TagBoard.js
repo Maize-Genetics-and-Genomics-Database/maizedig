@@ -298,7 +298,7 @@ TagBoard.prototype.boardMouseMove = function(event) {
 							'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
                             'target' : '_blank',
                             //'href' : 'https://www.maizegdb.org/gbrowse/maize_v4?q=' + this.imageMetadata.geneSymbol
-                            'href' : 'https://www.maizegdb.org/gbrowse/maize_v4test?q=' + this.imageMetadata.geneSymbol
+                            'href' : 'https://www.maizegdb.org/gbrowse/maize_v4test?l=MaizeDIG;q=' + this.imageMetadata.geneSymbol
 						});
 
                         var geneLinkGeneModelPage = $('<a />', {
