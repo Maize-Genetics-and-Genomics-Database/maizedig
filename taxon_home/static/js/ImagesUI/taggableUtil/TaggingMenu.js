@@ -7,7 +7,7 @@ function TaggingMenu(id, imagesUrl) {
    		{ colorRGB : 'rgb(0, 255, 0)'},
    		{ colorRGB : 'rgb(255, 255, 0)'},
    		{ colorRGB : 'rgb(192, 192, 192)'},
-   		{ colorRGB : 'rgb(0, 0, 0)'}
+   		{ colorRGB : 'rgb(1, 1, 1)'}
    	];
 	
 	this.ui = $('<div />', {
