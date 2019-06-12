@@ -1,3 +1,11 @@
+/**
+ * Tag manager
+ * @params id, userName, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, tagGroup
+ * @return none
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Apr 18 21:09:04 CDT 2018
+ */
 function Tag(id, userName, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, tagGroup) {
 	this.id = id;
 	this.userName = userName;
@@ -84,7 +92,7 @@ Tag.prototype.save = function(callback, errorCallback) {
 };
 
 /**
- * Delete tag with id - by ktcho
+ * Delete tag with id - by Kyoung Tak Cho
  */
 Tag.prototype.delete = function(callback, errorCallback) {
     $.ajax({

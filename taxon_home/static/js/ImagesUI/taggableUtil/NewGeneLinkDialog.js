@@ -1,3 +1,11 @@
+/**
+ * Dialog API for adding Gene Link
+ *
+ * @params pageBlock, organisms, siteUrl
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Mar 7 23:54:39 CDT 2018
+ */
 function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
     this.block = pageBlock;
     this.submitUrl = siteUrl + 'api/geneLinks';

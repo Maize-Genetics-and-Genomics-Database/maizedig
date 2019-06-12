@@ -1,3 +1,19 @@
+"""
+    GetAPI for SearchTags
+    @methods
+      getTagsByTagGroup()
+      getTagsByImage()
+      getTags()
+    @fields
+      fields
+      limit
+      offset
+      unlimited
+      user
+
+    Updated by Kyoung Tak Cho
+    Last Updated: May 16 12:07:03 CDT 2017
+"""
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import TagGroup, Tag, TagPoint, Picture
 from django.core.exceptions import ObjectDoesNotExist

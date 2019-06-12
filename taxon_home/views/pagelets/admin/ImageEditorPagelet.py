@@ -4,6 +4,10 @@
 
     Author: Andrew Oberlin
     Date: August 5, 2012
+
+    Modified by Kyoung Tak Cho
+    Date: November 1, 2016
+    Last Updated: Nov 14 14:46:18 CDT 2017
 '''
 
 from renderEngine.PageletBase import PageletBase

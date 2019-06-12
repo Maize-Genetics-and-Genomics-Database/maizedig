@@ -1,6 +1,12 @@
-#### -----------------------###
-#       Image Database        #
-#### -----------------------###
+'''
+    Definition of database table handlers
+    Author: Andrew Oberlin
+    Date: August 5, 2012
+
+    Modified by Kyoung Tak Cho
+    Date: November 1, 2016
+    Last Updated: January 10, 2019
+'''
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -2015,11 +2021,9 @@ class PictureDefinitionTag(models.Model):
         db_table = u'picturedefinitiontag'
     def __unicode__(self):
         return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))
-
 #
-# add models for relationship between maizedig database (picture table) and mgdb database
+# Image Notes
 #
-
 class PictureNotes(models.Model):
     picture = models.ForeignKey(Picture)
     notes = models.TextField(blank=True, null=True)
@@ -2028,6 +2032,22 @@ class PictureNotes(models.Model):
 
     class Meta:
         db_table = u'picture_notes'
+
+#
+# QTL information
+#
+class PictureQtl(models.Model):
+    picture = models.ForeignKey(Picture)
+    qtl = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(User)
+    dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
+
+    class Meta:
+        db_table = u'picture_qtl'
+
+#
+# add models for relationship between maizedig database (picture table) and mgdb database
+#
 
 class PictureMgdb(models.Model):
     pm_id = models.IntegerField(primary_key=True)

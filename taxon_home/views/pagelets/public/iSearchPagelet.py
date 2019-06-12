@@ -6,6 +6,7 @@
 
     Modified by Kyoung Tak Cho
     Date: November 15, 2016
+    Last Updated: May 9 14:06:25 CDT 2018
 '''
 from renderEngine.PageletBase import PageletBase
 #from taxon_home.models import PictureDefinitionTag

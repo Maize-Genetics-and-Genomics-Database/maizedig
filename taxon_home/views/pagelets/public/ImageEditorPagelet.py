@@ -4,6 +4,8 @@
 
     Author: Andrew Oberlin
     Date: August 5, 2012
+
+    last upaded: Feb. 8, 2019   by Kyoung Tak Cho
 '''
 from renderEngine.PageletBase import PageletBase
 from taxon_home.views.webServices.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
@@ -28,13 +30,13 @@ class ImageEditorPagelet(PageletBase):
         try:
             imageKey = request.GET.get('imageId', None)
             if (imageKey):
-                image = Picture.objects.get(pk__exact=imageKey, isPrivate=False)
-                
+                #image = Picture.objects.get(pk__exact=imageKey, isPrivate=False)
+                image = Picture.objects.get(pk__exact=imageKey)
+
                 # initialize tagging APIs
                 tagGroupAPI = TagGroupAPI(unlimited=True)
                 tagAPI = TagAPI(unlimited=True)
                 geneLinkAPI = GeneLinkAPI(unlimited=True)
-                
                 tagGroups = tagGroupAPI.getTagGroupsByImage(image, False).getObject()
                 
                 for group in tagGroups:

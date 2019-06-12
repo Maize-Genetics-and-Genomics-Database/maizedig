@@ -1,3 +1,15 @@
+"""
+    PostAPI for GeneLink
+    @methods
+      createGeneLink()
+        return metadata
+    @fields
+      fields
+      user
+
+    Updated by Kyoung Tak Cho
+    Last Updated: Nov 2 10:11:44 CDT 2017
+"""
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import Tag, GeneLink, Feature, Variation
 from django.core.exceptions import ObjectDoesNotExist
@@ -57,24 +69,14 @@ class PostAPI:
                     error += "uniquename: " + f.uniquename + ", name: " + f.name + ", organism: " + f.organism.common_name + "\n\n"
                 
                 raise Errors.NO_MATCHING_FEATURE.setCustom(error)
-        #try:
+
             if allele:
                 vID = None
-                #vID = Variation.objects.using('mgdb2').get(name__exact=allele)
-                #vID = Variation.objects.using('mgdb').get(name__exact=allele)
 
-                #vID = Variation.objects.using('mgdb2').filter(name__exact=allele)
                 vID = Variation.objects.using('mgdb').filter(name__exact=allele)
                 if not vID:
                     errorAllele = Errors.NO_MATCHING_ALLELE.setCustom(allele)
-                    print (errorAllele.getMessage())     # for test
                     raise errorAllele
-        #except (ObjectDoesNotExist, ValueError):
-        #    error = Errors.NO_MATCHING_ALLELE.setCustom(allele)
-        #    print (error.getMessage())     # for test
-        #    #metadata.setError(error)
-        #    #return metadata
-        #    raise Errors.NO_MATCHING_ALLELE.setCustom(allele)
 
             geneLink = GeneLink(tag=tag, feature=feature[0], user=self.user, allele=allele)
             geneLink.save()

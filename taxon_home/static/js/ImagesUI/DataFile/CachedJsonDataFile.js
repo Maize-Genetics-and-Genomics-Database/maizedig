@@ -1,3 +1,20 @@
+/**
+ * Build image attributes data for JSON format
+ * @params tagBoard, urlOfImge, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks
+ * @methods
+ *   getBase64Image(imgCache)
+ *   getFile()
+ * @fields
+ *   imageFile
+ *   imageFilaName
+ *   file
+ *   obj
+ *   objTag
+ *   objGeneLink
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Jun 06 20:16:06 CDT 2019
+ */
 function CachedJsonDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks) {
 	this.imageFile = null;
 	if (imageFile) {
@@ -8,19 +25,20 @@ function CachedJsonDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDa
 	}
 	
 	var file = {
-		'BioDIGImageMetadata' : {}
+		'MaizeDIGImageMetadata' : {}
 	};
 	
-	var metadata = file['BioDIGImageMetadata'];
+	var metadata = file['MaizeDIGImageMetadata'];
 	
 	if (urlOfImage) {
 		metadata['urlOfImage'] = tagBoard.getImageUrl();
 	}
 	
-	if (organisms) {
-		metadata['organisms'] = tagBoard.getOrganisms();
-	}
-	
+	//if (organisms) {
+	//	metadata['organisms'] = tagBoard.getOrganisms();
+	//}
+	metadata['organisms'] = "Zea mays";
+
 	if (uploadDateUser) {
 		metadata['uploadedBy'] = tagBoard.getUploadedBy();
 		metadata['uploadDate'] = tagBoard.getUploadDate();
@@ -29,12 +47,12 @@ function CachedJsonDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDa
 	if (tagGroups) {
 		var tagGroups = [];
 		var groups = tagBoard.getTagGroups();
-		
+
 		for (var i = 0; i < groups.length; i++) {
 			var group = groups[i];
 			var obj = {};
 			
-			obj['id'] = group.getKey();
+			obj['id'] = group.getKey;
 			obj['name'] = group.getName();
 			obj['lastModified'] = TaggableUtil.formatDate(group.getLastModified());
 			obj['dateCreated'] = TaggableUtil.formatDate(group.getDateCreated());
@@ -42,7 +60,7 @@ function CachedJsonDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDa
 			if (imageTags) {
 				var tags = group.getTags();
 				var objTags = [];
-				
+
 				for (var j = 0; j < tags.length; j++) {
 					var tag = tags[j];
 					var objTag = {};
@@ -51,14 +69,14 @@ function CachedJsonDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDa
 					objTag['color'] = tag.getColor();
 					objTag['description'] = tag.getDescription();
 					objTag['points'] = tag.getPoints();
-					
+
 					if (geneLinks) {
 						var geneLinks = tag.getGeneLinks();
 						var objGeneLinks = [];
-						
+
 						for (var k = 0; k < geneLinks.length; k++) {
 							var geneLink = geneLinks[k];
-							var objGeneLink = {}
+							var objGeneLink = {};
 							
 							objGeneLink['id'] = geneLink.getId();
 							objGeneLink['organismId'] = geneLink.getOrganismId();
@@ -82,7 +100,7 @@ function CachedJsonDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDa
 		
 		metadata['tagGroups'] = tagGroups;
 	}
-	
+
 	this.file = file;
 };
 
@@ -104,12 +122,13 @@ CachedJsonDataFile.prototype.getBase64Image = function(imgCache) {
 
 CachedJsonDataFile.prototype.getFile = function() {
 	var zip = new JSZip();
-	
 	zip.file('imageMetadata.json', JSON.stringify(this.file, undefined, 4));
-	
 	if (this.imageFile != null) {
 		zip.file(this.imageFileName, this.imageFile, { base64: true });
 	}
-	
-	return zip.generate();
+
+	zip.generateAsync({type:"blob"}).then(function (value) {
+		saveAs(value, "imageData.zip");
+	});
+	return zip;
 };

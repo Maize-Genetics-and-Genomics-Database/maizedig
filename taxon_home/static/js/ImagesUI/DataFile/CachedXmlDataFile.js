@@ -1,3 +1,20 @@
+/**
+ * Build image attributes data for JSON format
+ * @params tagBoard, urlOfImge, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks
+ * @methods
+ *   getBase64Image(imgCache)
+ *   getFile()
+ * @fields
+ *   imageFile
+ *   imageFilaName
+ *   file
+ *   obj
+ *   objTag
+ *   objGeneLink
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Jun 10 23:26:15 CDT 2019
+ */
 function CachedXmlDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks) {
 	this.imageFile = null;
 	if (imageFile) {
@@ -8,19 +25,20 @@ function CachedXmlDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDat
 	}
 	
 	var file = {
-		'BioDIGImageMetadata' : {}
+		'MaizeDIGImageMetadata' : {}
 	};
 	
-	var metadata = file['BioDIGImageMetadata'];
+	var metadata = file['MaizeDIGImageMetadata'];
 	
 	if (urlOfImage) {
 		metadata['urlOfImage'] = tagBoard.getImageUrl();
 	}
 	
-	if (organisms) {
-		metadata['organisms'] = tagBoard.getOrganisms();
-	}
-	
+	//if (organisms) {
+	//	metadata['organisms'] = tagBoard.getOrganisms();
+	//}
+	metadata['organisms'] = "Zea mays";
+
 	if (uploadDateUser) {
 		metadata['uploadedBy'] = tagBoard.getUploadedBy();
 		metadata['uploadDate'] = tagBoard.getUploadDate();
@@ -34,7 +52,7 @@ function CachedXmlDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDat
 			var group = groups[i];
 			var obj = {};
 			
-			obj['id'] = group.getKey();
+			obj['id'] = group.getKey;
 			obj['name'] = group.getName();
 			obj['lastModified'] = TaggableUtil.formatDate(group.getLastModified());
 			obj['dateCreated'] = TaggableUtil.formatDate(group.getDateCreated());
@@ -58,7 +76,7 @@ function CachedXmlDataFile(tagBoard, urlOfImage, imageFile, organisms, uploadDat
 						
 						for (var k = 0; k < geneLinks.length; k++) {
 							var geneLink = geneLinks[k];
-							var objGeneLink = {}
+							var objGeneLink = {};
 							
 							objGeneLink['id'] = geneLink.getId();
 							objGeneLink['organismId'] = geneLink.getOrganismId();
@@ -106,12 +124,13 @@ CachedXmlDataFile.prototype.getBase64Image = function(imgCache) {
 
 CachedXmlDataFile.prototype.getFile = function() {
 	var zip = new JSZip();
-	
 	zip.file('imageMetadata.xml', this.file);
-	
 	if (this.imageFile != null) {
 		zip.file(this.imageFileName, this.imageFile, { base64: true });
 	}
-	
-	return zip.generate();
+
+	zip.generateAsync({type:"blob"}).then(function (value) {
+		saveAs(value, "imageData.zip");
+	});
+	return zip;
 };

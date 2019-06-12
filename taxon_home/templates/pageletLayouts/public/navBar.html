@@ -21,7 +21,14 @@
 			form.setAttribute("action", "{{ SITE_URL }}logout_handler/");
 			document.body.appendChild(form);
 			form.submit();
-        	}
+        	};
+		function image_search(e){
+		    var query_value = $('#query').val();
+		    if (query_value == '') {
+                e.preventDefault();
+                alert('Please enter a keyword.')
+            }
+        };
 	</script>
 </head>
 <div id="banner" align="right"><img src="{{ STATIC_URL }}images/mycoplasma_banner.png" width="960px" alt="Banner" /></div>
@@ -80,7 +87,7 @@
 	<div class="login_search">
 		<form id="search"  method="get" action="{{ SITE_URL }}iSearch/">
 			<input type="text" name="query" id="query" />
-			<input type="submit" class="search_button" value="" />
+			<input type="submit" class="search_button" value="" onclick="image_search(event)" />
 			<br>
 			<input type="checkbox" name="searchImageDesc" value="true" checked/> ID
 			<input type="checkbox" name="searchImageNotes" value="true" checked/> IN

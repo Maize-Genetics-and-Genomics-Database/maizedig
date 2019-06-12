@@ -1,3 +1,10 @@
+/**
+ * Delete Gene Link Dialog
+ * @params pageBlock, organisms, siteUrl
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Nov 1 13:44:07 CDT 2017
+ */
 function DeleteGeneLinkDialog(pageBlock, organisms, siteUrl) {
     this.block = pageBlock;
     this.submitUrl = siteUrl + 'api/geneLinks';
@@ -82,9 +89,6 @@ DeleteGeneLinkDialog.prototype.onSubmit = function() {
             dataType : 'json',
             success : function(data, textStatus, jqXHR) {
                 data.feature.organismId = organismId;
-                //var geneLink = new GeneLink(geneId, data.feature);
-                //self.hide();
-                //alert(geneLink.getName() + ' has been deleted!');
             },
             error : function(jqXHR, textStatus, errorThrown) {
                 var errorMessage = $.parseJSON(jqXHR.responseText).message;

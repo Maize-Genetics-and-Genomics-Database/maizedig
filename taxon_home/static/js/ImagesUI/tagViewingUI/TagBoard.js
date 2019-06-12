@@ -1,3 +1,11 @@
+/**
+ * TagBoad: Drawing object for the Tag Board
+ * @params tagBoard, originalData, image, imageMetadata, genomeInfo, siteUrl
+ * @return none
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Tue Jun 10 15:31:27 CDT 2019
+ */
 /*
  -------------------------------------------------------------------------------------
  					Drawing object for the Tag Board (uses KineticJS)
@@ -297,7 +305,6 @@ TagBoard.prototype.boardMouseMove = function(event) {
 							'text' : 'GBrowser',
 							'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
                             'target' : '_blank',
-                            //'href' : 'https://www.maizegdb.org/gbrowse/maize_v4?q=' + this.imageMetadata.geneSymbol
                             'href' : 'https://www.maizegdb.org/gbrowse/maize_v4test?l=MaizeDIG;q=' + this.imageMetadata.geneSymbol
 						});
 
@@ -342,24 +349,11 @@ TagBoard.prototype.boardMouseMove = function(event) {
 			else {
 				info.removeClass('tag-info-old').addClass('tag-info');
 			}
-			/*
-			var shape = event.shape;
-			// positions the tag tooltip
-			var pos = this.__getPolyPos(event.shape);
-			pos[0] -= $('#taggable-tooltip').html(shape.description).width()/2;
-			pos[1] -= $(window).scrollTop() - 20;
-			$('#taggable-tooltip').css("left", pos[0] + "px").css("top", pos[1] + "px").show();*/
 		}
 		
 		this.tagInfo.find('.tag-info-old').remove();
  
 		this.layer.draw();
-		
-		// sets the selected tag for showing information
-		//var shapeId = event.shape.getId();
-		//this.selectedTag = this.tagGroups[this.currentTagGroup].getTags()[shapeId];
-		//this.defaultInfoViewCallback(tags, shapeId, id);
-        //window.alert(shapeId);
 	}
 };
 
@@ -369,14 +363,17 @@ TagBoard.prototype.__getPolyPos = function(poly) {
 };
 
 TagBoard.prototype.__convertOriginalDataToTagGroups = function(originalData) {
-	var tagGroups = {};
-	
-	for (group in originalData) {
+	//var tagGroups = {};
+	var tagGroups = [];
+
+	//for (group in originalData) {
+	for (var group = 0; group < originalData.length; group++) {
 		var newGroup = new TagGroup(originalData[group], this.imageMetadata.id, this.siteUrl);
 		var self = this;
-		tagGroups[newGroup.getId()] = newGroup;
+		//tagGroups[newGroup.getId()] = newGroup;
+		tagGroups.push(newGroup);
 	}
-	
+
 	return tagGroups;
 };
 
@@ -436,18 +433,18 @@ TagBoard.prototype.createFile = function(urlOfImage, imageFile, organisms, uploa
 		tagGroups, imageTags, geneLinks, xml, cached) {
 	if (xml) {
 		if (cached) {
-			return new CachedXmlDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
+			return new CachedXmlDataFile(this, urlOfImage, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
 		}
 		else {
-			return new FreshXmlDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
+			return new FreshXmlDataFile(this, urlOfImage, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
 		}
 	}
 	else {
 		if (cached) {
-			return new CachedJsonDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
+			return new CachedJsonDataFile(this, urlOfImage, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
 		}
 		else {
-			return new FreshJsonDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
+			return new FreshJsonDataFile(this, urlOfImage, imageFile, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
 		}
 	}
 };

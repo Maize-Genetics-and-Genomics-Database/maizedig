@@ -2,7 +2,16 @@
 <head>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js" ></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/imageUpdater/iSearchImageUpdater.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/PageBlock.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/HelpDialog.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/images.css" type="text/css" />
+    <style>
+        #helpBox {
+            font-size: 13px;
+            width: 700px;
+        }
+    </style>
 </head>
 <body>
 	<div class="results">
@@ -31,8 +40,41 @@
 			</div>
 		</div>
 	</div>
+    <div id="helpBox">
+        <div>
+            <p>
+                <b>Image Search:</b><br>
+                Image search tool provides
+                A curated image has detailed information with following five categories: image description, gene model IDs, gene symbol,
+                gene name, and image notes.
+                Any of these categories can be searched individually or together with searching category option (using check box).<br>
+                <br>
+                Categories:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp; Description (ID)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp; Image Notes (IN)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp; Gene Name (GN)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp; Gene Symbol (GS)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp; Gene ID (GI)<br>
+                <br>
+                Other options:<br>
+                Image search tool gets all data which contain keyword for each selected category option(s).
+                It does not support wildcard searching such as * and ?.
+            </p>
+        </div>
+        <div>
+            * Feedback is welcome. Please email mdig@maizegdb.org with any comment you may have.
+        </div>
+        <br />
+    </div>
 </body>
 <script type="text/javascript">
+    var contents = $('#helpBox');
+    var helpDialog = new HelpDialog(new PageBlock(), 'Image search', contents.show());
+
+    $('#helpButton').click(function() {
+        helpDialog.show();
+    });
+
 	(function($) {
 		$(document).ready(function() {
 			$('#collapse-holder-images').collapser({
@@ -73,4 +115,5 @@
 			});
 		});
 	})(jQuery);
+
 </script>

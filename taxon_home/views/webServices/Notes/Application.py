@@ -3,6 +3,7 @@
 
 	Author: Kyoung Tak Cho
 	Date: Oct. 23, 2017
+    Last Updated: Oct 24 21:48:23 CDT 2017
 '''
 from renderEngine.AjaxApplicationBase import WebServiceApplicationBase
 from renderEngine.WebServiceObject import WebServiceObject

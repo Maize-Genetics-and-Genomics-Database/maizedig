@@ -1,3 +1,15 @@
+"""
+    PostAPI for Images
+    @methods
+      createImageMetadata(image, description, altText, organisms, isKey=True)
+        return metadata
+    @fields
+      fields
+      user
+
+    Updated by Kyoung Tak Cho
+    Last Updated: May 10 12:56:10 CDT 2018
+"""
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import Picture, PictureDefinitionTag, Organism
 from renderEngine.WebServiceObject import WebServiceObject

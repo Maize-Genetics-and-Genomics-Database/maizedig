@@ -1,3 +1,15 @@
+"""
+    GetAPI for GeneLink
+    @methods
+      getGeneLink()
+        return metadata
+    @fields
+      fields
+      user
+
+    Updated by Kyoung Tak Cho
+    Last Updated: Nov 1 14:01:35 CDT 2017
+"""
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import GeneLink
 from django.core.exceptions import ObjectDoesNotExist

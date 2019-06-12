@@ -4,6 +4,10 @@
 
     Author: Andrew Oberlin
     Date: July 23, 2012
+
+    Modified by Kyoung Tak Cho
+    Date: November 21, 2016
+    Last Updated: Nov 1 12:00:32 CDT 2017
 '''
 from renderEngine.AjaxApplicationBase import WebServiceApplicationBase
 from renderEngine.WebServiceObject import WebServiceObject

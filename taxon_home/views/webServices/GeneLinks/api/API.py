@@ -1,3 +1,13 @@
+"""
+    API for GeneLink
+    @methods
+      getGeneLink()
+      createGeneLink()
+      deleteGeneLink()
+
+    Updated by Kyoung Tak Cho
+    Last Updated: Oct 30 10:22:08 CDT 2017
+"""
 import taxon_home.views.util.ErrorConstants as Errors
 import taxon_home.views.util.Util as Util
 from get import GetAPI
@@ -8,10 +18,7 @@ import logging
 '''
     Get an instance of a logger
 '''
-#logger = logging.getLogger('django')
 logger = logging.getLogger(__name__)
-#logger = logging.getLogger('BioDIG.debug')
-#logger = logging.getLogger('BioDIG')
 
 '''
     Gets the information for a tag given its key

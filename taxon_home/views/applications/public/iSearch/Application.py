@@ -1,5 +1,5 @@
 '''
-    Application for the Search Page of the DOME
+    Application for the Image Search
     URL: / or /index.html
 
     Author: Andrew Oberlin
@@ -7,26 +7,20 @@
 
     Modified by Kyoung Tak Cho
     Date: November 1, 2016
+    Last Updated: June 4, 2019
 '''
 from renderEngine.ApplicationBase import ApplicationBase
-from taxon_home.views.pagelets.public.ImageSearchPagelet import ImageSearchPagelet
 from taxon_home.views.pagelets.public.iSearchPagelet import iSearchPagelet
-from taxon_home.views.pagelets.public.GBrowseSearchPagelet import GBrowseSearchPagelet
 from taxon_home.views.pagelets.public.NavBarPagelet import NavBarPagelet
 from taxon_home.views.pagelets.public.FooterPagelet import FooterPagelet
-from taxon_home.models import Picture, GeneLink, Tag, Feature
+from taxon_home.models import Picture
 from taxon_home.models import PictureNotes, PictureMgdb, PictureGeneID
-from taxon_home.models import Locus
 from taxon_home.models import iSearchHistory
-#from taxon_home.models import Organism
-#from taxon_home.models import GeneLink
-#from taxon_home.models import Feature
-#from django.db.models import Q
 from taxon_home.views.util import Util
 
 class Application(ApplicationBase):
     def doProcessRender(self, request):
-        self.addPageletBinding('navBar', NavBarPagelet())
+        self.addPageletBinding('navBar', NavBarPagelet(addHelpButton=True))
 
         numSearch = 0
         searchCats = list('00000')
@@ -37,7 +31,8 @@ class Application(ApplicationBase):
         searchGeneID = str(request.GET.get('searchGeneID', '')).lower() == "true"
         query = Util.getDelimitedList(request.GET,'query')
         if not query:
-            query = ''
+            query = list()
+            query.append('')
 
         #candidates = [['Image Description'], ['Image Notes'], ['Gene Name'], ['Gene Symbol'], ['Gene ID']]
         candidates = [['0'], ['1'], ['2'], ['3'], ['4']]
@@ -95,7 +90,6 @@ class Application(ApplicationBase):
                     candidates[4].append(pictureID)
 
         # Store searching keyword
-        #if request.user != None or request.user != 'AnonymousUser':
         if str(request.user) != 'AnonymousUser':
             catSettings = ''.join(searchCats)
             newKeyword, created = iSearchHistory.objects.get_or_create(keyword=query[0], user=request.user)
@@ -121,7 +115,7 @@ class Application(ApplicationBase):
         self.addPageletBinding('center-' + str(numSearch), iSearchPagelet().setSearchParams(search))
 
         args = {
-            'title' : 'iSearch',
+            'title' : 'Image search',
             'numPagelets' : numSearch
         }
         self.setApplicationLayout('public/iSearch.html', args)

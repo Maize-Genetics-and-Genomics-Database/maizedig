@@ -44,7 +44,7 @@
 <div class="center_container" align="center">
 	<form id="search"  method="get" action="{{ SITE_URL }}iSearch/">
 		<input type="text" name="query" id="query" size="65" />
-		<input type="submit" class="search_button" value="" />
+		<input type="submit" class="search_button" value="" onclick="image_search(event)" />
         <br>
 		<input type="checkbox" name="searchImageDesc" value="true" checked/> Image Description
 		<input type="checkbox" name="searchImageNotes" value="true" checked/> Image Notes
@@ -97,14 +97,43 @@
 <div id="helpBox">
 	<div>
 		<p>
-			MaizeDIG – the Maize Database of Images and Genomes, a genotypic-phenotypic database, for maize based on BioDIG.
+			<b>MaizeDIG</b> – the Maize Database of Images and Genomes, a genotypic-phenotypic database, for maize based on BioDIG.
 			MaizeDIG and tool set have been enhanced to handle multiple reference genomes and has been seamlessly integrated with the MaizeGDB Genome Browser to make custom tracks showing mutant phenotypes within their genomic context.
 			It allows for custom tagging of images to highlight regions related to the phenotypes.
 			This is accomplished through an interface allowing users to create links from images to genomic coordinates and to curate and search images by gene model ID, gene symbol, and gene name.
 		</p>
 	</div>
 	<div>
-		Feedback is welcome. Please email [email_address_for_feedback] with any comment you man have.
+		<p>
+			<b>Image Search:</b><br>
+			Image search tool provides
+			A curated image has detailed information with following five categories: image description, gene model IDs, gene symbol,
+			gene name, and image notes.
+			Any of these categories can be searched individually or together with searching category option (using check box).<br>
+			<br>
+			Categories:<br>
+			&nbsp;&nbsp;&nbsp;&nbsp; Description (ID)<br>
+			&nbsp;&nbsp;&nbsp;&nbsp; Image Notes (IN)<br>
+			&nbsp;&nbsp;&nbsp;&nbsp; Gene Name (GN)<br>
+			&nbsp;&nbsp;&nbsp;&nbsp; Gene Symbol (GS)<br>
+			&nbsp;&nbsp;&nbsp;&nbsp; Gene ID (GI)<br>
+			<br>
+			Other options:<br>
+			Image search tool gets all data which contain keyword for each selected category option(s).
+			It does not support wildcard searching such as * and ?.
+		</p>
+	</div>
+    <div>
+        <p>
+			<b>Create a Gene Link at Workbench</b><br>
+			<video width="320" height="240" controls>
+				<source src="{{ STATIC_URL }}video/instructions-workbench.mp4" type="video/mp4">
+				<p>Your browser does not support the video tag.</p>
+			</video>
+		</p>
+    </div>
+	<div>
+		Feedback is welcome. Please email mdig@maizegdb.org with any comment you may have.
 	</div>
 	<br />
     <!--
@@ -183,4 +212,13 @@
     $('#helpButton').click(function() {
     	helpDialog.show();
     });
+
+    // image search
+	function image_search(e) {
+        var query_value = $('#query').val();
+        if (query_value == '') {
+            e.preventDefault();
+            alert('Please enter a keyword.')
+        }
+	};
 </script>

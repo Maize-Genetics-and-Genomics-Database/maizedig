@@ -3,6 +3,10 @@
     
     Author: Andrew Oberlin
     Date: July 23, 2012
+
+    Modified by Kyoung Tak Cho
+    Date: November 15, 2016
+    Last Updated: Jan 1 14:23:20 CDT 2018
 '''
 from renderEngine.PageletBase import PageletBase
 from taxon_home.models import Picture, RecentlyViewedPicture, Tag, TagGroup, GeneLink

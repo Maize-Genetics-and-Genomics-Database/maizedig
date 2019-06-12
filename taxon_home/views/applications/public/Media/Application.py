@@ -4,6 +4,9 @@
 
     Author: Andrew Oberlin
     Date: July 23, 2012
+
+    Updated by Kyoung Tak Cho
+    Last Updated: Jul 12 02:02:52 CDT 2017
 '''
 from taxon_home.models import Picture
 from django.conf import settings

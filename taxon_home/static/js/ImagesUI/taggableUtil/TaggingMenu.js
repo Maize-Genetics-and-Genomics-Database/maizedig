@@ -1,3 +1,11 @@
+/**
+ * Tagging Menu handler
+ *
+ * @params id, imageUrl
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Jun 13 11:52:09 CDT 2018
+ */
 function TaggingMenu(id, imagesUrl) {
 	this.colors = [
       	{ colorRGB : 'rgb(255, 0, 0)'},

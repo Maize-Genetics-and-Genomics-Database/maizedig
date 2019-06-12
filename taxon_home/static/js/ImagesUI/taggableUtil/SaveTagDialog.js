@@ -1,3 +1,11 @@
+/**
+ * Dialog API for saving Tag
+ *
+ * @params pageBlock, organisms, siteUrl
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Mar 7 23:57:33 CDT 2018
+ */
 function SaveTagDialog(pageBlock) {
 	this.dialog = $('<div />', {
 		'class' : 'tagging-dialog',

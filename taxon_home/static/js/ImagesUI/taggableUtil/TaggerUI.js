@@ -2,7 +2,10 @@
 	Creates a tagging application that links to the database using ajax
 	
 	Dependencies:
-		1. All of the dependencies taggable.js 
+		1. All of the dependencies taggable.js
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Jun 11 00:51:13 CDT 2019
 **/
 function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, imagesUrl, siteUrl, alreadyLoaded, callback) {
 	this.image = image;
@@ -70,12 +73,14 @@ TaggerUI.prototype.createStructure = function() {
 	var changeCurrentTagGroupsDialog = new ChangeCurrentTagGroupsDialog(pageBlock);
 	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.imagesUrl);
 	var editNotesDialog = new EditNotesDialog(pageBlock, this.siteUrl);
-	
+    var editQtlsDialog = new EditQtlsDialog(pageBlock, this.siteUrl);
+
 	var dialogs = {
 		'saveTags' : saveTagDialog,
 		'newTagGroup' : newTagGroupDialog,
 		'newGeneLink' : newGeneLinkDialog,
 		'editNotes' : editNotesDialog,
+        'editQtls' : editQtlsDialog,
 		'changeCurrentGroups' : changeCurrentTagGroupsDialog,
 		'downloadImageData' : downloadImageDataDialog
 	};
@@ -148,7 +153,11 @@ TaggerUI.prototype.createStructure = function() {
 	this.menu.getSection('tools').getMenuItem('zoomOut').onClick(function() {
 		self.image.zoomable("zoom", -1);
 	});
-	
+
+	this.menu.getSection('tools').getMenuItem('download').onClick(function() {
+		downloadImageDataDialog.show();
+	});
+
 	this.menu.getSection('geneLinks').getMenuItem('addNewLink').onClick(function() {
 		newGeneLinkDialog.show(self.drawingAPI.getTagBoard());
 	});
@@ -158,9 +167,13 @@ TaggerUI.prototype.createStructure = function() {
 		deleteGeneLinkDialog.show(self.drawingAPI.getTagBoard());
 	});
 
-	// Add/Edit Image Notes
-	this.menu.getSection('imageNotes').getMenuItem('editNotes').onClick(function() {
-		editNotesDialog.show(self.imageMetadata);
+    // Add/Edit Image Notes
+    this.menu.getSection('imageNotesQTLs').getMenuItem('editNotes').onClick(function() {
+        editNotesDialog.show(self.imageMetadata);
+    });
+	// Add/Edit QTLs
+	this.menu.getSection('imageNotesQTLs').getMenuItem('editQtls').onClick(function() {
+		editQtlsDialog.show(self.imageMetadata);
 	});
 	
 	this.taggingMenu.onCancelClick(function() {
@@ -255,6 +268,7 @@ TaggerUI.prototype.getToolbar = function(id) {
 	
 	// create tools menu section
 	var tools = new MenuSection('Tools', this.imagesUrl + 'tools.png');
+	tools.addMenuItem('download', 'Download Image Data', 'ui-icon ui-icon-disk', false);
 	tools.addMenuItem('zoomIn', 'Zoom In', 'ui-icon ui-icon-zoomin', false);
 	tools.addMenuItem('zoomOut', 'Zoom Out', 'ui-icon ui-icon-zoomout', false);
 	tools.addMenuItem('toggleTags', 'Toggle All Tag Visibility', this.imagesUrl + 'eye.png', true);
@@ -278,10 +292,11 @@ TaggerUI.prototype.getToolbar = function(id) {
 	geneLinks.addMenuItem('deleteLink', 'Delete Link From Tag', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('geneLinks', geneLinks);
 
-	// create image note menu section
-	var imageNotes = new MenuSection('Notes', this.imagesUrl + 'polygonButtonIcon.png');
-	imageNotes.addMenuItem('editNotes', 'Add/Edit Image Notes', 'ui-icon ui-icon-plusthick', false);
-	menu.addNewSection('imageNotes', imageNotes);
+	// create image note and QTL menu section
+    var imageNotesQTLs = new MenuSection('Notes/QTLs', this.imagesUrl + 'polygonButtonIcon.png');
+	imageNotesQTLs.addMenuItem('editNotes', 'Add/Edit Image Notes', 'ui-icon ui-icon-plusthick', false);
+    imageNotesQTLs.addMenuItem('editQtls', 'Add/Edit QTLs', 'ui-icon ui-icon-plusthick', false);
+	menu.addNewSection('imageNotesQTLs', imageNotesQTLs);
 
 	return menu;
 };
@@ -347,9 +362,25 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	var speciesInfo = $('<table cellspacing="0" />', {
 		
 	});
-	
+
+    // Image ID
+    var imageIDRow = $('<tr />', {
+        'class' : 'odd'
+	});
+    var imageIDLabel = $('<td />', {
+        'text' : 'Image ID:'
+    });
+    var imageIDContext = $('<td />', {
+        'text' : this.imageMetadata.id
+    });
+    imageIDRow.append(imageIDLabel);
+    imageIDRow.append(imageIDContext);
+    speciesInfo.append(imageIDRow);
+
 	// description of image
-	var descriptionRow = $('<tr />');
+	var descriptionRow = $('<tr />', {
+        'class' : 'even'
+	});
 	var descriptionLabel = $('<td />', {
 		'text' : 'Description:'
 	});
@@ -364,7 +395,7 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     //alert(this.imageMetadata.geneIDs.length);
 	if (this.imageMetadata.geneIDs.length == 0) {
         var geneIDRow = $('<tr />', {
-            'class': 'even'
+            'class': 'odd'
         });
         var geneIDLabel = $('<td />', {
             'text': 'Gene ID:'
@@ -378,7 +409,7 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	}
     for (var i = 0; i < this.imageMetadata.geneIDs.length; i++) {
         var geneIDRow = $('<tr />', {
-            'class': 'even'
+            'class': 'odd'
         });
         if (i == 0) {
             var geneIDLabel = $('<td />', {
@@ -429,7 +460,9 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     }
 
 	// Gene Symbol
-	var geneSymbolRow = $('<tr />');
+	var geneSymbolRow = $('<tr />', {
+        'class' : 'even'
+	});
 	var geneSymbolLabel = $('<td />', {
 		'text' : 'Gene Symbol:'
 	});
@@ -442,7 +475,7 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 
     // Gene Name
     var geneNameRow = $('<tr />', {
-        'class' : 'even'
+        'class' : 'odd'
 	});
     var geneNameLabel = $('<td />', {
         'text' : 'Gene Name:'
@@ -455,7 +488,9 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     speciesInfo.append(geneNameRow);
 
 	// upload date data
-	var uploadDateRow = $('<tr />');
+	var uploadDateRow = $('<tr />', {
+        'class' : 'even'
+	});
 	var uploadDateLabel = $('<td />', {
 		'text' : 'Uploaded on:'
 	});
@@ -468,7 +503,7 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 
 	// uploader data
 	var uploaderRow = $('<tr />', {
-        'class' : 'even'
+        'class' : 'odd'
 	});
 	var uploaderLabel = $('<td />', {
 		'text' : 'Uploaded by:'
@@ -480,21 +515,23 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	uploaderRow.append(uploader);
 	speciesInfo.append(uploaderRow);
 
-	// Image ID
-	var imageIDRow = $('<tr />');
-    var imageIDLabel = $('<td />', {
-        'text' : 'Image ID:'
+    // QTL information
+    var qtlRow = $('<tr />', {
+        'class' : 'even'
     });
-    var imageIDContext = $('<td />', {
-        'text' : this.imageMetadata.id
+    var qtlLabel = $('<td />', {
+        'text' : 'QTL:'
     });
-    imageIDRow.append(imageIDLabel);
-    imageIDRow.append(imageIDContext);
-    speciesInfo.append(imageIDRow);
+    var qtl = $('<td />', {
+        'text' : this.imageMetadata.qtl
+    });
+    qtlRow.append(qtlLabel);
+    qtlRow.append(qtl);
+    speciesInfo.append(qtlRow);
 
 	// Image notes
     var notesRow = $('<tr />', {
-        'class' : 'even'
+        'class' : 'odd'
     });
     var notesLabel = $('<td />', {
         'text' : 'Notes:'

@@ -1,9 +1,14 @@
 /**
-	Creates a tagging application that links to the database using ajax
-	
-	Dependencies:
-		1. All of the dependencies taggable.js 
-**/
+ * Creates a tagging application that links to the database using ajax
+ *
+ * Dependencies:
+ *   1. All of the dependencies taggable.js
+ *
+ * @params image, parent, originalData, imageMetadata, genomicInfo, imagesUrl, siteUrl, alreadyLoaded, callback
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Feb 6 10:58:04 CDT 2019
+ */
 function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, imagesUrl, siteUrl, alreadyLoaded, callback) {
 	this.image = image;
 	this.parent = parent;
@@ -204,52 +209,119 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	var speciesInfo = $('<table cellspacing="0" />', {
 		
 	});
-	
+
+    // Image ID
+    var imageIDRow = $('<tr />', {
+        'class' : 'odd'
+    });
+    var imageIDLabel = $('<td />', {
+        'text' : 'Image ID:'
+    });
+    var imageIDContext = $('<td />', {
+        'text' : this.imageMetadata.id
+    });
+    imageIDRow.append(imageIDLabel);
+    imageIDRow.append(imageIDContext);
+    speciesInfo.append(imageIDRow);
+
 	// description of image
-	var descriptionRow = $('<tr />');
+	var descriptionRow = $('<tr />', {
+        'class' : 'even'
+    });
 	var descriptionLabel = $('<td />', {
 		'text' : 'Description:'
 	});
 	var description = $('<td />', {
 		'text' : this.imageMetadata.description
 	});
-	
 	descriptionRow.append(descriptionLabel);
 	descriptionRow.append(description);
-	
 	speciesInfo.append(descriptionRow);
 
     // Gene ID
-    var geneIDRow = $('<tr />', {
-    	'class' : 'even'
-	});
-    var geneIDLabel = $('<td />', {
-        'text' : 'Gene ID:'
-    });
-    var geneID = $('<td />', {
-        'text' : this.imageMetadata.geneID
-    });
+    if (this.imageMetadata.geneIDs.length == 0) {
+        var geneIDRow = $('<tr />', {
+            'class': 'odd'
+        });
+        var geneIDLabel = $('<td />', {
+            'text': 'Gene ID:'
+        });
+        var geneID = $('<td />', {
+            'text': 'null'
+        });
+        geneIDRow.append(geneIDLabel);
+        geneIDRow.append(geneID);
+        speciesInfo.append(geneIDRow);
+    }
+    for (var i = 0; i < this.imageMetadata.geneIDs.length; i++) {
+        var geneIDRow = $('<tr />', {
+            'class': 'odd'
+        });
+        if (i == 0) {
+            var geneIDLabel = $('<td />', {
+                'text': 'Gene ID:'
+            });
+        }
+        else {
+            var geneIDLabel = $('<td />', {
+                'text': ' '
+            });
+        }
 
-    geneIDRow.append(geneIDLabel);
-    geneIDRow.append(geneID);
-    speciesInfo.append(geneIDRow);
+        // Set version string (short form)
+        var versionStr =  this.imageMetadata.geneIDs[i].version;
+        var versionAssm = '';
+        var genomeAssmURL = "";
+        switch (versionStr.toLowerCase()) {
+            case "v3":
+            case "v4":
+                //case "b73 refgen_v4":
+                versionAssm = "";
+                genomeAssmURL = "https://www.maizegdb.org/assembly";
+                break;
+            default:
+                versionAssm = versionStr;
+                genomeAssmURL = "https://www.maizegdb.org/genome/genome_assembly/";
+        }
+
+        var geneIDCell = $('<td />');
+        var geneIDGeneModelPage = $('<a />', {
+            'text' : this.imageMetadata.geneIDs[i].geneID,
+            'style' : 'margin-left: 20px; margin-right: 20px; font-size: 12px',
+            'target' : '_blank',
+            'href' : 'https://www.maizegdb.org/gene_center/gene/' + this.imageMetadata.geneIDs[i].geneID
+        });
+
+        var geneIDAssemblyPage = $('<a />', {
+            'text' : versionStr,
+            'style' : 'font-size: 12px',
+            'target' : '_blank',
+            'href' : genomeAssmURL + versionAssm
+        });
+        geneIDCell.append(geneIDGeneModelPage);
+        geneIDCell.append(geneIDAssemblyPage);
+        geneIDRow.append(geneIDLabel);
+        geneIDRow.append(geneIDCell);
+        speciesInfo.append(geneIDRow);
+    }
 
 	// Gene Symbol
-	var geneSymbolRow = $('<tr />');
+	var geneSymbolRow = $('<tr />', {
+    	'class' : 'even'
+	});
 	var geneSymbolLabel = $('<td />', {
 		'text' : 'Gene Symbol:'
 	});
 	var geneSymbol = $('<td />', {
 		'text' : this.imageMetadata.geneSymbol
 	});
-
     geneSymbolRow.append(geneSymbolLabel);
     geneSymbolRow.append(geneSymbol);
     speciesInfo.append(geneSymbolRow);
 
     // Gene Name
     var geneNameRow = $('<tr />', {
-        'class' : 'even'
+        'class' : 'odd'
 	});
     var geneNameLabel = $('<td />', {
         'text' : 'Gene Name:'
@@ -257,23 +329,36 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
     var geneName = $('<td />', {
         'text' : this.imageMetadata.geneName
     });
-
     geneNameRow.append(geneNameLabel);
     geneNameRow.append(geneName);
     speciesInfo.append(geneNameRow);
 
+    // QTL information
+    var qtlRow = $('<tr />', {
+        'class' : 'even'
+    });
+    var qtlLabel = $('<td />', {
+        'text' : 'QTL:'
+    });
+    var qtl = $('<td />', {
+        'text' : this.imageMetadata.qtl
+    });
+    qtlRow.append(qtlLabel);
+    qtlRow.append(qtl);
+    speciesInfo.append(qtlRow);
+
 	// upload date data
-	var uploadDateRow = $('<tr />');
+	var uploadDateRow = $('<tr />', {
+        'class' : 'odd'
+	});
 	var uploadDateLabel = $('<td />', {
 		'text' : 'Uploaded on:'
 	});
 	var uploadDate = $('<td />', {
 		'text' : this.imageMetadata.uploadDate
 	});
-	
 	uploadDateRow.append(uploadDateLabel);
 	uploadDateRow.append(uploadDate);
-	
 	speciesInfo.append(uploadDateRow);
 	
 	// uploader data
@@ -286,10 +371,9 @@ TaggerUI.prototype.__renderSpeciesInfo = function() {
 	var uploader = $('<td />', {
 		'text' : this.imageMetadata.uploadedBy
 	});
-	
 	uploaderRow.append(uploaderLabel);
 	uploaderRow.append(uploader);
-	
 	speciesInfo.append(uploaderRow);
+
 	return speciesInfo;
 };

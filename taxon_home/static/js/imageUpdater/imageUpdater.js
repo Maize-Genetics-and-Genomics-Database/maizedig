@@ -9,6 +9,9 @@
 		Dependencies:
 			jQuery 1.7.2 or higher
 			jQuery UI 1.8.18 or higher
+
+	 	Updated by Kyoung Tak Cho
+	 	Last Updated: Nov 29 08:51:19 CDT 2017
 	**/
 	var private_methods = {
 		/**

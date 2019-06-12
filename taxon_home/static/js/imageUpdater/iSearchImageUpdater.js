@@ -4,11 +4,14 @@
 		Author: Andrew Oberlin
 		Date: August 22, 2012
 		
-		Description: Updates the Images 
+		Description: Updates the Images
 		
 		Dependencies:
 			jQuery 1.7.2 or higher
 			jQuery UI 1.8.18 or higher
+
+	 	Updated by Kyoung Tak Cho
+	 	Last Updated: Jan 12 20:47:56 CDT 2019
 	**/
 	var private_methods = {
 		/**

@@ -1,3 +1,11 @@
+/**
+ * Dialog API for editing image notes
+ *
+ * @params pageBlock, siteUrl
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Jan 13 16:10:03 CDT 2018
+ */
 function EditNotesDialog(pageBlock, siteUrl) {
     this.block = pageBlock;
     this.submitUrl = siteUrl + 'api/notes';

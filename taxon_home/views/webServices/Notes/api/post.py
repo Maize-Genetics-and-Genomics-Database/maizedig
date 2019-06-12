@@ -1,3 +1,11 @@
+'''
+	PostAPI for handling Image Notes data
+
+	Author: Kyoung Tak Cho
+	Date: Oct. 23, 2017
+    Last Updated: Jan 10 12:17:20 CDT 2019
+'''
+
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import Picture, PictureNotes
 from django.core.exceptions import ObjectDoesNotExist

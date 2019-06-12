@@ -1,3 +1,20 @@
+"""
+    GetAPI for SearchGeneLinks
+    @methods
+      getGeneLinksByTag()
+      getGeneLinksByTagGroup()
+      getGeneLinksByImage()
+      getGeneLinks()
+    @fields
+      fields
+      limit
+      offset
+      unlimited
+      user
+
+    Updated by Kyoung Tak Cho
+    Last Updated: Nov 1 14:48:24 CDT 2017
+"""
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import GeneLink, Tag, TagGroup, Picture
 from django.core.exceptions import ObjectDoesNotExist
@@ -177,7 +194,3 @@ class GetAPI:
                 )
             
         return metadata
-        
-        
-        
-        

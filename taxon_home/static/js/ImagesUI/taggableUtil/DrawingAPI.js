@@ -1,10 +1,10 @@
 /**
  * Creates an API for drawing on the drawing board and then saving the tag onto
  * 
- * 
- * @param drawingBoard
- * @param tagBoard
- * @return
+ * @params drawingBoard, tagBoard, dialogs, siteUrl, originalData, image, imageMetadata, genomicInfo
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Apr 18 13:51:46 CDT 2018
  */
 function DrawingAPI(drawingBoard, tagBoard, dialogs, siteUrl, originalData, image, imageMetadata, genomicInfo) {
 	this.tagBoard = new TagBoard(tagBoard, originalData, image, imageMetadata, genomicInfo, siteUrl);

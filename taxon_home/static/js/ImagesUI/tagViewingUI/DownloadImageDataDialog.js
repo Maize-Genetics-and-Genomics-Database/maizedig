@@ -1,3 +1,12 @@
+/**
+ * Download Image Attributes Data Dialog
+ * @params pageBlock, image, imageUrl
+ * @return none
+ *
+ * Updated by Kyoung Tak Cho
+ * Updated date: Tue Jun 11 00:50:30 CDT 2019
+ */
+
 function DownloadImageDataDialog(pageBlock, image, imagesUrl) {
 	this.block = pageBlock;
 	this.image = image;
@@ -31,7 +40,7 @@ function DownloadImageDataDialog(pageBlock, image, imagesUrl) {
 	this.includedDataContent = this.createIncludedDataContent();
 	this.fileTypeContent = this.createFileTypeContent();
 	
-	this.contents.append(this.dataStoreContent);
+	//this.contents.append(this.dataStoreContent);
 	this.contents.append(this.includedDataContent);
 	this.contents.append(this.fileTypeContent);
 	
@@ -41,15 +50,15 @@ function DownloadImageDataDialog(pageBlock, image, imagesUrl) {
 	
 	this.finalizeBody = $('<div />');
 	
-	this.submitButton = $('<span />', {
-		'class' : 'tagging-menu-button',
-		'style' : 'display: inline-block',
-		'text': 'Download'
+	this.submitButton = $('<button />', {
+		'class' : 'tagging-button',
+		'style' : 'margin-left: 10px',
+		'text' : 'Download'
 	});
 	
 	this.cancelButton = $('<button />', {
 		'class' : 'tagging-button',
-		'text': 'Cancel',
+		'text' : 'Cancel',
 		'style' : 'margin-left: 10px'
 	});
 	
@@ -63,15 +72,16 @@ function DownloadImageDataDialog(pageBlock, image, imagesUrl) {
 	
 	this.dialog.append(this.title);
 	this.dialog.append(this.contents);
-	this.dialog.append(this.finalizeUI)
+	this.dialog.append(this.finalizeUI);
 	
 	var self = this;
-	
+
+	this.submitButton.on('click', Util.scopeCallback(this, this.onSubmit));
 	this.cancelButton.on('click', Util.scopeCallback(this, this.onCancel));
 	this.closeButton.on('click', Util.scopeCallback(this, this.onCancel));
 	
 	$('body').append(this.dialog);
-	this.downloadified = false;
+	this.downloadified = true;
 };
 
 DownloadImageDataDialog.prototype.setTagBoard = function(tagBoard) {
@@ -93,17 +103,16 @@ DownloadImageDataDialog.prototype.onSubmit = function() {
 		var tagGroups = includedData.hasOwnProperty('tagGroups');
 		var imageTags = includedData.hasOwnProperty('imageTags');
 		var geneLinks = includedData.hasOwnProperty('geneLinks');
-		var organisms = includedData.hasOwnProperty('organisms');
+		var organisms = 'Zea mays';
 		var file = this.tagBoard.createFile(
 			urlOfImage, imageFile, organisms, uploadDateUser, tagGroups, imageTags, 
 			geneLinks, fileType == "xml", dataStore == "cached"
 		);
-		
-		return file.getFile();
+
+		file.getFile();
 	}
-	else {
-		return '';
-	}
+
+	this.hide();
 };
 
 DownloadImageDataDialog.prototype.onCancel = function() {
@@ -132,7 +141,7 @@ DownloadImageDataDialog.prototype.show = function() {
 			    return self.onSubmit();
 			},
 			onComplete: function(){ 
-			    alert('Your File Has Been Saved!'); 
+			    alert('Your file has been saved!');
 			},
 			onError: function(){ 
 			    alert('Nothing to save. Please select some options in the dialog provided.'); 
@@ -341,7 +350,7 @@ DownloadImageDataDialog.prototype.createIncludedDataContent = function() {
 		'text' : 'Associated Organisms'
 	}));
 	
-	includedDataRowFour.append(organisms);
+	//includedDataRowFour.append(organisms);	// removed: we consider maize only.
 	
 	tagGroups.children('input').click(function() {   
 	    if (!this.checked) {

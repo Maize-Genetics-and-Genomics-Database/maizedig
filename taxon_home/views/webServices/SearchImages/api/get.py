@@ -1,3 +1,19 @@
+"""
+    GetAPI for SearchImages
+    @methods
+      getImageMetadataByOrganism()
+      getImageMetadata()
+      getImageMetadataForiSearch()
+    @fields
+      fields
+      limit
+      offset
+      unlimited
+      user
+
+    Updated by Kyoung Tak Cho
+    Last Updated: Jan 14 20:30:56 CDT 2018
+"""
 from taxon_home.models import Picture, PictureDefinitionTag
 from taxon_home.models import PictureNotes, PictureMgdb, PictureGeneID
 from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
@@ -93,17 +109,14 @@ class GetAPI:
         else:
             if self.unlimited:
                 allowedImages = Picture.objects.filter(isPrivate=False)[self.offset:]
-                #allowedImages = (Picture.objects.filter(isPrivate=False) | Picture.objects.filter(isPrivate=True))[self.offset:]
             else:
                 allowedImages = Picture.objects.filter(isPrivate=False)[self.offset:self.offset+self.limit]
-                #allowedImages = (Picture.objects.filter(isPrivate=False) | Picture.objects.filter(isPrivate=True))[self.offset:self.offset+self.limit]
-        
+
         imageMetadataAPI = ImageMetadataAPI(self.user, self.fields)
         
         for image in allowedImages:
             metadata.put(imageMetadataAPI.getImageMetadata(image, False).getObject())
-            #print image
-        
+
         return metadata
 
     '''
