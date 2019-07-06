@@ -45,8 +45,6 @@ The summary of set up as follows and we discuss more details in following sub se
       - Chado
       - SQLite
   4. Dependencies
-      - BioPerl
-      - Pip
       - Sorl-thumnail
       - BioPython
       - GFFParser
@@ -122,17 +120,82 @@ For more information about FirewallD, please see the article,
 [How to set up a Firewall using FirewallD on CentOS 7](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7).
 
 
-### Installation of Python
+### Installation of Python and Python-devel
 
 If Python is not installed in your system, please see followings:
 
+> $ sudo yum install python\
+> $ sudo yum install python-devel
+
+
 ### Django Installation
 
+BioDIG was developed based on Django 1.3.7 and we use same version of Django for MaizeDIG.
+We can install Django with **pip** as follows:
 
-### Database set up
+> $ sudo pip install Django==1.3.7
+
+and then we can verify the installation as belows:
+
+> $ **python**\
+> Python 2.7.5 (default, Aug 18 2016, 15:58:25)\
+> [GCC 4.8.5 20150623 (Red Hat 4.8.5-4)] on linux2\
+> Type "help", "copyright", "credits" or "license" for more information.\
+> *>>>* **import django**\
+> *>>>* **print(django.get_version())**\
+> **1.3.7**
+
+If you see the version of Django as above, Django framework is successfully installed on your system.
+
+#### Start Django project for MaizeDIG
+
+The first thing to do use Django
+Now, we need to start MaizeDIG project.
+To start Django project, we can use *'django-admin.py'* as below:
+
+> $ cd /var/www\
+> $ sudo django-admin.py startproject MaizeDIG
+
+Then, MaizeDIG project will be created in *'/var/www/MaizeDIG'* with configuration files.
+It will be cloned git repository into the *'/var/www/MaizeDIG'*. 
+We will discuss details about this in 'Deployment Instruction' section.
+
+### Installation of PostgreSQL
+
+
 
 
 ### Other Dependancies
+
+#### psycopg2
+
+> $ sudo pip install psycopg2==2.5
+
+#### pillow
+
+> $ sudo pip install pillow
+
+
+#### sorl-thumbnail
+
+> $ sudo pip install sorl-thumbnail
+
+#### BioPython
+
+> $ sudo yum install python-biopython
+
+#### GFFParser
+
+> $ sudo pip install bcbio-gff
+
+Verify the installation of GFFParser:
+> $ **python**\
+> Python 2.7.5 (default, Aug 18 2016, 15:58:25)\
+> [GCC 4.8.5 20150623 (Red Hat 4.8.5-4)] on linux2\
+> Type "help", "copyright", "credits" or "license" for more information.\
+> *>>>* **from BCBio.GFF  import GFFExaminer**\
+> *>>>* **from BCBio import GFF**\
+
 
 
 
@@ -143,7 +206,21 @@ If Python is not installed in your system, please see followings:
 3. 
 
 
-## Validation of set up
+## Verify MaizeDIG set up
+
+
+## FAQ
+
+* Public mode and curator (admin) mode
+* curator login (Administration)
+* Create Gene Links
+    - Add Tag Group
+    - Add Tag(s)
+    - Create a link between Tag and Gene model
+* Image Search
+* GBrowse
+
+
 
 ## Contribution guidelines ###
 
