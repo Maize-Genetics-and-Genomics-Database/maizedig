@@ -1,4 +1,11 @@
 
+#### Directory & File structure
+
+```
+apache/
+└── django.wsgi
+```  
+
 #### WSGI set up
 
 It should be added `WSGIScriptAlias` into the apache configuration (/etc/httpd/conf/httpd.conf). 
