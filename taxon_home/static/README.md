@@ -1,7 +1,7 @@
 
 #### Directory & File structure
 ```
-static/
+taxon_home/static/
 ├── css/                        # Style sheets for HTML UI design
 ├── development-bundle/         # JQuery 1.8.14
 ├── images/                     # UI images
