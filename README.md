@@ -43,7 +43,6 @@ The summary of set up as follows and we discuss more details in following sub se
   3. Database set up
       - Install/Configuration PostgreSQL
       - Chado
-      - SQLite
   4. Dependencies
       - Sorl-thumnail
       - BioPython
@@ -364,65 +363,198 @@ You can follow steps belows for finishing up of MaizeDIG set up.
 1. Clone git repository into **'/var/www/MaizeDIG/'**
 2. Set proper ownership under **'/var/www/MaizeDIG/'**
 
-        $ sudo chown mdig:mdig -R /var/www
+       $ sudo chown mdig:mdig -R /var/www
    
 3. Edit 'settings.py' for your system environment such as database URL or IP address, 
 user login credentials, and so on.
 
 4. Create admin user account
 
-        $ cd /var/www/MaizeDIG/
-        $ python manager.py createsuperuser --username=mdig
-        E-mail address: totaks@gmail.com
-        Password: ********
-        Password (again): ********
-        Superuser created successfully.
+       $ cd /var/www/MaizeDIG/
+       $ python manager.py createsuperuser --username=mdig
+       E-mail address: totaks@gmail.com
+       Password: ********
+       Password (again): ********
+       Superuser created successfully.
 
 5. Web server configurations - VirtualHost and WSGI set up:
 
         [EDIT] /etc/httpd/conf/httpd.conf
         
         ...
-        ##################################################################
-        #
-        # Virtual Host Settings
-        #
+       ##################################################################
+       #
+       # Virtual Host Settings
+       #
         
-        #
-        # MaizeDIG
-        #
-        <VirtualHost maizedig.usda.iastate.edu:80>
-            ServerName maizedig.maizegdb.org
-            DocumentRoot /var/www/MaizeDIG
-            ServerAlias maizedig.maizegdb.org
-            ServerAdmin totaks@gmail.com
+       #
+       # MaizeDIG
+       #
+       <VirtualHost maizedig.usda.iastate.edu:80>
+           ServerName maizedig.maizegdb.org
+           DocumentRoot /var/www/MaizeDIG
+           ServerAlias maizedig.maizegdb.org
+           ServerAdmin totaks@gmail.com
             
-            WSGIDaemonProcess maizedig.maizegdb.org user=mdig group=mdig processes=2 threads=25 python-path=/var/www/MaizeDIG:/usr/lib/python2.7/site-packages
-            WSGIProcessGroup maizedig.maizegdb.org
+           WSGIDaemonProcess maizedig.maizegdb.org user=mdig group=mdig processes=2 threads=25 python-path=/var/www/MaizeDIG:/usr/lib/python2.7/site-packages
+           WSGIProcessGroup maizedig.maizegdb.org
             
-            WSGIScriptAlias / "/var/www/MaizeDIG/apache/django.wsgi"
-            <Directory "/var/www/MaizeDIG">
-                Order allow,deny
-                Allow from all
-            </Directory>
+           WSGIScriptAlias / "/var/www/MaizeDIG/apache/django.wsgi"
+           <Directory "/var/www/MaizeDIG">
+               Order allow,deny
+               Allow from all
+           </Directory>
 
-            ErrorLog logs/MaizeDIG-error_log
-            CustomLog logs/MaizeDIG-access_log common
-        </VirtualHost>
-        ...
+           ErrorLog logs/MaizeDIG-error_log
+           CustomLog logs/MaizeDIG-access_log common
+       </VirtualHost>
+       ...
 
 6. Connect your MaizeDIG main page in web browser.
 
 
+
+## Key Directory & File structure
+
+```
+MaizeDIG
+├── taxon_home
+│   ├── media                                       # all images located here
+│   ├── static
+│   │   ├── js                                      # Java Script (JQuery) for data handling
+│   │   │   ├── ImagesUI                            # Image data handler using JQuery 
+│   │   │   │   ├── taggableUtil
+│   │   │   │   │   ├── DeleteGeneLinkDialog.js
+│   │   │   │   │   ├── DrawingAPI.js
+│   │   │   │   │   ├── DrawingBoard.js
+│   │   │   │   │   ├── EditNotesDialog.js
+│   │   │   │   │   ├── EditQtlsDialog.js
+│   │   │   │   │   ├── NewGeneLinkDialog.js
+│   │   │   │   │   ├── NewTagGroupDialog.js
+│   │   │   │   │   ├── SaveTagDialog.js
+│   │   │   │   │   ├── TaggerUI.js
+│   │   │   │   │   └── TaggingMenu.js
+│   │   │   │   ├── tagViewerUtil
+│   │   │   │   │   ├── DrawingAPI.js
+│   │   │   │   │   └── TaggerUI.js
+│   │   │   │   ├── tagViewingUI
+│   │   │   │   │   ├── DownloadImageDataDialog.js  # Download image attribute data
+│   │   │   │   │   ├── GeneLink.js                 # Handle Gene Link data
+│   │   │   │   │   ├── TagBoard.js
+│   │   │   │   │   ├── TaggableUtil.js
+│   │   │   │   │   ├── TagGroup.js                 # Handle Tag Group data
+│   │   │   │   │   └── Tag.js                      # Handle Tag data
+│   │   │   │   ├── tagViewer.js
+│   │   │   │   ├── taggable.js
+│   │   │   │   └── zoomable.js
+│   │   │   └── imageUpdater
+│   │   │       ├── imageUpdater.js                 # Build Image List for Image menu
+│   │   │       └── iSearchImageUpdater.js          # Build Image list (JQuery) for Image Search results page
+│   │   └── video
+│   │       └── instructions-workbench.mp4          # Workbench demonstration video
+│   ├── templates
+│   │   ├── applicationLayouts
+│   │   │   ├── public
+│   │   │   │   ├── base.html
+│   │   │   │   ├── iSearch.html
+│   │   │   │   ├── search.html
+│   │   │   │   └── simple.html
+│   │   │   └── registered
+│   │   │       └── base.html
+│   │   └── pageletLayouts
+│   │       ├── admin
+│   │       │   ├── customize.html
+│   │       │   ├── imageEditor.html
+│   │       ├── public
+│   │       │   ├── footer.html
+│   │       │   ├── home.html
+│   │       │   ├── imageEditor.html
+│   │       │   ├── imageSearch.html
+│   │       │   ├── images.html
+│   │       │   ├── iSearch.html
+│   │       │   └── navBar.html
+│   │       └── registered
+│   │           ├── navBar.html
+│   │           └── workbench.html
+│   ├── views
+│   │   ├── applications
+│   │   │   ├── admin
+│   │   │   │   └── Customize
+│   │   │   │       └── APPlication.py
+│   │   │   ├── public
+│   │   │   │   ├── Images
+│   │   │   │   │   └── APPlication.py
+│   │   │   │   └── iSearch
+│   │   │   │       └── APPlication.py
+│   │   │   └── registered
+│   │   │       ├── Administration
+│   │   │       │   └── APPlication.py
+│   │   │       └── ImageUploader
+│   │   │           └── APPlication.py
+│   │   ├── pagelets
+│   │   │   ├── admin
+│   │   │   │   ├── CustomizePagelet.py
+│   │   │   │   └── ImageEditorPagelet.py
+│   │   │   ├── public
+│   │   │   │   ├── HomePagelet.py
+│   │   │   │   ├── HomePagelet.pyc
+│   │   │   │   ├── ImageEditorPagelet.py
+│   │   │   │   ├── ImageSearchPagelet.py
+│   │   │   │   ├── ImagesPagelet.py
+│   │   │   │   ├── iSearchPagelet.py
+│   │   │   │   └── NavBarPagelet.py
+│   │   │   └── registered
+│   │   │       ├── ImageUploaderPagelet.py
+│   │   │       ├── NavBarPagelet.py
+│   │   │       └── WorkbenchPagelet.py
+│   │   └── webServices
+│   │       ├── GeneLinks
+│   │       ├── Images
+│   │       ├── Notes
+│   │       ├── Qtls
+│   │       ├── SearchImages
+│   │       ├── TagGroups
+│   │       └── Tags
+│   └── models.py
+├── manage.py
+├── settings.py
+└── urls.py
+```
+
+
+
 ## FAQ
 
-* Public mode and curator (admin) mode
-* curator login (Administration)
-* Create Gene Links
+#### 1. Public mode vs. Admin mode (for curator)
+
+MaizeDIG provides all Genelinks information for public which means it requires no user login process. 
+In addition, For image curatation, [EDIT]
+
+
+#### 2. Curator login (Administration)
+
+To use [EDIT]
+
+#### 3. Image Curation
+
+MaizeDIG provides an image curation tool suite enabling tagging
+of phenotypic features, image-gene linking, visualization
+of image-gene data, and image searching. In this section, we
+provide details on each of these features.
+Please note that you need to login as an administration mode to use Workbench (see *Curatior Login*).
+
     - Add Tag Group
     - Add Tag(s)
     - Create a link between Tag and Gene model
-* Image Search
+
+Please see the demonstration
+[video](http://maizedig.maizegdb.org/static_site/video/instructions-workbench.mp4) 
+for details of adding Tag group, Tag, Image Notes, and creating Gene Link.
+
+#### Image Search
+
+You can 
+
 * GBrowse
 
 
