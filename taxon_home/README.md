@@ -1,15 +1,15 @@
 
-#### Directory & File structure
+#### Structure of Directories & Files
 ```
 taxon_home/
-├── media/              # image files stored here
-├── static/             # static files such as CSS, Java Script, etc.
+├── media/              # Image files stored here
+├── static/             # Static files such as CSS, Java Script, etc.
 ├── templates/          # HTML templates for page layouts
 ├── templatetags/
-├── views/              # applications, pagelets, util, and web services
-├── admin.py
-├── models.py
-├── routers.py
+├── views/              # Applications, pagelets, util, and web services
+├── admin.py            # Register models for admin page (Workbench)
+├── models.py           # Data handlers for Database
+├── routers.py          # A router to control all database operations on models in the contrib.auth application
 └── tests.py
 ```
 
@@ -71,6 +71,7 @@ routers.py
       db_for_write
       allow_syncdb
 ```
+
 
 ##### tests.py
 
