@@ -92,8 +92,8 @@ webService_application/
 ├── api/
 │   ├── API.py              # Provides interface for application
 │   ├── get.py              # Gets data from database
-│   ├── put.py              # Adds data into database
-│   ├── post.py             # Updates data 
+│   ├── put.py              # Updates data 
+│   ├── post.py             # Adds data into database
 │   └── delete.py           # Delete data
 └── Application.py          # Applicaton 
 ```
