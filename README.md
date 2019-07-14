@@ -441,12 +441,12 @@ MaizeDIG
 │   │   │   │   ├── taggableUtil                    # Tagging Tool menu for Workbench (Admin mode)
 │   │   │   │   │   ├── DrawingAPI.js                 # API for drawing on the drawing board
 │   │   │   │   │   ├── DrawingBoard.js               # DrawingBoard object for drawing the tags
-│   │   │   │   │   ├── EditNotesDialog.js            # Add/Edit image notes
-│   │   │   │   │   ├── EditQtlsDialog.js             # Add/Edit QTLs information
-│   │   │   │   │   ├── NewGeneLinkDialog.js          # Add Gene Link
-│   │   │   │   │   ├── NewTagGroupDialog.js          # Add Tag Group
-│   │   │   │   │   ├── TaggerUI.js                   # Tagger UI
-│   │   │   │   │   └── TaggingMenu.js                # menus
+│   │   │   │   │   ├── EditNotesDialog.js            # Dialog API for Add/Edit image notes
+│   │   │   │   │   ├── EditQtlsDialog.js             # Dialog API for Add/Edit QTLs information
+│   │   │   │   │   ├── NewGeneLinkDialog.js          # Dialog API for adding Gene Link
+│   │   │   │   │   ├── NewTagGroupDialog.js          # Dialog API for Adding Tag Group
+│   │   │   │   │   ├── TaggerUI.js                   # Creates a tagging application that links to the database using Ajax
+│   │   │   │   │   └── TaggingMenu.js                # Tagging Menu handler
 │   │   │   │   ├── tagViewer.js                    # JQuery TagViewer Plugin
 │   │   │   │   ├── taggable.js                     # JQuery Taggable Plugin
 │   │   │   │   └── zoomable.js                     # JQuery Zoomable Plugin
