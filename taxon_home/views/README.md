@@ -77,6 +77,7 @@ for more information about Django structure.
 
 `views/` directory has most of Django source codes (Python) which are for web development. 
 We can focus on three sub directories: `applications/`, `pagelets/`, and `webServices/`. 
-`applications/` is for web application and `webServices/` is for web service application, 
-and `pagelets/` is handler for template or display logic.
+`applications/` is for web application 
+and `webServices/` is for getting data for each object from database (datasets handling), 
+and `pagelets/` contains handlers for templates (display logic).
 
