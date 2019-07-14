@@ -19,8 +19,7 @@ views/                                  # Web applications and web services
 │   │   └── Search/                     # NOT USED
 │   └── registered/
 │       ├── Administration/             # Admin page application
-│       ├── ImageUploader/              # Image manual uploader
-│       └── TGManager/                  # NOT USED
+│       └── ImageUploader/              # Image manual uploader
 ├── pagelets/                           # Web page UI applications
 │   ├── admin/                          # Admin mode
 │   │   ├── CustomizePagelet.py         # Pagelet for the customization of the website
@@ -41,7 +40,6 @@ views/                                  # Web applications and web services
 │   └── registered/                     # Admin mode
 │       ├── ImageUploaderPagelet.py     # Pagelet for the Manual Image Upload page
 │       ├── NavBarPagelet.py            # Pagelet for the Navigation Bar (Admin mode)
-│       ├── TGManagerPagelet.py
 │       └── WorkbenchPagelet.py         # Pagelet for the Workbench page (Admin mode)
 ├── util/
 │   ├── ErrorConstants.py

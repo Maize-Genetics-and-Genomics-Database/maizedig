@@ -1,26 +1,23 @@
 
 #### Structure of Directories & Files
 ```
-applications/
+applications/               # Django applications for website
 ├── admin
-│   └── Customize
+│   └── Customize           # Admin page customize page handler - NOT USED
 ├── public
-│   ├── AdvancedSearch
+│   ├── AdvancedSearch      # NOT USED
 │   ├── Blast
 │   ├── EditImage
-│   ├── Home
-│   ├── Images
+│   ├── Home                # Main page (Home)
+│   ├── Images              # Image Viewer application
 │   ├── Login
-│   ├── Logout
-│   ├── Media
-│   ├── Search
-│   └── iSearch
+│   ├── Logout              # Log out
+│   ├── Media               # Controller of actual image files 
+│   ├── Search              # NOT USED
+│   └── iSearch             # Image Search application
 └── registered
-    ├── Administration
-    ├── ImageUploader
-    └── TGManager
+    ├── Administration      # Admin page application
+    └── ImageUploadera      # Manual image uploader
 ```
-
-
 
 
