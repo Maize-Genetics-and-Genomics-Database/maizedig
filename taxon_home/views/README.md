@@ -16,7 +16,7 @@ views/
 │   │   ├── Login/
 │   │   ├── Logout/
 │   │   ├── Media/
-│   │   └── Search/
+│   │   └── Search/                     # NOT USED
 │   └── registered/
 │       ├── Administration/             # Admin page layout handler
 │       ├── ImageUploader/              # Image manual uploader

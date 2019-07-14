@@ -1,6 +1,5 @@
 
-#### Directory & File structure
-
+#### Structure of Directories & Files
 ```
 databaseUpdater/
 ├── GenomeDB/                       # Genome data import module (GFF -> DB)

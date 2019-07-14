@@ -1,6 +1,5 @@
 
-#### Directory & File structure
-
+#### Structure of Directories & Files
 ```
 configuration/
 ├── GBrowse.conf            # NOT USED at MaizeDIG
