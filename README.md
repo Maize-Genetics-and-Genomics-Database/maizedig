@@ -363,199 +363,230 @@ You can follow steps belows for finishing up of MaizeDIG set up.
 1. Clone git repository into **'/var/www/MaizeDIG/'**
 2. Set proper ownership under **'/var/www/MaizeDIG/'**
 
-       $ sudo chown mdig:mdig -R /var/www
+    ```
+    $ sudo chown mdig:mdig -R /var/www
+    ```
    
 3. Edit 'settings.py' for your system environment such as database URL or IP address, 
 user login credentials, and so on.
 
 4. Create admin user account
 
-       $ cd /var/www/MaizeDIG/
-       $ python manager.py createsuperuser --username=mdig
-       E-mail address: totaks@gmail.com
-       Password: ********
-       Password (again): ********
-       Superuser created successfully.
+    ```
+    $ cd /var/www/MaizeDIG/
+    $ python manager.py createsuperuser --username=mdig
+    E-mail address: totaks@gmail.com
+    Password: ********
+    Password (again): ********
+    Superuser created successfully.
+    ```
 
 5. Web server configurations - VirtualHost and WSGI set up:
 
-        [EDIT] /etc/httpd/conf/httpd.conf
+    ```
+    [File: /etc/httpd/conf/httpd.conf]
+    ...
+    ##################################################################
+    #
+    # Virtual Host Settings
+    #
+    
+    #
+    # MaizeDIG
+    #
+    <VirtualHost maizedig.usda.iastate.edu:80>
+        ServerName maizedig.maizegdb.org
+        DocumentRoot /var/www/MaizeDIG
+        ServerAlias maizedig.maizegdb.org
+        ServerAdmin totaks@gmail.com
         
-        ...
-       ##################################################################
-       #
-       # Virtual Host Settings
-       #
+        WSGIDaemonProcess maizedig.maizegdb.org user=mdig group=mdig processes=2 threads=25 python-path=/var/www/MaizeDIG:/usr/lib/python2.7/site-packages
+        WSGIProcessGroup maizedig.maizegdb.org
         
-       #
-       # MaizeDIG
-       #
-       <VirtualHost maizedig.usda.iastate.edu:80>
-           ServerName maizedig.maizegdb.org
-           DocumentRoot /var/www/MaizeDIG
-           ServerAlias maizedig.maizegdb.org
-           ServerAdmin totaks@gmail.com
-            
-           WSGIDaemonProcess maizedig.maizegdb.org user=mdig group=mdig processes=2 threads=25 python-path=/var/www/MaizeDIG:/usr/lib/python2.7/site-packages
-           WSGIProcessGroup maizedig.maizegdb.org
-            
-           WSGIScriptAlias / "/var/www/MaizeDIG/apache/django.wsgi"
-           <Directory "/var/www/MaizeDIG">
-               Order allow,deny
-               Allow from all
-           </Directory>
-
-           ErrorLog logs/MaizeDIG-error_log
-           CustomLog logs/MaizeDIG-access_log common
-       </VirtualHost>
-       ...
+        WSGIScriptAlias / "/var/www/MaizeDIG/apache/django.wsgi"
+        <Directory "/var/www/MaizeDIG">
+            Order allow,deny
+            Allow from all
+        </Directory>
+        
+        ErrorLog logs/MaizeDIG-error_log
+        CustomLog logs/MaizeDIG-access_log common
+    </VirtualHost>
+    ...
+    ```
 
 6. Connect your MaizeDIG main page in web browser.
 
 
 
-## Key Directory & File structure
+## Key Directories & Files structure
 
 ```
 MaizeDIG
 ├── taxon_home
-│   ├── media                                       # all images located here
+│   ├── media                                 # all images located here
 │   ├── static
-│   │   ├── js                                      # Java Script (JQuery) for data handling
-│   │   │   ├── ImagesUI                            # Image data handler using JQuery 
-│   │   │   │   ├── taggableUtil
-│   │   │   │   │   ├── DeleteGeneLinkDialog.js
-│   │   │   │   │   ├── DrawingAPI.js
-│   │   │   │   │   ├── DrawingBoard.js
-│   │   │   │   │   ├── EditNotesDialog.js
-│   │   │   │   │   ├── EditQtlsDialog.js
-│   │   │   │   │   ├── NewGeneLinkDialog.js
-│   │   │   │   │   ├── NewTagGroupDialog.js
-│   │   │   │   │   ├── SaveTagDialog.js
-│   │   │   │   │   ├── TaggerUI.js
-│   │   │   │   │   └── TaggingMenu.js
-│   │   │   │   ├── tagViewerUtil
-│   │   │   │   │   ├── DrawingAPI.js
-│   │   │   │   │   └── TaggerUI.js
-│   │   │   │   ├── tagViewingUI
-│   │   │   │   │   ├── DownloadImageDataDialog.js  # Download image attribute data
-│   │   │   │   │   ├── GeneLink.js                 # Handle Gene Link data
-│   │   │   │   │   ├── TagBoard.js
-│   │   │   │   │   ├── TaggableUtil.js
-│   │   │   │   │   ├── TagGroup.js                 # Handle Tag Group data
-│   │   │   │   │   └── Tag.js                      # Handle Tag data
-│   │   │   │   ├── tagViewer.js
-│   │   │   │   ├── taggable.js
-│   │   │   │   └── zoomable.js
+│   │   ├── js                                  # Java Script (JQuery) for data handling
+│   │   │   ├── ImagesUI                          # Image data handler using JQuery 
+│   │   │   │   ├── tagViewerUtil                   # Tagging Tool for Image Viewer (Public mode)
+│   │   │   │   │   ├── DrawingAPI.js                 # API for drawing on the drawing board
+│   │   │   │   │   └── TaggerUI.js                   # Tagger UI and menu
+│   │   │   │   ├── tagViewingUI                    # UI for displaying Tag/GeneLink information
+│   │   │   │   │   ├── DownloadImageDataDialog.js    # Download image attribute data
+│   │   │   │   │   ├── GeneLink.js                   # Handle Gene Link data
+│   │   │   │   │   ├── TagBoard.js                   # Drawing object for the Tag Board
+│   │   │   │   │   ├── TaggableUtil.js               # Static utility methods for canvases
+│   │   │   │   │   ├── TagGroup.js                   # Handle Tag Group data
+│   │   │   │   │   └── Tag.js                        # Handle Tag data
+│   │   │   │   ├── taggableUtil                    # Tagging Tool menu for Workbench (Admin mode)
+│   │   │   │   │   ├── DrawingAPI.js                 # API for drawing on the drawing board
+│   │   │   │   │   ├── DrawingBoard.js               # DrawingBoard object for drawing the tags
+│   │   │   │   │   ├── EditNotesDialog.js            # Add/Edit image notes
+│   │   │   │   │   ├── EditQtlsDialog.js             # Add/Edit QTLs information
+│   │   │   │   │   ├── NewGeneLinkDialog.js          # Add Gene Link
+│   │   │   │   │   ├── NewTagGroupDialog.js          # Add Tag Group
+│   │   │   │   │   ├── TaggerUI.js                   # Tagger UI
+│   │   │   │   │   └── TaggingMenu.js                # menus
+│   │   │   │   ├── tagViewer.js                    # JQuery TagViewer Plugin
+│   │   │   │   ├── taggable.js                     # JQuery Taggable Plugin
+│   │   │   │   └── zoomable.js                     # JQuery Zoomable Plugin
 │   │   │   └── imageUpdater
-│   │   │       ├── imageUpdater.js                 # Build Image List for Image menu
-│   │   │       └── iSearchImageUpdater.js          # Build Image list (JQuery) for Image Search results page
+│   │   │       ├── imageUpdater.js                   # Build Image List for Image menu
+│   │   │       └── iSearchImageUpdater.js            # Build Image list (JQuery) for Image Search results page
 │   │   └── video
 │   │       └── instructions-workbench.mp4          # Workbench demonstration video
-│   ├── templates
-│   │   ├── applicationLayouts
-│   │   │   ├── public
-│   │   │   │   ├── base.html
-│   │   │   │   ├── iSearch.html
-│   │   │   │   ├── search.html
-│   │   │   │   └── simple.html
-│   │   │   └── registered
-│   │   │       └── base.html
-│   │   └── pageletLayouts
-│   │       ├── admin
-│   │       │   ├── customize.html
-│   │       │   ├── imageEditor.html
-│   │       ├── public
-│   │       │   ├── footer.html
-│   │       │   ├── home.html
-│   │       │   ├── imageEditor.html
-│   │       │   ├── imageSearch.html
-│   │       │   ├── images.html
-│   │       │   ├── iSearch.html
-│   │       │   └── navBar.html
-│   │       └── registered
-│   │           ├── navBar.html
-│   │           └── workbench.html
-│   ├── views
-│   │   ├── applications
-│   │   │   ├── admin
-│   │   │   │   └── Customize
-│   │   │   │       └── APPlication.py
-│   │   │   ├── public
-│   │   │   │   ├── Images
-│   │   │   │   │   └── APPlication.py
-│   │   │   │   └── iSearch
-│   │   │   │       └── APPlication.py
-│   │   │   └── registered
-│   │   │       ├── Administration
-│   │   │       │   └── APPlication.py
-│   │   │       └── ImageUploader
-│   │   │           └── APPlication.py
-│   │   ├── pagelets
-│   │   │   ├── admin
-│   │   │   │   ├── CustomizePagelet.py
-│   │   │   │   └── ImageEditorPagelet.py
-│   │   │   ├── public
-│   │   │   │   ├── HomePagelet.py
-│   │   │   │   ├── HomePagelet.pyc
-│   │   │   │   ├── ImageEditorPagelet.py
-│   │   │   │   ├── ImageSearchPagelet.py
-│   │   │   │   ├── ImagesPagelet.py
-│   │   │   │   ├── iSearchPagelet.py
-│   │   │   │   └── NavBarPagelet.py
-│   │   │   └── registered
-│   │   │       ├── ImageUploaderPagelet.py
-│   │   │       ├── NavBarPagelet.py
-│   │   │       └── WorkbenchPagelet.py
-│   │   └── webServices
-│   │       ├── GeneLinks
-│   │       ├── Images
-│   │       ├── Notes
-│   │       ├── Qtls
-│   │       ├── SearchImages
-│   │       ├── TagGroups
-│   │       └── Tags
-│   └── models.py
-├── manage.py
-├── settings.py
-└── urls.py
+│   ├── templates                             # HTML templates
+│   │   ├── applicationLayouts                  # Common base Layouts
+│   │   │   ├── public                            # Public mode
+│   │   │   │   ├── base.html                       # base HTML template (Public mode)
+│   │   │   │   ├── iSearch.html                    # Image Search base HTML template (support multiple resultes pagelets)
+│   │   │   │   ├── search.html                     # NOT USED
+│   │   │   │   └── simple.html                     # NOT USED
+│   │   │   └── registered                        # Admin mode
+│   │   │       └── base.html                       # base HTML template (Admin mode)
+│   │   └── pageletLayouts                      # Detail pagelet Layouts
+│   │       ├── admin                             # Admin Mode
+│   │       │   ├── customize.html                  # admin page customize page template - NOT USED
+│   │       │   ├── imageEditor.html                # Image editor page template
+│   │       ├── public                            # Public mode
+│   │       │   ├── footer.html                     # Footer HTML template
+│   │       │   ├── home.html                       # Main page (Home) HTML template
+│   │       │   ├── imageEditor.html                # Image Editor HTML template
+│   │       │   ├── imageSearch.html                # Image search HTML template
+│   │       │   ├── images.html                     # Images List HTML template
+│   │       │   ├── iSearch.html                    # Image search result page template
+│   │       │   └── navBar.html                     # Navigation Bar template
+│   │       └── registered                        # Admin mode
+│   │           ├── navBar.html                     # Navigation Bar template
+│   │           └── workbench.html                  # Workbench page template
+│   ├── views                                 # Web applications and services
+│   │   ├── applications                        # Applications for layout handler
+│   │   │   ├── admin                             # Admin mode
+│   │   │   │   └── Customize                       # Admin page customize page handler - NOT USED
+│   │   │   ├── public                            # Public mode
+│   │   │   │   ├── Images                          # Image Viewer layout handler
+│   │   │   │   └── iSearch                         # Image Search layout handler
+│   │   │   └── registered                        # Admin mode
+│   │   │       ├── Administration                  # Admin page layout handler
+│   │   │       └── ImageUploader                   # Image manual uploader
+│   │   ├── pagelets                            # Web page UI applications
+│   │   │   ├── admin                             # Admin mode
+│   │   │   │   ├── CustomizePagelet.py             # Pagelet for the customization of the website
+│   │   │   │   └── ImageEditorPagelet.py           # Pagelet for the Image Editor for admin mode
+│   │   │   ├── public                            # Public mode
+│   │   │   │   ├── HomePagelet.py                  # Pagelet for the main page (Home)
+│   │   │   │   ├── ImageEditorPagelet.py           # Pagelet for the Image Editor for public mode
+│   │   │   │   ├── ImageSearchPagelet.py           # Pagelet for the Search page (NOT USED)
+│   │   │   │   ├── ImagesPagelet.py                # Pagelet for the Image page
+│   │   │   │   ├── iSearchPagelet.py               # Pagelet for the Image Search page
+│   │   │   │   └── NavBarPagelet.py                # Pagelet for the Navigation Bar (Public mode)
+│   │   │   └── registered                        # Admin mode
+│   │   │       ├── ImageUploaderPagelet.py         # Pagelet for the Manual Image Upload page
+│   │   │       ├── NavBarPagelet.py                # Pagelet for the Navigation Bar (Admin mode)
+│   │   │       └── WorkbenchPagelet.py             # Pagelet for the Workbench page (Admin mode)
+│   │   └── webServices                         # Web service (Ajax) applications
+│   │       ├── GeneLinks                         # Ajax application for GeneLinks data
+│   │       ├── Images                            # Ajax application for images data
+│   │       ├── Notes                             # Ajax application for image notes
+│   │       ├── Qtls                              # Ajax application for QTLs
+│   │       ├── SearchImages                      # Ajax application for Image search
+│   │       ├── TagGroups                         # Ajax application for Tag groups
+│   │       └── Tags                              # Ajax application for Tags
+│   └── models.py                             # Data handlers for Database
+├── tagged_images                           # Modules for Tag/GeneLink data for MaizeGDB integration
+│   ├── css
+│   │   └── maphilight.css
+│   ├── js
+│   │   └── maphilight.js                     # Java Scripts (JQuery)
+│   ├── tags
+│   │   ├── johnt2_test.html
+│   │   └── wtf1_test.html
+│   ├── create_tagged_image.php               # Main controller for tagged images pages
+│   ├── main.html
+│   ├── bluecorn.jpg
+│   └── neuffer.jpg
+├── manage.py                               # Django project manager
+├── settings.py                             # Settings
+└── urls.py                                 # URLs 
 ```
 
 
 
 ## FAQ
 
-#### 1. Public mode vs. Admin mode (for curator)
+#### Public mode vs. Admin mode (for curator)
 
-MaizeDIG provides all Genelinks information for public which means it requires no user login process. 
-In addition, For image curatation, [EDIT]
+MaizeDIG provides all Genelinks information for public which means it requires no user login process 
+to get the information. 
+In addition, it allows image curation with user login with is called Admin mode or Curator mode. 
 
 
-#### 2. Curator login (Administration)
+#### Curator login (Administration mode)
 
-To use [EDIT]
+To create GeneLinks, you need to login into the administration page. 
+First, you can use following URL:
 
-#### 3. Image Curation
+> Curator Login: http://maizedig.maizegdb.org/administration/
 
-MaizeDIG provides an image curation tool suite enabling tagging
-of phenotypic features, image-gene linking, visualization
-of image-gene data, and image searching. In this section, we
-provide details on each of these features.
+and type `USER_ID` and `PASSWORD`. 
+When you login, and click `Administration` link, you can move to the Workbench page as below:
+![Workbench](screenshots/maizedig_workbench.png)
+**Figure 1**. Workbench
+
+
+#### Create and change password for Curator (Admin user)
+
+* Create user account (Curator account):
+
+    ```
+    $ cd /var/www/MaizeDIG/
+    $ python manager.py createsuperuser --username=ktcho
+    E-mail address: totaks@gmail.com
+    Password: ********
+    Password (again): ********
+    Superuser created successfully.
+    ```
+* Change password
+
+    ```
+    $ python manage.py changepassword ktcho
+    Changing password for user 'ktcho'
+    Password: **********
+    Password (again): **********
+    Password changed successfully for user 'ktcho'
+    ```
+
+
+#### Image Curation
+
+MaizeDIG provides an image curation tool suite enabling tagging of phenotypic features, 
+image-gene linking, visualization of image-gene data, and image searching.
 Please note that you need to login as an administration mode to use Workbench (see *Curatior Login*).
-
-    - Add Tag Group
-    - Add Tag(s)
-    - Create a link between Tag and Gene model
 
 Please see the demonstration
 [video](http://maizedig.maizegdb.org/static_site/video/instructions-workbench.mp4) 
 for details of adding Tag group, Tag, Image Notes, and creating Gene Link.
 
-#### Image Search
-
-You can 
-
-* GBrowse
 
 
 ## Who do I talk to? ###
