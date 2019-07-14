@@ -1,8 +1,8 @@
 
 #### Structure of Directories & Files
 ```
-SearchImages/
-├── api
+AggregateTagGroupsSearch/
+├── api/
 │   ├── API.py
 │   └── get.py
 └── Application.py
@@ -11,13 +11,13 @@ SearchImages/
 
 #### Descriptions
 
-Web application for data handling for Image search. 
+Web application for data handling for getting all Tags and GeneLinks given Image.
 
 ##### Application.py
 ```
 Application.py
   Description:
-    Ajax Application for getting the metadata for Image search.
+    Ajax Application for getting the metadata for all Tags and GeneLinks given Image.
 
   class Application(WebServiceApplicationBase)
     Methods:
@@ -32,9 +32,14 @@ Application.py
 ```
 API.py
   Description:
-    API for Image search application
+    API for Aggregate TagGroups for given Image
 
-  getImageMetadata(request)
+  getAggregateTagGroups(request)
+    ...
+    if imageKey:
+      return getAPI.getAggregateTagGroupsByImage(imageKey)
+    else:
+      return getAPI.getAggregateTagGroups()
 ```
 
 
@@ -42,16 +47,14 @@ API.py
 ```
 get.py
   Description:
-    Gets Image search with given parameters from database
+    Gets all Tags and GeneLinks with given Image from database
 
   class GetAPI
     Methods:
       __init__(self, limit=10, offset=0, user=None, fields=None, unlimited=False)
-      getImageMetadata(self)
+      getAggregateTagGroupsByImage(self, imageKey, isKey=True)
         return metadata
-      getImageMetadataForiSearch(self, query)
-        return metadata
-      getImageMetadataByOrganism(self, organismId)
+      getAggregateTagGroups(self)
         return metadata
 ```
 
