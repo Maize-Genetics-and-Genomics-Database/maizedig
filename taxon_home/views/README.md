@@ -1,8 +1,8 @@
 
 #### Structure of Directories & Files
 ```
-views/
-├── applications/                       # Applications for layout handler
+views/                                  # Web applications and web services
+├── applications/                       # Django applications for website
 │   ├── admin/                          # Admin mode
 │   │   └── Customize/                  # Admin page customize page handler - NOT USED
 │   ├── public/                         # Public mode
@@ -11,14 +11,14 @@ views/
 │   │   ├── EditImage/
 │   │   ├── GBrowse/
 │   │   ├── Home/
-│   │   ├── Images/                     # Image Viewer layout handler
-│   │   ├── iSearch/                    # Image Search layout handler
+│   │   ├── Images/                     # Image Viewer application
+│   │   ├── iSearch/                    # Image Search application
 │   │   ├── Login/
 │   │   ├── Logout/
 │   │   ├── Media/
 │   │   └── Search/                     # NOT USED
 │   └── registered/
-│       ├── Administration/             # Admin page layout handler
+│       ├── Administration/             # Admin page application
 │       ├── ImageUploader/              # Image manual uploader
 │       └── TGManager/                  # NOT USED
 ├── pagelets/                           # Web page UI applications
@@ -63,5 +63,21 @@ views/
     └── Tags/                           # Ajax application for Tags
 ```
 
+#### Web structure with MTV model
 
+Django framework is used for MaizeDIG web services, 
+and Django has '*Model-Template-View*' (MTV) architecture. 
+Please see Figure 2. 
+![Django MTV diagram](../../screenshots/MTV-Diagram.png)
+**Figure 2** Django MTV diagram (https://djangobook.com/mdj2-django-structure/)
+
+*Model* part allows easy wayt to deals with data from database and a class in Model corresponds to each table in database.
+*Template* part is display logic and *View* part is for business logic.
+Please see [The django Book](https://djangobook.com/mdj2-django-structure/) site 
+for more information about Django structure.
+
+`views/` directory has most of Django source codes (Python) which are for web development. 
+We can focus on three sub directories: `applications/`, `pagelets/`, and `webServices/`. 
+`applications/` is for web application and `webServices/` is for web service application, 
+and `pagelets/` is handler for template or display logic.
 

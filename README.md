@@ -480,14 +480,14 @@ MaizeDIG
 │   │           ├── navBar.html                     # Navigation Bar template
 │   │           └── workbench.html                  # Workbench page template
 │   ├── views                                 # Web applications and services
-│   │   ├── applications                        # Applications for layout handler
+│   │   ├── applications                        # Django applications for website
 │   │   │   ├── admin                             # Admin mode
 │   │   │   │   └── Customize                       # Admin page customize page handler - NOT USED
 │   │   │   ├── public                            # Public mode
-│   │   │   │   ├── Images                          # Image Viewer layout handler
-│   │   │   │   └── iSearch                         # Image Search layout handler
+│   │   │   │   ├── Images                          # Image Viewer application
+│   │   │   │   └── iSearch                         # Image Search application
 │   │   │   └── registered                        # Admin mode
-│   │   │       ├── Administration                  # Admin page layout handler
+│   │   │       ├── Administration                  # Admin page application
 │   │   │       └── ImageUploader                   # Image manual uploader
 │   │   ├── pagelets                            # Web page UI applications
 │   │   │   ├── admin                             # Admin mode
