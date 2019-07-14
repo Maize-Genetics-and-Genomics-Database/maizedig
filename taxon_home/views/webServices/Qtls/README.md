@@ -1,24 +1,24 @@
 
 #### Structure of Directories & Files
 ```
-Notes/
+Qtls/
 ├── api
 │   ├── API.py
 │   ├── get.py
-│   └── post.py
+│   ├── post.py
 └── Application.py
 ```
 
 
 #### Descriptions
 
-Web application for data handling for Image Notes. 
+Web application for data handling for QTLs.
 
 ##### Application.py
 ```
 Application.py
   Description:
-    Ajax Application for getting the metadata of Image Notes.
+    Ajax Application for getting the metadata of QTLs.
 
   class Application(WebServiceApplicationBase)
     Methods:
@@ -33,12 +33,12 @@ Application.py
 ```
 API.py
   Description:
-    API for Image Notes application
+    API for QTLs application
 
-  getNote(request)
-    return getAPI.getNote(imageKey)
-  addNote(request)
-    return postAPI.addNote(notes, pn_id, imageKey)
+  getQtl(request)
+    return getAPI.getQtl(imageKey)
+  addQtl(request)
+    return postAPI.addQtl(qtl, pq_id, imageKey)
 ```
 
 
@@ -46,12 +46,12 @@ API.py
 ```
 get.py
   Description:
-    Gets Image Notes with given parameters from database
+    Gets QTLs with given parameters from database
 
   class GetAPI
     Methods:
       __init__(self, user=None, fields=None)
-      getNote(self, imageKey)
+      getQtl(self, imageKey)
         return metadata
 ```
 
@@ -60,12 +60,13 @@ get.py
 ```
 post.py
   Description:
-    Creates/Updates Image Notes with the given parameters
+    Creates/Updates QTLs with the given parameters
 
   class PostAPI
     Methods:
       __init__(self, user, fields=None)
-      addNote(self, notes, pn_id, imageKey)
+      addQtl(self, qtl, pq_id, imageKey)
         return metadata
 ```
+
 
