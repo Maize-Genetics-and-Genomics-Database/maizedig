@@ -7,14 +7,13 @@ taxon_home/
 ├── templates/          # HTML templates for page layouts
 ├── templatetags/
 ├── views/              # applications, pagelets, util, and web services
-├── __init__.py
 ├── admin.py
 ├── models.py
 ├── routers.py
 └── tests.py
 ```
 
-'**taxon_home**' is practical root directory in this project 
+'**taxon_home**' is main working directory in this project 
 and actual applications and web development source codes are placed under the '**views**' directory. 
 
 
