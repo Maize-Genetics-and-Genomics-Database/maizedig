@@ -67,7 +67,6 @@ views/                                  # Web applications and web services
 
 Django framework is used for MaizeDIG web services, 
 and Django has '*Model-Template-View*' (MTV) architecture. 
-Please see Figure 2. 
 ![Django MTV diagram](../../screenshots/MTV-Diagram.png)
 **Figure 2** Django MTV diagram (https://djangobook.com/mdj2-django-structure/)
 
